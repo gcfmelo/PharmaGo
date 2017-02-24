@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="http://schemas.android.com/tools">
+    <string-array name="about_options">
+        <item>Contact us</item>
+        <item>Disclaimer</item>
+    </string-array>
+    <string-array name="account_options">
+        <item>Balance</item>
+        <item>Transactions</item>
+        <item>Rewards</item>
+    </string-array>
+    <string-array name="campaigns_options">
+        <item>Open Opportunities</item>
+        <item>Closed/Expired</item>
+        <item>Statistics</item>
+    </string-array>
+    <string-array name="options">
+        <item>User</item>
+        <item>Account</item>
+        <item>Campaigns</item>
+        <item>About</item>
+    </string-array>
+    <string-array name="user_options">
+        <item>Settings</item>
+        <item>Profile</item>
+    </string-array>
     <attr format="reference" name="drawerArrowStyle"/>
     <attr format="dimension" name="height"/>
     <attr format="boolean" name="isLightTheme"/>
@@ -601,8 +625,6 @@
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
     <string name="character_counter_pattern" translatable="false">%1$d / %2$d</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="password_toggle_content_description">Toggle password visibility</string>
     <string name="path_password_eye" translatable="false">M12,4.5C7,4.5 2.73,7.61 1,12c1.73,4.39 6,7.5 11,7.5s9.27,-3.11 11,-7.5c-1.73,-4.39 -6,-7.5 -11,-7.5zM12,17c-2.76,0 -5,-2.24 -5,-5s2.24,-5 5,-5 5,2.24 5,5 -2.24,5 -5,5zM12,9c-1.66,0 -3,1.34 -3,3s1.34,3 3,3 3,-1.34 3,-3 -1.34,-3 -3,-3z</string>
     <string name="path_password_eye_mask_strike_through" translatable="false">M2,4.27 L19.73,22 L22.27,19.46 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
@@ -610,8 +632,12 @@
     <string name="path_password_strike_through" translatable="false">M3.27,4.27 L19.74,20.74</string>
     <string name="search_menu_title">Search</string>
     <string name="status_bar_notification_info_overflow">999+</string>
+    <string name="title_activity_about_menu">About Pharmago</string>
+    <string name="title_activity_account_menu">Account Options</string>
+    <string name="title_activity_campaigns_menu">Campaigns Options</string>
     <string name="title_activity_login">Login</string>
-    <string name="title_activity_main_menu">PharmaGo</string>
+    <string name="title_activity_main_menu">Home</string>
+    <string name="title_activity_user_menu">User Configuration</string>
     <string name="web_sevice_base_url">http://www.benben.net.br/apiPharmaGo?</string>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>

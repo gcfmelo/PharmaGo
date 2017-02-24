@@ -1,13 +1,12 @@
 package br.com.phago.pharmago;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,40 +14,39 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> listView,
+                                    View itemView,
+                                    int position,
+                                    long id) {
+                if (position == 0) {
+                    // TODO do the "AccountMenuActivity" need to handle this Intent in some way?
+                    // Intent intent = new Intent(UserMenuActivity.this, UserMenuActivity.class);
+                    //startActivity(intent);
+                    Toast.makeText(MainActivity.this, "You have selected \"User\"", Toast.LENGTH_SHORT).show();
+                }
+                if (position == 1) {
+                    // TODO do the "AccountMenuActivity" need to handle this Intent in some way?
+                    // Intent intent = new Intent(MainActivity.this, AccountMenuActivity.class);
+                    //startActivity(intent);
+                    Toast.makeText(MainActivity.this, "You have selected \"Account\"", Toast.LENGTH_SHORT).show();
+                }
+                if (position == 2) {
+                    // TODO do the "CampaignsMenuActivity" need to handle this Intent in some way?
+                    Intent intent = new Intent(MainActivity.this, CampaignsMenuActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(MainActivity.this, "You have selected \"Campaigns\"", Toast.LENGTH_SHORT).show();
+                }
+                if (position == 3) {
+                    // TODO do the "AboutMenuActivity" need to handle this Intent in some way?
+                    //Intent intent = new Intent(MainActivity.this, AboutMenuActivity.class);
+                    //startActivity(intent);
+                    Toast.makeText(MainActivity.this, "You have selected \"About\"", Toast.LENGTH_SHORT).show();
+                }
             }
-        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        };
+        ListView listView = (ListView) findViewById(R.id.list_options);
+        listView.setOnItemClickListener(itemClickListener);
     }
 }
-
-

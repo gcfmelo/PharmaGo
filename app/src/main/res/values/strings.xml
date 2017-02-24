@@ -2,14 +2,43 @@
     <string name="app_name">PharmaGo</string>
     <string name="action_settings">Settings</string>
     <string name="activity_main_header">Home</string>
-    <string name="title_activity_main_menu">PharmaGo</string>
-
+    <string name="title_activity_main_menu">Home</string>
     <string name="title_activity_login">Login</string>
-
-
+    <string name="title_activity_user_menu">User Configuration</string>
+    <string name="title_activity_account_menu">Account Options</string>
+    <string name="title_activity_campaigns_menu">Campaigns Options</string>
+    <string name="title_activity_about_menu">About Pharmago</string>
     <string name="api_token">123456789</string>
     <string name="web_sevice_base_url">http://www.benben.net.br/apiPharmaGo?</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string-array name="options">
+        <item>User</item>
+        <item>Account</item>
+        <item>Campaigns</item>
+        <item>About</item>
+    </string-array>
+
+    <string-array name="user_options">
+        <item>Settings</item>
+        <item>Profile</item>
+    </string-array>
+
+    <string-array name="account_options">
+        <item>Balance</item>
+        <item>Transactions</item>
+        <item>Rewards</item>
+    </string-array>
+
+    <string-array name="campaigns_options">
+        <item>Open Opportunities</item>
+        <item>Closed/Expired</item>
+        <item>Statistics</item>
+    </string-array>
+
+    <string-array name="about_options">
+        <item>Contact us</item>
+        <item>Disclaimer</item>
+    </string-array>
+
 </resources>

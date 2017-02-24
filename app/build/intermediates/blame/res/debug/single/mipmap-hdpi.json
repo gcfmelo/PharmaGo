@@ -2,5 +2,9 @@
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi\\ic_launcher.png",
         "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi\\pharmago_logo.png",
+        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\mipmap-hdpi\\pharmago_logo.png"
     }
 ]

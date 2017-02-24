@@ -56,6 +56,10 @@
         "source": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.2.0\\res\\layout\\select_dialog_item_material.xml"
     },
     {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_campaigns_menu.xml",
+        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\activity_campaigns_menu.xml"
+    },
+    {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_alert_dialog_button_bar_material.xml",
         "source": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.2.0\\res\\layout\\abc_alert_dialog_button_bar_material.xml"
     },
@@ -72,16 +76,8 @@
         "source": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\exploded-aar\\com.android.support\\design\\25.2.0\\res\\layout\\design_navigation_menu_item.xml"
     },
     {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\app_bar_main_menu.xml",
-        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\app_bar_main_menu.xml"
-    },
-    {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_media.xml",
         "source": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.2.0\\res\\layout\\notification_template_media.xml"
-    },
-    {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\content_main_menu.xml",
-        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\content_main_menu.xml"
     },
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_bar_up_container.xml",
@@ -110,10 +106,6 @@
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_text_input_password_icon.xml",
         "source": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\exploded-aar\\com.android.support\\design\\25.2.0\\res\\layout\\design_text_input_password_icon.xml"
-    },
-    {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\content_main.xml",
-        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\content_main.xml"
     },
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_simple.xml",
@@ -174,14 +166,6 @@
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_login.xml",
         "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\activity_login.xml"
-    },
-    {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\nav_header_main_menu.xml",
-        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\nav_header_main_menu.xml"
-    },
-    {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main_menu.xml",
-        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\activity_main_menu.xml"
     },
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_popup_menu_header_item_layout.xml",

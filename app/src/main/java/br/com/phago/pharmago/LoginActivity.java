@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     static final String KEY_COUNTER = "COUNTER";
     private int mCounter = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

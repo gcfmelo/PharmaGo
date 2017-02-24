@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">PharmaGo</string>
+    <string name="action_settings">Settings</string>
+    <string name="activity_main_header">Home</string>
+    <string name="title_activity_main_menu">PharmaGo</string>
+
+    <string name="title_activity_login">Login</string>
+
+
+    <string name="api_token">123456789</string>
+    <string name="web_sevice_base_url">http://www.benben.net.br/apiPharmaGo?</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+</resources>

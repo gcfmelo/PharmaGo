@@ -6,8 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-// 24/02/2017 13:04
-//----------------
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -66,7 +65,9 @@ public class LoginActivity extends AppCompatActivity {
         final TextView textViewResult = (TextView) findViewById(R.id.textViewResult);
         EditText emailEditText = (EditText) findViewById(R.id.editTextEmail);
         final EditText passwordEditText = (EditText) findViewById(R.id.editTextPassword);
+
         mCounter++;
+
         Toast.makeText(this, "Count: "+ Integer.toString(mCounter)+" clicks", Toast.LENGTH_SHORT).show();
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -151,7 +152,6 @@ public class LoginActivity extends AppCompatActivity {
                     } catch(Exception e) {
                         e.printStackTrace();
                     }
-
                 }
             }, new Response.ErrorListener() {
                 @Override

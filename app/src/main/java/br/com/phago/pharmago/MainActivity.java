@@ -10,10 +10,17 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String KEY_COUNTER = "COUNTER";
+    // global variables to hold user data
+    public static String user_id, user_name, user_email;
+    public static int mCounter = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> listView,
@@ -21,10 +28,12 @@ public class MainActivity extends AppCompatActivity {
                                     int position,
                                     long id) {
                 if (position == 0) {
+
                     // TODO do the "AccountMenuActivity" need to handle this Intent in some way?
-                    // Intent intent = new Intent(UserMenuActivity.this, UserMenuActivity.class);
-                    //startActivity(intent);
                     Toast.makeText(MainActivity.this, "You have selected \"User\"", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, UserMenuActivity.class);
+                    startActivity(intent);
+
                 }
                 if (position == 1) {
                     // TODO do the "AccountMenuActivity" need to handle this Intent in some way?
@@ -34,9 +43,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (position == 2) {
                     // TODO do the "CampaignsMenuActivity" need to handle this Intent in some way?
+
+
+                    Toast.makeText(MainActivity.this, "You have selected \"Campaigns\"", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, CampaignsMenuActivity.class);
                     startActivity(intent);
-                    Toast.makeText(MainActivity.this, "You have selected \"Campaigns\"", Toast.LENGTH_SHORT).show();
                 }
                 if (position == 3) {
                     // TODO do the "AboutMenuActivity" need to handle this Intent in some way?

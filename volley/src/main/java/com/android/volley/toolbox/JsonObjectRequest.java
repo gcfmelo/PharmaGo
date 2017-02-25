@@ -43,9 +43,9 @@ public class JsonObjectRequest extends JsonRequest<JSONObject> {
      * @param errorListener Error listener, or null to ignore errors.
      */
     public JsonObjectRequest(int method, String url, JSONObject jsonRequest,
-            Listener<JSONObject> listener, ErrorListener errorListener) {
+                             Listener<JSONObject> listener, ErrorListener errorListener) {
         super(method, url, (jsonRequest == null) ? null : jsonRequest.toString(), listener,
-                    errorListener);
+                errorListener);
     }
 
     /**
@@ -55,7 +55,7 @@ public class JsonObjectRequest extends JsonRequest<JSONObject> {
      * @see #JsonObjectRequest(int, String, JSONObject, Listener, ErrorListener)
      */
     public JsonObjectRequest(String url, JSONObject jsonRequest, Listener<JSONObject> listener,
-            ErrorListener errorListener) {
+                             ErrorListener errorListener) {
         this(jsonRequest == null ? Method.GET : Method.POST, url, jsonRequest,
                 listener, errorListener);
     }

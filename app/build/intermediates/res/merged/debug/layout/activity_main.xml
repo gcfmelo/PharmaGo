@@ -10,8 +10,15 @@
     android:weightSum="1">
 
 
-    <ImageView
+    <Button
+        android:text="@string/button_text"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:onClick="onClickStartServices"/>
+
+    <ImageView
+        android:layout_width="194dp"
         android:layout_height="69dp"
         android:layout_marginStart="0dp"
         android:layout_marginLeft="0dp"
@@ -19,9 +26,9 @@
         android:id="@+id/imageView_pharmago_logo"
         android:cropToPadding="false"
         android:adjustViewBounds="false"
-        android:layout_weight="0.05"
         android:scaleType="fitStart"
-        android:background="?attr/colorPrimary" />
+        android:background="?attr/colorPrimary"
+        />
 
     <ListView
         android:layout_width="match_parent"

@@ -13,6 +13,10 @@
     <string name="other_web_sevice_base_url">http://www.benben.net.br/apiPharmaGo?email=gcfmelo@gmail.com&amp;password=abc123&amp;action=getCampaigns&amp;token=123456789</string>
 
 
+    <string name="button_response">Button Response</string>
+    <string name="button_text">Test Services (see results in Android log)</string>
+
+
     <string-array name="options">
         <item>User</item>
         <item>Account</item>
@@ -42,5 +46,6 @@
         <item>Contact us</item>
         <item>Disclaimer</item>
     </string-array>
+
 
 </resources>

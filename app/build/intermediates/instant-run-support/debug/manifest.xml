@@ -39,6 +39,11 @@
         <activity
             android:name="br.com.phago.pharmago.CampaignsMenuActivity"
             android:label="@string/title_activity_campaigns_menu" />
+
+        <service
+            android:name="br.com.phago.pharmago.getWsData"
+            android:exported="false" />
+   // true if available for other Apps
     </application>
 
 </manifest>

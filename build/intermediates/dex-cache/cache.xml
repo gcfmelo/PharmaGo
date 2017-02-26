@@ -3,6 +3,15 @@
 
     <item
         is-multidex="true"
+        jar="C:\Android\PharmaGo\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.2.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="152de8da301561dcb0946471697a420d8f7a68c5">
+        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-25.2.0_407fbf3689cd96c140b2f5288852f2b8678c5cb0\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Android\PharmaGo\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.2.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
@@ -18,6 +27,15 @@
         revision="25.0.2"
         sha1="ea6a989b83d19b1b461281e0475a6cd6514897f8">
         <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-25.2.0_90bfea3b818eedb7c171e72b8e8573942b2419d8\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Lenovo\AppData\Local\Android\sdk2\extras\android\m2repository\com\android\support\support-annotations\25.2.0\support-annotations-25.2.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4a5a82a027706397fff621b22fd6fa796e91d7c5">
+        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.2.0_34fa22c91218fc0f43911d3815631d55bdd23a92\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -39,51 +57,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Android\PharmaGo\app\build\intermediates\exploded-aar\com.android.support\transition\25.2.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e51c2f662bb72419632af5192553c37e33890a99">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-transition-25.2.0_30eb766ab6d1028763b28530760da4113d2d5cd1\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Android\PharmaGo\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="3fa2656aa3f1f1e73d78dd0538db7bf4c3c93f3a">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_4072bfa806a075523e0959a942f4e93f5e93c277\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Android\PharmaGo\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="b71583dae63425a9ff4acd65dc306fc491050087">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_453739e58950043518e6f4a1dc50b6a4c3690237\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Android\PharmaGo\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.2.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="152de8da301561dcb0946471697a420d8f7a68c5">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-25.2.0_407fbf3689cd96c140b2f5288852f2b8678c5cb0\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Lenovo\AppData\Local\Android\sdk2\extras\android\m2repository\com\android\support\support-annotations\25.2.0\support-annotations-25.2.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4a5a82a027706397fff621b22fd6fa796e91d7c5">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.2.0_34fa22c91218fc0f43911d3815631d55bdd23a92\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Android\PharmaGo\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.2.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
@@ -99,6 +72,15 @@
         revision="25.0.2"
         sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
         <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-25.2.0_4eeec91d5a1637a1c5f4d36cfda45ba2cf4dc7b7\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Android\PharmaGo\app\build\intermediates\exploded-aar\com.android.support\transition\25.2.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e51c2f662bb72419632af5192553c37e33890a99">
+        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-transition-25.2.0_30eb766ab6d1028763b28530760da4113d2d5cd1\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -126,6 +108,24 @@
         revision="25.0.2"
         sha1="ee394a892dd21c03a528139c1e8d4e0e1264ac84">
         <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-media-compat-25.2.0_202a6eeaf1fa0a0009245a1e428cd37615679332\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Android\PharmaGo\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="688efe75acf410d8b1b0210394f71dd4d4096301">
+        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_4072bfa806a075523e0959a942f4e93f5e93c277\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Android\PharmaGo\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b71583dae63425a9ff4acd65dc306fc491050087">
+        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_453739e58950043518e6f4a1dc50b6a4c3690237\classes.dex" />
     </item>
     <item
         is-multidex="true"

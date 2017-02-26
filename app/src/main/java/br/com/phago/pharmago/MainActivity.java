@@ -60,4 +60,20 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.list_options);
         listView.setOnItemClickListener(itemClickListener);
     }
+
+    public void onClickStartServices(View view){
+        Intent intent = new Intent(this, getWsData.class);
+        intent.setAction(getWsData.ACTION_GET_LOGIN_DATA);
+        intent.putExtra(getWsData.EXTRA_EMAIL, "gcfmelo@gmail.com");
+        intent.putExtra(getWsData.EXTRA_PASSWORD, "abc123");
+        startService(intent);
+
+        Intent intent2 = new Intent(this, getWsData.class);
+        intent.setAction(getWsData.ACTION_GET_CAMPAIGNS_DATA);
+        intent.putExtra(getWsData.EXTRA_EMAIL, "gcfmelo@gmail.com");
+        intent.putExtra(getWsData.EXTRA_PASSWORD, "abc123");
+        startService(intent);
+    }
+
+
 }

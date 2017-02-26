@@ -5,48 +5,47 @@
     density="560dpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="150815957950764"
+    timestamp="316895194606847"
     token="-5379870446317862396"
-    verifier="COLD_SWAP_REQUESTED" >
+    verifier="FIELD_ADDED" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="569" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="32" />
     <task
         name="verifier"
-        duration="0" />
+        duration="15" />
+
+    <artifact
+        location="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
+        type="DEX" />
 
     <build
-        timestamp="135912527368131"
-        verifier="FULL_BUILD_REQUESTED" >
+        timestamp="309260481371829"
+        verifier="MANIFEST_FILE_CHANGE" >
         <artifact
             location="C:\Android\PharmaGo\app\build\outputs\apk\app-debug.apk"
             type="MAIN" />
     </build>
     <build
-        timestamp="149959662526809"
+        timestamp="311504552634729"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="C:\Android\PharmaGo\app\build\intermediates\instant-run-resources\resources-debug.ir.ap_"
             type="RESOURCES" />
-        <artifact
-            location="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_2\classes.dex"
-            type="DEX" />
-        <artifact
-            location="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_0\classes.dex"
-            type="DEX" />
+    </build>
+    <build
+        timestamp="316895194606847"
+        verifier="FIELD_ADDED" >
         <artifact
             location="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
             type="DEX" />
     </build>
-    <build
-        timestamp="150815957950764"
-        verifier="COLD_SWAP_REQUESTED" />
 
 </instant-run>

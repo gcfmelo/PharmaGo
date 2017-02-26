@@ -18,7 +18,7 @@
         android:id="@+id/imageView_pharmago_logo"
         android:cropToPadding="false"
         android:adjustViewBounds="false"
-        android:layout_weight="0.05"
+        android:layout_weight="0.02"
         android:scaleType="fitStart"
         android:background="?attr/colorPrimary" />
 

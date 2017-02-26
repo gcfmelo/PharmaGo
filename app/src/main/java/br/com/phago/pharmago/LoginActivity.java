@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         mCounter++;
 
         Toast.makeText(this, "Count: "+ Integer.toString(mCounter)+" clicks", Toast.LENGTH_SHORT).show();
+        //
         RequestQueue queue = Volley.newRequestQueue(this);
 
         URL urlObj = createURL(emailEditText.getText().toString(), passwordEditText.getText().toString(), "login", getString(R.string.api_token));     //format URL to call WS
@@ -101,6 +102,8 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
+
+
                         String txtMsg = "";
                         String j_name = response.getString("name");
                         String j_status = response.getString("status");

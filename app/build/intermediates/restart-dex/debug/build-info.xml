@@ -5,26 +5,26 @@
     density="560dpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="316895194606847"
+    timestamp="321564718093888"
     token="-5379870446317862396"
-    verifier="FIELD_ADDED" >
+    verifier="COMPATIBLE" >
 
     <task
         name="javac"
-        duration="569" />
+        duration="375" />
     <task
         name="instant-run-dex"
-        duration="0" />
+        duration="55" />
     <task
         name="instant-run-transform"
-        duration="32" />
+        duration="44" />
     <task
         name="verifier"
-        duration="15" />
+        duration="13" />
 
     <artifact
-        location="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
-        type="DEX" />
+        location="C:\Android\PharmaGo\app\build\intermediates\reload-dex\debug\classes.dex"
+        type="RELOAD_DEX" />
 
     <build
         timestamp="309260481371829"
@@ -41,11 +41,18 @@
             type="RESOURCES" />
     </build>
     <build
-        timestamp="316895194606847"
-        verifier="FIELD_ADDED" >
+        timestamp="321271451790757"
+        verifier="FIELD_REMOVED" >
         <artifact
             location="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
             type="DEX" />
+    </build>
+    <build
+        timestamp="321564718093888"
+        verifier="COMPATIBLE" >
+        <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\reload-dex\debug\classes.dex"
+            type="RELOAD_DEX" />
     </build>
 
 </instant-run>

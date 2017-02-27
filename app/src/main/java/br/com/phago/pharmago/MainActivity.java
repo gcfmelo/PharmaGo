@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickStartServices(View view){
+
         Intent intent = new Intent(this, getWsData.class);
         intent.setAction(getWsData.ACTION_GET_LOGIN_DATA);
         intent.putExtra(getWsData.EXTRA_EMAIL, "gcfmelo@gmail.com");
@@ -69,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
 
         Intent intent2 = new Intent(this, getWsData.class);
-        intent.setAction(getWsData.ACTION_GET_CAMPAIGNS_DATA);
-        intent.putExtra(getWsData.EXTRA_EMAIL, "gcfmelo@gmail.com");
-        intent.putExtra(getWsData.EXTRA_PASSWORD, "abc123");
-        startService(intent);
+        intent2.setAction(getWsData.ACTION_GET_CAMPAIGNS_DATA);
+        intent2.putExtra(getWsData.EXTRA_EMAIL, "gcfmelo@gmail.com");
+        intent2.putExtra(getWsData.EXTRA_PASSWORD, "abc123");
+        startService(intent2);
+
     }
 
 

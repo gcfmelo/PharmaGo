@@ -1,8 +1,12 @@
 package br.com.phago.pharmago;
 
 import android.app.IntentService;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -114,16 +118,108 @@ public class getWsData extends IntentService {
      * parameters.
      */
     private void handleActionGetLogin(String email, String password) {
+        // TODO: SQLite connection
+
+        try {
+            final SQLiteOpenHelper pharmagoDatabaseHelper = new PharmagoDatabaseHelper(this);
+            final SQLiteDatabase db = pharmagoDatabaseHelper.getWritableDatabase();
+            RequestQueue queue = Volley.newRequestQueue(this);
+
+            URL urlObj = createURL(email, password, "login", "123456789");     //format URL to call WS
+            final String mEmail = email;
+            final String mPassword = password;
+            String url = urlObj.toString();
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        String txtMsg = "";
+                        String j_name = response.getString("name");
+                        String j_status = response.getString("status");
+                        String j_companyCode = response.getString("companyCode");
+                        String j_companyName = response.getString("companyName");
+                        String j_companyLatitude = response.getString("companyLatitude");
+                        String j_companyLongitude = response.getString("companyLongitude");
+                        String j_transactions = response.getString("transactions");
+
+
+                        txtMsg = "FROM JSON OBJECT WE HAVE: \n\n"
+                                + "Username: " + j_name + "\n"
+                                + "Status: " + j_status + "\n"
+                                + "Company Code (CNPJ): " + j_companyCode + "\n"
+                                + "Company Name: " + j_companyName + "\n"
+                                + "Company Latitude: " + j_companyLatitude + "\n"
+                                + "Company Longitude: " + j_companyLongitude + "\n"
+                                + "Transactions: " + j_transactions + "\n"
+                                + "\n-------------------------------------------------------------------------\n\n";
+
+                        Log.v("getCampaignService", " FROM JSON OBJECT" + txtMsg + "\n\n");
+
+                        // dealing with the transactions Array
+
+                        JSONArray tr = response.getJSONArray("transactions");
+                        for (int i = 0; i < tr.length(); i++) {
+                            JSONObject obj = tr.getJSONObject(i);
+                        }
+
+                        String txtTrans = "";
+                        int intTotalPoints = 0;
+
+                        for (int i = 0; i < tr.length(); i++) {
+                            txtTrans = txtTrans + "id: " + tr.getJSONObject(i).getInt("idTransaction") + "\n";
+                            txtTrans = txtTrans + "Campaign: " + tr.getJSONObject(i).getString("title") + "\n";
+                            txtTrans = txtTrans + "Nature: " + tr.getJSONObject(i).getString("nature") + "\n";
+                            txtTrans = txtTrans + "Amount: " + tr.getJSONObject(i).getInt("amount") + "\n\n";
+                            intTotalPoints += tr.getJSONObject(i).getInt("amount");
+
+                            ContentValues transactionData = new ContentValues();
+
+                            transactionData.put("idTransaction", tr.getJSONObject(i).getInt("idTransaction"));
+                            transactionData.put("relatedCampaignName", tr.getJSONObject(i).getString("title"));
+                            transactionData.put("nature", tr.getJSONObject(i).getString("nature"));
+                            transactionData.put("amount", tr.getJSONObject(i).getInt("amount"));
+
+                            db.insert("TRANSACTION", null, transactionData);
+                            Log.v("TRANSACTION", " INSERTED TRANSACTION: " + Integer.toString(i) + "*****************************************");
+                        }
+                        db.close();
+                        txtMsg = txtMsg + "JSON ARRAY FORMATED TRANSACTIONS RETURNED: \n\n"
+                                + txtTrans + "-------------------------------------------------------------------------\n"
+                                + "** TRANSACTION COUNT: " + Integer.toString(tr.length()) + " transactions" + "\n-------------------------------------------------------------------------\n"
+                                + "** TOTAL AMOUNT:      " + Integer.toString(intTotalPoints) + " points" + "\n-------------------------------------------------------------------------\n\n";
+
+                        Log.v("getCampaignService", " DEALING WITH TRANSACTIONS: FROM JSON ARRAY" + txtMsg + "\n\n");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }  // onResponse
+            }  // JsonObjectRequest
+
+                    , new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    if (error.getMessage() == null) {
+                        Log.v("getCampaignService", "Login has failed!" + "\n\n");
+                        // TODO: reset your password, create a new account
+                    } else {
+                        Log.v("getCampaignService", "onErrorResponse(): " + error.getMessage());
+                    }
+                }
+            });
+            queue.add(jsonObjectRequest);   // replace for the correct object name
+        } catch (SQLiteException e) {
+            Log.v("Service: ", "Database is unavailable!");
+        }
+    }
+
+
+
         // TODO: Handle action get Login
 
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        URL urlObj = createURL(email, password, "login", "123456789");     //format URL to call WS
-        final String mEmail = email;
-        final String mPassword = password;
-
-        String url = urlObj.toString();
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,7 +265,7 @@ public class getWsData extends IntentService {
 
 // ws using volley with JsonObject
 
-
+/*
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -244,7 +340,7 @@ public class getWsData extends IntentService {
         //throw new UnsupportedOperationException("Not yet implemented");
 
 
-
+*/
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -42,7 +42,11 @@
         <service
             android:name="br.com.phago.pharmago.getWsData"
             android:exported="false" />
-   // true if available for other Apps
+        // true if available for other Apps
+        <activity
+            android:name="br.com.phago.pharmago.ClosedCampaignsListActivity"
+            android:label="@string/button_text" />
+        <activity android:name="br.com.phago.pharmago.CampaignsActivityList" />
     </application>
 
 </manifest>

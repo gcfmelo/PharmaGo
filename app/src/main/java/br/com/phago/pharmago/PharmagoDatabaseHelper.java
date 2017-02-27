@@ -34,7 +34,7 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
         updatePharmagoDatabase(db, oldVersion, newVersion);
     }
 
-    private static void insertUser( SQLiteDatabase db, String email, String name,
+    private static void insertUser(SQLiteDatabase db, String email, String name,
                                         String status, String companyCode, String companyName,
                                         String companyLatitude,String companyLongitude){
 
@@ -119,7 +119,7 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
                             "numberOfQuestions INTEGER," +
                             "pointsRightAnswer INTEGER," +
                             "pointsParticipation INTEGER," +
-                            "statusTEXT," +
+                            "status TEXT," +
                             "createdAt TEXT);");
         }
         // handle each upgrade here

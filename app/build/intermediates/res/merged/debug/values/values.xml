@@ -638,7 +638,9 @@
     <string name="status_bar_notification_info_overflow">999+</string>
     <string name="title_activity_about_menu">About Pharmago</string>
     <string name="title_activity_account_menu">Account Options</string>
+    <string name="title_activity_campaigns_list">Campaigns</string>
     <string name="title_activity_campaigns_menu">Campaigns Options</string>
+    <string name="title_activity_closed_campaigns_list">Closed Campaigns</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_main_menu">Home</string>
     <string name="title_activity_user_menu">User Configuration</string>

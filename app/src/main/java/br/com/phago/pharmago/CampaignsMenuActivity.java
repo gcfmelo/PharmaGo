@@ -1,5 +1,6 @@
 package br.com.phago.pharmago;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -27,9 +28,9 @@ public class CampaignsMenuActivity extends AppCompatActivity {
                 }
                 if (position == 1) {
                     //TODO
-                    // Intent intent = new Intent(CampaignsMenuActivity.this, ClosedCampaignsActivity.class);
+                    Intent intent = new Intent(CampaignsMenuActivity.this, ClosedCampaignsListActivity.class);
                     // TODO Append Campaign ID to the intent
-                    //startActivity(intent);
+                    startActivity(intent);
                     Toast.makeText(CampaignsMenuActivity.this, "You have selected \"Closed/Expired\"", Toast.LENGTH_SHORT).show();
                 }
                 if (position == 2) {

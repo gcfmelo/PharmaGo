@@ -115,7 +115,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="688efe75acf410d8b1b0210394f71dd4d4096301">
+        sha1="0ef1d1010aaeb4520a4052fb6ffcea5aeb1cba89">
         <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_4072bfa806a075523e0959a942f4e93f5e93c277\classes.dex" />
     </item>
     <item

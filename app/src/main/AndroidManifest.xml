@@ -35,7 +35,12 @@
 
         <service
             android:name=".getWsData"
-            android:exported="false"></service>   // true if available for other Apps
+            android:exported="false" />
+        // true if available for other Apps
+        <activity
+            android:name=".ClosedCampaignsListActivity"
+            android:label="@string/button_text" />
+        <activity android:name=".CampaignsActivityList"></activity>
     </application>
 
 </manifest>

@@ -8,6 +8,9 @@
     <string name="title_activity_account_menu">Account Options</string>
     <string name="title_activity_campaigns_menu">Campaigns Options</string>
     <string name="title_activity_about_menu">About Pharmago</string>
+    <string name="title_activity_closed_campaigns_list">Closed Campaigns</string>
+    <string name="title_activity_campaigns_list">Campaigns</string>
+
     <string name="api_token">123456789</string>
     <string name="web_sevice_base_url">http://www.benben.net.br/apiPharmaGo?</string>
     <string name="other_web_sevice_base_url">http://www.benben.net.br/apiPharmaGo?email=gcfmelo@gmail.com&amp;password=abc123&amp;action=getCampaigns&amp;token=123456789</string>

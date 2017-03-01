@@ -166,6 +166,12 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
     private static final String FIELD_USER_CPF = "cpf";
     private static final String FIELD_USER_NAME = "name";
 
+    private static final String FIELD_TRANSACTION_ID = "idTransaction";
+    private static final String FIELD_TRANSACTION_EVENT_DATE = "eventDate";
+    private static final String FIELD_TRANSACTION_TITLE = "title";
+    private static final String FIELD_TRANSACTION_NATURE = "nature";
+    private static final String FIELD_TRANSACTION_AMOUNT = "amount";
+
 
     // to be defined
 
@@ -201,7 +207,7 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
 
         db.execSQL(
-                "CREATE TABLE IF NOT EXISTS USER (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "CREATE TABLE IF NOT EXISTS " + TABLE_USER + " (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "email TEXT, " +
                         "name TEXT, " +
                         "status TEXT, " +
@@ -325,81 +331,183 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         return (int) cursor.getCount();
     }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////    methods for TRANSACTION
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+    //The following methods are responsible for creating, updating, and deleting the records:
 
+    public void recreateTransactionTable(SQLiteDatabase db){
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTION);
 
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS "+TABLE_TRANSACTION+" (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "email TEXT, " +
+                        "name TEXT, " +
+                        "status TEXT, " +
+                        "cpf TEXT, "+
+                        "companyCode TEXT, " +
+                        "companyName TEXT, " +
+                        "companyLatitude TEXT, " +
+                        "companyLongitude TEXT); ");
+    }
 
+    public void saveTransactionRecord(int idTransaction, String eventDate, String title,
+                                String nature, int amount){
 
+        long id = findTransactionId(idTransaction);
+        if (id>0) {
+            updateTransactionRecord(id, idTransaction, eventDate, title,
+                    nature, amount);
 
+        } else {
+            addTransactionRecord(idTransaction, eventDate, title,
+                    nature, amount);
+        }
+    }
 
+    public long addTransactionRecord(int idTransaction, String eventDate, String title,
+                                     String nature, int amount){
 
+        SQLiteDatabase db = getWritableDatabase();
 
+        // to assure we have a unique user on the table we will drop and recreate TABLE_USER
+        recreateTransactionTable(db);
 
+        ContentValues values = new ContentValues();
 
+        values.put("idTransaction", idTransaction);
+        values.put("eventDate", eventDate);
+        values.put("title", title);
+        values.put("nature", nature);
+        values.put("amount", amount);
 
+        long retVal = db.insert(TABLE_TRANSACTION, null, values);
 
+        db.close();
+        return retVal;
+    }
 
+    public int updateTransactionRecord(long id, int idTransaction, String eventDate, String title,
+                                       String nature, int amount) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
 
-    // methods for  TRANSACTIONs
+        values.put("_id", id);
+        values.put("idTransaction", idTransaction);
+        values.put("eventDate", eventDate);
+        values.put("title", title);
+        values.put("nature", nature);
+        values.put("amount", amount);
 
-    // methods for QUIZes
+        return db.update(TABLE_TRANSACTION, values, "_id = ?", new String[]{String.valueOf(id)});
+    }
 
-    public static void insertUser(SQLiteDatabase db, String email, String name,
-                                  String status, String companyCode, String companyName,
-                                  String companyLatitude, String companyLongitude){
-
-        ContentValues userData = new ContentValues();
-
-        userData.put("email", email);
-        userData.put("name", name);
-        userData.put("status", status);
-        userData.put("companyCode", companyCode);
-        userData.put("companyName", companyName);
-        userData.put("companyLatitude", companyLatitude);
-        userData.put("companyLongitude", companyLongitude);
-
-        db.insert("USER",null,userData);
+    public int deleteTransactionRecord(long id) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(TABLE_TRANSACTION, "_id = ?", new String[]{String.valueOf(id)});
     }
 
 
-    public static void insertTransaction(SQLiteDatabase db,
-                                         int idTransaction,
-                                         String relatedCampaignName,
-                                         String nature,
-                                         int amount){
 
-        ContentValues transactionData = new ContentValues();
 
-        transactionData.put("idTransaction", idTransaction);
-        transactionData.put("relatedCampaignName", relatedCampaignName);
-        transactionData.put("nature", nature);
-        transactionData.put("amount", amount);
 
-        db.insert("TRANSACTION",null,transactionData);
+
+    // And these methods handle reading the information from the database:
+
+    public long findTransactionId(int idTransaction) {
+        long returnVal = -1;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT _id FROM " + TABLE_TRANSACTION + " WHERE " + FIELD_TRANSACTION_ID + " = ?", new String[]{String.valueOf(idTransaction)});
+        Log.i(FIELD_TRANSACTION_ID,"getCount()="+cursor.getCount());
+        if (cursor.getCount() == 1) {
+            cursor.moveToFirst();
+            returnVal = cursor.getInt(0);
+        }
+        return returnVal;
     }
 
-    public static void insertCampaign(SQLiteDatabase db, int idSponsor, int idCampaign,
-                                      int sequential, String sponsorName, String eventDate,
-                                      int numberOfQuestions, int pointsRightAnswer,
-                                      int pointsParticipation, String status, String createdAt){
-
-        ContentValues campaignData = new ContentValues();
-
-        campaignData.put("idSponsor", idSponsor);
-        campaignData.put("idCampaign", idCampaign);
-        campaignData.put("sequential", sequential);
-        campaignData.put("sponsorName", sponsorName);
-        campaignData.put("eventDate", eventDate);
-        campaignData.put("numberOfQuestions", numberOfQuestions);
-        campaignData.put("pointsRightAnswer", pointsRightAnswer);
-        campaignData.put("pointsParticipation", pointsParticipation);
-        campaignData.put("status", status);
-        campaignData.put("createdAt", createdAt);
-
-        db.insert("CAMPAIGN",null,campaignData);
+    public String getTransactionEventDate(int idTransaction) {
+        String returnVal = "";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT "+FIELD_TRANSACTION_EVENT_DATE+" FROM " + TABLE_TRANSACTION + " WHERE "+ FIELD_TRANSACTION_ID + " = ?", new String[]{String.valueOf(idTransaction)});
+        if (cursor.getCount() == 1) {
+            cursor.moveToFirst();
+            returnVal = cursor.getString(0);
+        }
+        return returnVal;
     }
 
+    public String getTransactionTitle(int idTransaction) {
+        String returnVal = "";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT "+FIELD_TRANSACTION_TITLE+" FROM " + TABLE_TRANSACTION + " WHERE "+ FIELD_TRANSACTION_ID + " = ?", new String[]{String.valueOf(idTransaction)});
+        if (cursor.getCount() == 1) {
+            cursor.moveToFirst();
+            returnVal = cursor.getString(0);
+        }
+        return returnVal;
+    }
+
+    public String getTransactionNature(int idTransaction) {
+        String returnVal = "";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT "+FIELD_TRANSACTION_NATURE+" FROM " + TABLE_TRANSACTION + " WHERE "+ FIELD_TRANSACTION_ID + " = ?", new String[]{String.valueOf(idTransaction)});
+        if (cursor.getCount() == 1) {
+            cursor.moveToFirst();
+            returnVal = cursor.getString(0);
+        }
+        return returnVal;
+    }
+
+    public int getTransactionAmount(int idTransaction) {
+        int returnVal = 0;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT "+FIELD_TRANSACTION_AMOUNT+" FROM " + TABLE_TRANSACTION + " WHERE "+ FIELD_TRANSACTION_ID + " = ?", new String[]{String.valueOf(idTransaction)});
+        if (cursor.getCount() == 1) {
+            cursor.moveToFirst();
+            returnVal = Integer.parseInt(cursor.getString(0));
+        }
+        return returnVal;
+    }
+
+
+    public Cursor getTransactionList() {
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT _id, " + FIELD_TRANSACTION_ID + " FROM " + TABLE_TRANSACTION + " ORDER BY " + FIELD_TRANSACTION_ID + " ASC";
+        return db.rawQuery(query, null);
+    }
+
+    public int getTransactionCount() {
+        long returnVal=0;
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT _id, " + FIELD_TRANSACTION_ID + " FROM " + TABLE_TRANSACTION + " ORDER BY " + FIELD_TRANSACTION_ID + " ASC";
+        Cursor cursor = db.rawQuery(query, null);
+        return (int) cursor.getCount();
+    }
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////    methods for QUIZes
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////    methods for ALL TABLES
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void updatePharmagoDatabase(SQLiteDatabase db, int oldVersion, int newVersion){
 
         if (oldVersion<1){

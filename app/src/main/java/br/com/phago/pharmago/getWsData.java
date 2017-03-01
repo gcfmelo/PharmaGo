@@ -173,8 +173,8 @@ public class getWsData extends IntentService {
                                 , response.getString("companyLongitude")
                         );
 
-                        Log.v("User CPF @@@@@@@@   ", mDB.getUserCpf(1));
-                        Log.v("User Name @@@@@@@@   ", mDB.getUserName(1));
+                        Log.v("User CPF   @@@@@@@@   ", mDB.getUserCpf(1));
+                        Log.v("User Name  @@@@@@@@   ", mDB.getUserName(1));
                         Log.v("User Count @@@@@@@@   ", Integer.toString(mDB.getUserCount()));
 
                         mDB.close();
@@ -213,7 +213,7 @@ public class getWsData extends IntentService {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Handle action handleActionGetCampaigns in the provided background thread with the provided
+     * Handle action handleActionGetTransactions in the provided background thread with the provided
      * parameters.
      */
     private void handleActionGetTransactions(String email, String password) {
@@ -241,22 +241,19 @@ public class getWsData extends IntentService {
                         //  TODO UPDATE USER LOGIN DATA IN SQlite
                         ///////////////////////////////////////////////////////////
 
-                        Log.v("User count", Integer.toString(mDB.getUserCount()));
+                        Log.v("Transaction count", Integer.toString(mDB.getTransactionCount()));
 
-                        mDB.addUserRecord(
-                                response.getString("email")
-                                , response.getString("name")
-                                , response.getString("status")
-                                , response.getString("cpf")
-                                , response.getString("companyCode")
-                                , response.getString("companyName")
-                                , response.getString("companyLatitude")
-                                , response.getString("companyLongitude")
+                        mDB.addTransactionRecord(
+                                  Integer.parseInt(response.getString("idTransaction"))
+                                , response.getString("eventDate")
+                                , response.getString("title")
+                                , response.getString("nature")
+                                , Integer.parseInt(response.getString("amount"))
                         );
 
-                        Log.v("User CPF @@@@@@@@   ", mDB.getUserCpf(1));
-                        Log.v("User Name @@@@@@@@   ", mDB.getUserName(1));
-                        Log.v("User Count @@@@@@@@   ", Integer.toString(mDB.getUserCount()));
+                        Log.v("Trans ID      @@@@@", mDB.getTransactionTitle(Integer.parseInt(response.getString("idTransaction"))));
+                        Log.v("Trans Date @@@@@@@@   ", mDB.getTransactionEventDate(Integer.parseInt(response.getString("idTransaction"))));
+                        Log.v("Trans Count   @@@@@", Integer.toString(mDB.getTransactionCount()));
 
                         mDB.close();
 

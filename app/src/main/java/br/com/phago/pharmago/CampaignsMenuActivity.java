@@ -29,7 +29,6 @@ public class CampaignsMenuActivity extends AppCompatActivity {
                 if (position == 1) {
                     //TODO
                     Intent intent = new Intent(CampaignsMenuActivity.this, ClosedCampaignsListActivity.class);
-                    // TODO Append Campaign ID to the intent
                     startActivity(intent);
                     Toast.makeText(CampaignsMenuActivity.this, "You have selected \"Closed/Expired\"", Toast.LENGTH_SHORT).show();
                 }

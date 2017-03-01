@@ -69,11 +69,21 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(getWsData.EXTRA_PASSWORD, "abc123");
         startService(intent);
 
+       /*
         Intent intent2 = new Intent(this, getWsData.class);
-        intent2.setAction(getWsData.ACTION_GET_CAMPAIGNS_DATA);
+        intent2.setAction(getWsData.ACTION_GET_TRANSACTIONS_DATA);
         intent2.putExtra(getWsData.EXTRA_EMAIL, "gcfmelo@gmail.com");
         intent2.putExtra(getWsData.EXTRA_PASSWORD, "abc123");
         startService(intent2);
+
+
+        Intent intent3 = new Intent(this, getWsData.class);
+        intent3.setAction(getWsData.ACTION_GET_QUIZ_DATA);
+        intent3.putExtra(getWsData.EXTRA_EMAIL, "gcfmelo@gmail.com");
+        intent3.putExtra(getWsData.EXTRA_PASSWORD, "abc123");
+        startService(intent3);
+
+        */
 
     }
 

@@ -2715,9 +2715,9 @@ containing a value of this type.
         public static final int button=0x7f0e0082;
         public static final int button2=0x7f0e0085;
         public static final int buttonPanel=0x7f0e004b;
-        public static final int campaign_date_created=0x7f0e0076;
+        public static final int campaign_date_created=0x7f0e0075;
         public static final int campaign_id=0x7f0e0074;
-        public static final int campaign_sponsor_name=0x7f0e0075;
+        public static final int campaign_sponsor_name=0x7f0e0076;
         public static final int campaign_status=0x7f0e0077;
         public static final int cancel_action=0x7f0e0096;
         public static final int center=0x7f0e0027;

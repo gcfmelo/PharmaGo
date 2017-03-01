@@ -35,6 +35,23 @@ public class ClosedCampaignsListActivity extends ListActivity{
             Toast.makeText(this, "Database Unavailable", Toast.LENGTH_LONG).show();
         }
     }
+
+    private void createCampaingListOnDb(){
+        // put some data into CAMPAIGN table
+        try {
+            SQLiteOpenHelper pharmagoDatabaseHelper =new PharmagoDatabaseHelper(this);
+            db = pharmagoDatabaseHelper.getWritableDatabase();
+            String mySql = "INSERT OR REPLACE INTO CAMPAIGN [(idSponsor, idCampaign, sequential, sponsorName, "+
+                    "eventDate, numberOfQuestions, pointsRightAnswer, pointsParticipation, "+
+                    "status, createdAt )] VALUES (1, 1, 1, 'Laboratorio A', '2017-02-20', 2, 50, 100, 'ACTIVE', '2017-02-15 15:54:15.22313' )";
+
+            db.execSQL(mySql);
+
+        } catch
+                (SQLiteException e){
+            Toast.makeText(this, "Database Unavailable", Toast.LENGTH_LONG).show();
+        }
+    }
     @Override
     public void onListItemClick(ListView listview,
                                 View itemView,

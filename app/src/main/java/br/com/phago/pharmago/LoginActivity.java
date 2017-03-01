@@ -77,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
         String url = urlObj.toString();
 
         //String url ="https://www.packtpub.com/";
-
         if (rqType == "TXT" || rqType == "TEXT") {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
@@ -98,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
             });
             queue.add(stringRequest);
         } else {
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {

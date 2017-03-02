@@ -13,8 +13,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URL;
@@ -220,18 +223,102 @@ public class getWsData extends IntentService {
         final PharmagoDatabaseHelper mDB;
         final SQLiteOpenHelper pharmagoDatabaseHelper = new PharmagoDatabaseHelper(this);
         final SQLiteDatabase db = pharmagoDatabaseHelper.getWritableDatabase();
+        final boolean useText = true;
+
 
         try {
+        mDB = new PharmagoDatabaseHelper(this);
 
-            mDB = new PharmagoDatabaseHelper(this);
+        mDB.recreateTransactionTable(db);
 
-            RequestQueue queue = Volley.newRequestQueue(this);
+        RequestQueue queue = Volley.newRequestQueue(this);
 
-            URL urlObj = createURL(email, password, "getTransaction", "123456789");     //format URL to call WS
-            final String mEmail = email;
-            final String mPassword = password;
-            String url = urlObj.toString();
+        URL urlObj = createURL(email, password, "getTransactions", "123456789");     //format URL to call WS
+        //final String mEmail = email;
+        //final String mPassword = password;
+        String url = urlObj.toString();
 
+        if (useText) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    String myJsonString = response.toString();
+                    Log.v("TEXT RETURNED:   @@@   ",myJsonString);
+                    if (myJsonString.startsWith("[")){
+                        myJsonString="{\"transaction\":"+myJsonString+"}";
+                    }
+                    // converting to JSONObject
+                    JSONObject jsonObj = null;
+                    try {
+                        jsonObj = new JSONObject(myJsonString);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.v("JSON OBJ RETURN: @@@   ",jsonObj.toString());
+
+                    JSONArray tr = null;
+                    try {
+                        tr = jsonObj.getJSONArray("transaction");
+                        Log.v("transaction: @@@   ",tr.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (tr != null) {
+
+                        for (int i=0;i< tr.length(); i++){
+                            try {
+                                JSONObject obj = tr.getJSONObject(i);
+                                // TODO remove
+                                String txtLog = obj.getString("sponsorCode")+
+                                        obj.getInt("idCampaign")+
+                                        obj.getInt("idTransaction")+
+                                        obj.getString("eventDate")+
+                                        obj.getString("title")+
+                                        obj.getString("nature")+
+                                        obj.getInt("amount");
+
+                                mDB.addTransactionRecord(
+                                        obj.getString("sponsorCode"),
+                                        obj.getInt("idCampaign"),
+                                        obj.getInt("idTransaction"),
+                                        obj.getString("eventDate"),
+                                        obj.getString("title"),
+                                        obj.getString("nature"),
+                                        obj.getInt("amount"));
+
+                                Log.v("sponsorCode: @@@   ",obj.getString("sponsorCode"));
+                                Log.v("idCampaign: @@@   ",obj.getString("idCampaign"));
+                                Log.v("idTransaction: @@@   ",obj.getString("idTransaction"));
+                                Log.v("eventDate : @@@   ",obj.getString("eventDate"));
+                                Log.v("title : @@@   ",obj.getString("title"));
+                                Log.v("nature: @@@   ",obj.getString("nature"));
+                                Log.v("amount: @@@   ",obj.getString("amount"));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        mDB.close();
+                    }
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    if (error.getMessage() == null) {
+                        Log.v("TRANSACTION ERROR: @@@ ","Transactions Sync has Failed!");
+                        // TODO: retrieve your password
+                    } else {
+                        Log.v("ERROR RETURNED:    @@@ ", error.getMessage());
+                    }
+                }
+            });
+            queue.add(stringRequest);
+        } else {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -244,7 +331,9 @@ public class getWsData extends IntentService {
                         Log.v("Transaction count", Integer.toString(mDB.getTransactionCount()));
 
                         mDB.addTransactionRecord(
-                                  Integer.parseInt(response.getString("idTransaction"))
+                                response.getString("sponsorCode")
+                                ,Integer.parseInt(response.getString("idCampaign"))
+                                ,Integer.parseInt(response.getString("idTransaction"))
                                 , response.getString("eventDate")
                                 , response.getString("title")
                                 , response.getString("nature")
@@ -277,11 +366,15 @@ public class getWsData extends IntentService {
                 }
             });
             queue.add(jsonObjectRequest);   // replace for the correct object name
-        } catch (SQLiteException e) {
+        }
+
+        }catch (SQLiteException e) {
             Log.v("Service: ", "Database is unavailable!");
             pharmagoDatabaseHelper.close();
         }
+
         pharmagoDatabaseHelper.close();
+
     }
 
 

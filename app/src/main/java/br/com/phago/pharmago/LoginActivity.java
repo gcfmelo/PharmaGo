@@ -101,8 +101,6 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
-
-
                         String txtMsg = "";
                         String j_name = response.getString("name");
                         String j_status = response.getString("status");

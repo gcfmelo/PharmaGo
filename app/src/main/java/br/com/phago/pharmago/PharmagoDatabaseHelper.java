@@ -204,7 +204,7 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
     //The following methods are responsible for creating, updating, and deleting the records:
 
     public void recreateUserTable(SQLiteDatabase db){
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER+";");
 
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS " + TABLE_USER + " (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -341,44 +341,50 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
     //The following methods are responsible for creating, updating, and deleting the records:
 
     public void recreateTransactionTable(SQLiteDatabase db){
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTION);
 
-        db.execSQL(
-                "CREATE TABLE IF NOT EXISTS "+TABLE_TRANSACTION+" (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "email TEXT, " +
-                        "name TEXT, " +
-                        "status TEXT, " +
-                        "cpf TEXT, "+
-                        "companyCode TEXT, " +
-                        "companyName TEXT, " +
-                        "companyLatitude TEXT, " +
-                        "companyLongitude TEXT); ");
+        String sqlQuery = "DROP TABLE IF EXISTS '" + TABLE_TRANSACTION + "';";
+
+        Log.v("SqlQuery 1: ", sqlQuery);
+
+        db.execSQL(sqlQuery);
+
+        sqlQuery = "CREATE TABLE IF NOT EXISTS '"+TABLE_TRANSACTION+"' (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "sponsorCode TEXT, " +
+                "idCampaign INTEGER, " +
+                "idTransaction INTEGER, " +
+                "eventDate TEXT, "+
+                "title TEXT, " +
+                "nature TEXT, " +
+                "amount INTEGER);";
+
+        Log.v("SqlQuery 2: ", sqlQuery);
+
+        db.execSQL(sqlQuery);
     }
 
-    public void saveTransactionRecord(int idTransaction, String eventDate, String title,
-                                String nature, int amount){
+    public void saveTransactionRecord(String sponsorCode, int idCampaign, int idTransaction, String eventDate,
+                                      String title, String nature, int amount){
 
         long id = findTransactionId(idTransaction);
         if (id>0) {
-            updateTransactionRecord(id, idTransaction, eventDate, title,
-                    nature, amount);
+            updateTransactionRecord(id, sponsorCode, idCampaign, idTransaction,
+                    eventDate, title, nature, amount);
 
         } else {
-            addTransactionRecord(idTransaction, eventDate, title,
-                    nature, amount);
+            addTransactionRecord(sponsorCode, idCampaign, idTransaction,
+                    eventDate, title, nature, amount);
         }
     }
 
-    public long addTransactionRecord(int idTransaction, String eventDate, String title,
-                                     String nature, int amount){
+    public long addTransactionRecord(String sponsorCode, int idCampaign, int idTransaction, String eventDate,
+                                     String title, String nature, int amount){
 
         SQLiteDatabase db = getWritableDatabase();
 
-        // to assure we have a unique user on the table we will drop and recreate TABLE_USER
-        recreateTransactionTable(db);
-
         ContentValues values = new ContentValues();
 
+        values.put("sponsorCode", sponsorCode);
+        values.put("idCampaign", idCampaign);
         values.put("idTransaction", idTransaction);
         values.put("eventDate", eventDate);
         values.put("title", title);
@@ -391,12 +397,14 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
         return retVal;
     }
 
-    public int updateTransactionRecord(long id, int idTransaction, String eventDate, String title,
-                                       String nature, int amount) {
+    public int updateTransactionRecord(long id, String sponsorCode, int idCampaign, int idTransaction, String eventDate,
+                                       String title, String nature, int amount) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put("_id", id);
+        values.put("sponsorCode", sponsorCode);
+        values.put("idCampaign", idCampaign);
         values.put("idTransaction", idTransaction);
         values.put("eventDate", eventDate);
         values.put("title", title);
@@ -413,15 +421,13 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
 
 
 
-
-
-
     // And these methods handle reading the information from the database:
 
     public long findTransactionId(int idTransaction) {
         long returnVal = -1;
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT _id FROM " + TABLE_TRANSACTION + " WHERE " + FIELD_TRANSACTION_ID + " = ?", new String[]{String.valueOf(idTransaction)});
+        Cursor cursor = db.rawQuery("SELECT _id FROM " + TABLE_TRANSACTION + " WHERE " + FIELD_TRANSACTION_ID
+                + " = ?", new String[]{String.valueOf(idTransaction)});
         Log.i(FIELD_TRANSACTION_ID,"getCount()="+cursor.getCount());
         if (cursor.getCount() == 1) {
             cursor.moveToFirst();
@@ -433,7 +439,8 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
     public String getTransactionEventDate(int idTransaction) {
         String returnVal = "";
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT "+FIELD_TRANSACTION_EVENT_DATE+" FROM " + TABLE_TRANSACTION + " WHERE "+ FIELD_TRANSACTION_ID + " = ?", new String[]{String.valueOf(idTransaction)});
+        Cursor cursor = db.rawQuery("SELECT "+FIELD_TRANSACTION_EVENT_DATE+" FROM " + TABLE_TRANSACTION
+                + " WHERE "+ FIELD_TRANSACTION_ID + " = ?", new String[]{String.valueOf(idTransaction)});
         if (cursor.getCount() == 1) {
             cursor.moveToFirst();
             returnVal = cursor.getString(0);

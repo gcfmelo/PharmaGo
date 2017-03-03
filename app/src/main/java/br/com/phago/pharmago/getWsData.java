@@ -43,10 +43,10 @@ public class getWsData extends IntentService {
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     public static final String ACTION_GET_LOGIN_DATA = "login";
-    public static final String ACTION_GET_TRANSACTIONS_DATA = "getTransaction";
+    public static final String ACTION_GET_TRANSACTIONS_DATA = "getTransactions";
     public static final String ACTION_GET_QUIZ_DATA = "getQuiz";
     //public static final String ACTION_SAVE_ANSWERS_DATA = "saveAnswers";
-
+    public static final String ACTION_TEST = "testServices";
 
     // TODO: Rename parameters
     public static final String EXTRA_EMAIL = "br.com.phago.pharmago.extra.PARAM1";
@@ -83,7 +83,7 @@ public class getWsData extends IntentService {
      * @see IntentService
      */
     // TODO: Customize helper method
-    public static void startActionGetCampaigns(Context context, String email, String password) {
+    public static void startActionGetTransactions(Context context, String email, String password) {
         Intent intent = new Intent(context, getWsData.class);
         intent.setAction(ACTION_GET_TRANSACTIONS_DATA);
         intent.putExtra(EXTRA_EMAIL, email);
@@ -106,6 +106,25 @@ public class getWsData extends IntentService {
         context.startService(intent);
     }
 
+    /**
+     * Starts this service to perform action testServices with the given parameters. If
+     * the service is already performing a task this action will be queued.
+     *
+     * @see IntentService
+     */
+    // TODO: Customize helper method
+    public static void startActionTestServices(Context context, String email, String password) {
+        Intent intent = new Intent(context, getWsData.class);
+        intent.setAction(ACTION_TEST);
+
+        // TODO maybe we need to change to EXTRA_CPF and password, beacause email can be changed
+        intent.putExtra(EXTRA_EMAIL, email);
+        intent.putExtra(EXTRA_PASSWORD, password);
+        //intent.putExtra(EXTRA_CPF, cpf);
+
+        context.startService(intent);
+    }
+
 
 // here goes the code to run when service is called
     @Override
@@ -120,12 +139,18 @@ public class getWsData extends IntentService {
                 final String email = intent.getStringExtra(EXTRA_EMAIL);
                 final String password = intent.getStringExtra(EXTRA_PASSWORD);
                 handleActionGetTransactions(email, password);
-            }  else if ((ACTION_GET_QUIZ_DATA).equals(action)) {
+            } else if ((ACTION_GET_QUIZ_DATA).equals(action)) {
                 final String email = intent.getStringExtra(EXTRA_EMAIL);
                 final String password = intent.getStringExtra(EXTRA_PASSWORD);
                 handleActionGetTransactions(email, password);
+            } else if ((ACTION_TEST).equals(action)) {
+                final String email = intent.getStringExtra(EXTRA_EMAIL);
+                final String password = intent.getStringExtra(EXTRA_PASSWORD);
+                handleActionTestServices(email, password);
             }
         }
+
+        //Log.v("Intent:","No Intent to Launch");
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -222,14 +247,14 @@ public class getWsData extends IntentService {
     private void handleActionGetTransactions(String email, String password) {
         final PharmagoDatabaseHelper mDB;
         final SQLiteOpenHelper pharmagoDatabaseHelper = new PharmagoDatabaseHelper(this);
-        final SQLiteDatabase db = pharmagoDatabaseHelper.getWritableDatabase();
+        //final SQLiteDatabase db = pharmagoDatabaseHelper.getWritableDatabase();
         final boolean useText = true;
 
 
         try {
         mDB = new PharmagoDatabaseHelper(this);
 
-        mDB.recreateTransactionTable(db);
+        //mDB.recreateTransactionTable(db);
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -453,6 +478,103 @@ private void handleActionGetQuiz(String email, String password) {
         Log.v("Service: ", "Database is unavailable!");
     }
 }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Handle action testServices in the provided background thread with the provided
+     * parameters.
+     */
+    private void handleActionTestServices(String email, String password) {
+
+        final PharmagoDatabaseHelper mDB;
+        final SQLiteOpenHelper pharmagoDatabaseHelper = new PharmagoDatabaseHelper(this);
+        final SQLiteDatabase db = pharmagoDatabaseHelper.getWritableDatabase();
+
+        try {
+
+            mDB = new PharmagoDatabaseHelper(this);
+
+            //final String mEmail = email;
+            //final String mPassword = password;
+
+            String uName = mDB.getUserName(1);
+            //int tCount = mDB.getTransactionCount();
+
+            Log.v("USER  NAME *****",uName);
+            //Log.v("USER  COUNT *****",Integer.toString(uCount));
+            //Log.v("TRANS COUNT *****",Integer.toString(tCount));
+         /**
+            RequestQueue queue = Volley.newRequestQueue(this);
+
+            URL urlObj = createURL(email, password, "login", "123456789");     //format URL to call WS
+
+            String url = urlObj.toString();
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+
+                        ///////////////////////////////////////////////////////////
+                        //  TODO UPDATE USER LOGIN DATA IN SQlite
+                        ///////////////////////////////////////////////////////////
+
+                        Log.v("User count", Integer.toString(mDB.getUserCount(db)));
+
+                        mDB.addUserRecord(
+                                response.getString("email")
+                                , response.getString("name")
+                                , response.getString("status")
+                                , response.getString("cpf")
+                                , response.getString("companyCode")
+                                , response.getString("companyName")
+                                , response.getString("companyLatitude")
+                                , response.getString("companyLongitude")
+                        );
+
+                        Log.v("User CPF   @@@@@@@@   ", mDB.getUserCpf(1));
+                        Log.v("User Name  @@@@@@@@   ", mDB.getUserName(1));
+                        Log.v("User Count @@@@@@@@   ", Integer.toString(mDB.getUserCount(db)));
+
+                        mDB.close();
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }  // onResponse
+            }
+
+                    , new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    if (error.getMessage() == null) {
+                        Log.v("login   -  ", "Login has failed!" + "\n\n");
+                        // TODO: reset your password, create a new account
+                    } else {
+                        Log.v("login   -  ", "onErrorResponse(): " + error.getMessage());
+                    }
+                }
+            });
+            queue.add(jsonObjectRequest);   // replace for the correct object name
+
+        */
+
+        } catch (SQLiteException e) {
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            Log.v("Service: ", "Database is unavailable!");
+            db.close();
+        }
+        db.close();
+        Log.v("Service: ", "Database Close!");
+    }
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

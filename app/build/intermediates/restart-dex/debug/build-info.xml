@@ -2,43 +2,79 @@
 <instant-run
     abi="x86_64,x86"
     api-level="24"
+    build-mode="COLD"
     density="560dpi"
-    format="8"
-    plugin-version="2.2.3"
-    timestamp="585414508589639"
+    format="10"
+    plugin-version="2.3.0"
+    timestamp="1488510903747"
     token="-5379870446317862396"
     verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="373" />
+        duration="357" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="23" />
+        duration="9" />
     <task
         name="verifier"
-        duration="4" />
+        duration="5" />
 
     <artifact
-        location="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
-        type="DEX" />
+        location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
+        type="SPLIT" />
 
     <build
-        timestamp="490339746210464"
+        build-mode="FULL"
+        timestamp="1488509702755"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
+            type="SPLIT" />
+        <artifact
             location="C:\Android\PharmaGo\app\build\outputs\apk\app-debug.apk"
-            type="MAIN" />
+            type="SPLIT_MAIN" />
     </build>
     <build
-        timestamp="585414508589639"
+        build-mode="COLD"
+        timestamp="1488510903747"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
-            location="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
-            type="DEX" />
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
+            type="SPLIT" />
     </build>
 
 </instant-run>

@@ -12,7 +12,7 @@ import android.util.Log;
  */
 
 public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
-    private static final String DB_NAME = "pharmago.db";  // our database name
+    private static final String DB_NAME = "phago.db";  // our database name
     private static final int DB_VERSION = 1; // this is the current version of our database
     // TABLE NAMES
     private static final String TABLE_USER = "user";
@@ -265,14 +265,14 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put("_id", id);
-        values.put(email, email);
-        values.put(name, name);
-        values.put(status, status);
-        values.put(cpf, cpf);
-        values.put(companyCode, companyCode);
-        values.put(companyName, companyName);
-        values.put(companyLatitude, companyLatitude);
-        values.put(companyLongitude, companyLongitude);
+        values.put("email", email);
+        values.put("name", name);
+        values.put("status", status);
+        values.put("cpf", cpf);
+        values.put("companyCode", companyCode);
+        values.put("companyName", companyName);
+        values.put("companyLatitude", companyLatitude);
+        values.put("companyLongitude", companyLongitude);
 
         return db.update(TABLE_USER, values, "_id = ?", new String[]{String.valueOf(id)});
     }
@@ -348,7 +348,7 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(sqlQuery);
 
-        sqlQuery = "CREATE TABLE IF NOT EXISTS '"+TABLE_TRANSACTION+"' (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+      sqlQuery = "CREATE TABLE IF NOT EXISTS '"+TABLE_TRANSACTION+"' (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "sponsorCode TEXT, " +
                 "idCampaign INTEGER, " +
                 "idTransaction INTEGER, " +
@@ -383,13 +383,13 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put("sponsorCode", sponsorCode);
-        values.put("idCampaign", idCampaign);
-        values.put("idTransaction", idTransaction);
-        values.put("eventDate", eventDate);
-        values.put("title", title);
-        values.put("nature", nature);
-        values.put("amount", amount);
+        values.put("sponsorCode", sponsorCode);                // String
+        values.put("idCampaign", idCampaign);                  // int
+        values.put("idTransaction", idTransaction);            // int
+        values.put("eventDate", eventDate);                    // String
+        values.put("title", title);                            // String
+        values.put("nature", nature);                          // String
+        values.put("amount", amount);                          // int
 
         long retVal = db.insert(TABLE_TRANSACTION, null, values);
 
@@ -519,25 +519,55 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
 
         if (oldVersion<1){
 
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
 
-            db.execSQL(
-                    "CREATE TABLE IF NOT EXISTS USER (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                            "email TEXT, " +
-                            "name TEXT, " +
-                            "status TEXT, " +
-                            "cpf TEXT, "+
-                            "companyCode TEXT, " +
-                            "companyName TEXT, " +
-                            "companyLatitude TEXT, " +
-                            "companyLongitude TEXT); ");
+            //////////////////////////////////////////////
+            //////  U S E R S
+            //////////////////////////////////////////////
+
+            String sqlQuery ="DROP TABLE IF EXISTS " + TABLE_USER;
+
+            //db.execSQL(sqlQuery);
+            Log.v("DROP USER   *** ", sqlQuery);
+
+
+            sqlQuery = "CREATE TABLE IF NOT EXISTS USER (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "email TEXT, " +
+                    "name TEXT, " +
+                    "status TEXT, " +
+                    "cpf TEXT, "+
+                    "companyCode TEXT, " +
+                    "companyName TEXT, " +
+                    "companyLatitude TEXT, " +
+                    "companyLongitude TEXT); ";
+
+            //db.execSQL(sqlQuery);
+            Log.v("CREATE USER *** ", sqlQuery);
+
+
+            //////////////////////////////////////////////
+            //////  T R A N S A C T I O N S
+            //////////////////////////////////////////////
+            sqlQuery = "DROP TABLE IF EXISTS '" + TABLE_TRANSACTION + "';";
+
+            db.execSQL(sqlQuery);
+            Log.v("DROP TRANS   *** ", sqlQuery);
+
+            sqlQuery = "CREATE TABLE IF NOT EXISTS '"+TABLE_TRANSACTION+"' (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+             "sponsorCode TEXT, " +
+             "idCampaign INTEGER, " +
+             "idTransaction INTEGER, " +
+             "eventDate TEXT, "+
+             "title TEXT, " +
+             "nature TEXT, " +
+             "amount INTEGER);";
+
+             db.execSQL(sqlQuery);
+             Log.v("CREATE TRANS *** ", sqlQuery);
+
+
+
             /**
-            db.execSQL(
-                    "CREATE TABLE IF NOT EXISTS TRANSACTION (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "idTransaction INTEGER, " +
-                        "eventDate TEXT, " + "title TEXT, "+
-                        "nature TEXT, " +
-                        "amount INTEGER); ");
+
 
             db.execSQL(
                     "CREATE TABLE IF NOT EXISTS QUIZ (_id INTEGER PRIMARY KEY AUTOINCREMENT, "+
@@ -579,6 +609,7 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
             */
 
         }
+
         // handle each upgrade here
         // suppose you added a new column in version 1
         if (oldVersion<2){

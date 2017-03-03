@@ -1,10 +1,10 @@
 [
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\anim-v21\\design_bottom_sheet_slide_in.xml",
-        "source": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\exploded-aar\\com.android.support\\design\\25.2.0\\res\\anim-v21\\design_bottom_sheet_slide_in.xml"
+        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\c502f1d6e8d24bf5a7e8a121817f550c3894ccaa\\output\\res\\anim-v21\\design_bottom_sheet_slide_in.xml"
     },
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\anim-v21\\design_bottom_sheet_slide_out.xml",
-        "source": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\exploded-aar\\com.android.support\\design\\25.2.0\\res\\anim-v21\\design_bottom_sheet_slide_out.xml"
+        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\c502f1d6e8d24bf5a7e8a121817f550c3894ccaa\\output\\res\\anim-v21\\design_bottom_sheet_slide_out.xml"
     }
 ]

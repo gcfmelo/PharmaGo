@@ -1,10 +1,10 @@
 [
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\color-v11\\abc_background_cache_hint_selector_material_light.xml",
-        "source": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.2.0\\res\\color-v11\\abc_background_cache_hint_selector_material_light.xml"
+        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\color-v11\\abc_background_cache_hint_selector_material_light.xml"
     },
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\color-v11\\abc_background_cache_hint_selector_material_dark.xml",
-        "source": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.2.0\\res\\color-v11\\abc_background_cache_hint_selector_material_dark.xml"
+        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\color-v11\\abc_background_cache_hint_selector_material_dark.xml"
     }
 ]

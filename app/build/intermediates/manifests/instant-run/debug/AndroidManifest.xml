@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.android.tools.fd.runtime.BootstrapApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -48,6 +47,10 @@
             android:name="br.com.phago.pharmago.ClosedCampaignsListActivity"
             android:label="@string/button_text" />
         <activity android:name="br.com.phago.pharmago.CampaignsActivityList" />
+
+        <service
+            android:name="com.android.tools.fd.runtime.InstantRunService"
+            android:exported="true" />
     </application>
 
 </manifest>

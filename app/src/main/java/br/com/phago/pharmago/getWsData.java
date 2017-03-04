@@ -150,7 +150,7 @@ public class getWsData extends IntentService {
             }
         }
 
-        //Log.v("Intent:","No Intent to Launch");
+        //Log.i(TAG, "Intent:","No Intent to Launch");
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -163,7 +163,7 @@ public class getWsData extends IntentService {
      * parameters.
      */
     private void handleActionGetLogin(String email, String password) {
-
+        final String TAG = "ActionGetLogin: ";
         final PharmagoDatabaseHelper mDB;
         final SQLiteOpenHelper pharmagoDatabaseHelper = new PharmagoDatabaseHelper(this);
         final SQLiteDatabase db = pharmagoDatabaseHelper.getWritableDatabase();
@@ -188,7 +188,7 @@ public class getWsData extends IntentService {
                         //  TODO UPDATE USER LOGIN DATA IN SQlite
                         ///////////////////////////////////////////////////////////
 
-                        Log.v("User count", Integer.toString(mDB.getUserCount()));
+                        Log.i(TAG, "User count"+ Integer.toString(mDB.getUserCount()));
 
                         mDB.addUserRecord(
                                   response.getString("email")
@@ -201,9 +201,9 @@ public class getWsData extends IntentService {
                                 , response.getString("companyLongitude")
                         );
 
-                        Log.v("User CPF   @@@@@@@@   ", mDB.getUserCpf(1));
-                        Log.v("User Name  @@@@@@@@   ", mDB.getUserName(1));
-                        Log.v("User Count @@@@@@@@   ", Integer.toString(mDB.getUserCount()));
+                        Log.i(TAG, "User CPF   @@@@@@@@   "+ mDB.getUserCpf(1));
+                        Log.i(TAG, "User Name  @@@@@@@@   "+ mDB.getUserName(1));
+                        Log.i(TAG, "User Count @@@@@@@@   "+ Integer.toString(mDB.getUserCount()));
 
                         mDB.close();
 
@@ -219,16 +219,16 @@ public class getWsData extends IntentService {
                 public void onErrorResponse(VolleyError error) {
 
                     if (error.getMessage() == null) {
-                        Log.v("login   -  ", "Login has failed!" + "\n\n");
+                        Log.i(TAG, "login   -  "+ "Login has failed!" + "\n\n");
                         // TODO: reset your password, create a new account
                     } else {
-                        Log.v("login   -  ", "onErrorResponse(): " + error.getMessage());
+                        Log.i(TAG, "login   -  "+ "onErrorResponse(): " + error.getMessage());
                     }
                 }
             });
             queue.add(jsonObjectRequest);   // replace for the correct object name
         } catch (SQLiteException e) {
-            Log.v("Service: ", "Database is unavailable!");
+            Log.i(TAG, "Service: "+ "Database is unavailable!");
             pharmagoDatabaseHelper.close();
         }
         pharmagoDatabaseHelper.close();
@@ -245,6 +245,7 @@ public class getWsData extends IntentService {
      * parameters.
      */
     private void handleActionGetTransactions(String email, String password) {
+        final String TAG = "ActionGetTransactions: ";
         final PharmagoDatabaseHelper mDB;
         final SQLiteOpenHelper pharmagoDatabaseHelper = new PharmagoDatabaseHelper(this);
         //final SQLiteDatabase db = pharmagoDatabaseHelper.getWritableDatabase();
@@ -268,7 +269,7 @@ public class getWsData extends IntentService {
                 @Override
                 public void onResponse(String response) {
                     String myJsonString = response.toString();
-                    Log.v("TEXT RETURNED:   @@@   ",myJsonString);
+                    Log.i(TAG, "TEXT RETURNED:   @@@   "+ myJsonString);
                     if (myJsonString.startsWith("[")){
                         myJsonString="{\"transaction\":"+myJsonString+"}";
                     }
@@ -280,12 +281,12 @@ public class getWsData extends IntentService {
                         e.printStackTrace();
                     }
 
-                    Log.v("JSON OBJ RETURN: @@@   ",jsonObj.toString());
+                    Log.i(TAG, "JSON OBJ RETURN: @@@   "+ jsonObj.toString());
 
                     JSONArray tr = null;
                     try {
                         tr = jsonObj.getJSONArray("transaction");
-                        Log.v("transaction: @@@   ",tr.toString());
+                        Log.i(TAG, "transaction: @@@   "+ tr.toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -313,13 +314,13 @@ public class getWsData extends IntentService {
                                         obj.getString("nature"),
                                         obj.getInt("amount"));
 
-                                Log.v("sponsorCode: @@@   ",obj.getString("sponsorCode"));
-                                Log.v("idCampaign: @@@   ",obj.getString("idCampaign"));
-                                Log.v("idTransaction: @@@   ",obj.getString("idTransaction"));
-                                Log.v("eventDate : @@@   ",obj.getString("eventDate"));
-                                Log.v("title : @@@   ",obj.getString("title"));
-                                Log.v("nature: @@@   ",obj.getString("nature"));
-                                Log.v("amount: @@@   ",obj.getString("amount"));
+                                Log.i(TAG, "sponsorCode: @@@   "+obj.getString("sponsorCode"));
+                                Log.i(TAG, "idCampaign: @@@   "+obj.getString("idCampaign"));
+                                Log.i(TAG, "idTransaction: @@@   "+obj.getString("idTransaction"));
+                                Log.i(TAG, "eventDate : @@@   "+obj.getString("eventDate"));
+                                Log.i(TAG, "title : @@@   "+obj.getString("title"));
+                                Log.i(TAG, "nature: @@@   "+obj.getString("nature"));
+                                Log.i(TAG, "amount: @@@   "+obj.getString("amount"));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -335,10 +336,10 @@ public class getWsData extends IntentService {
                 public void onErrorResponse(VolleyError error) {
 
                     if (error.getMessage() == null) {
-                        Log.v("TRANSACTION ERROR: @@@ ","Transactions Sync has Failed!");
+                        Log.i(TAG, "TRANSACTION ERROR: @@@ "+"Transactions Sync has Failed!");
                         // TODO: retrieve your password
                     } else {
-                        Log.v("ERROR RETURNED:    @@@ ", error.getMessage());
+                        Log.i(TAG, "ERROR RETURNED:    @@@ "+ error.getMessage());
                     }
                 }
             });
@@ -353,7 +354,7 @@ public class getWsData extends IntentService {
                         //  TODO UPDATE USER LOGIN DATA IN SQlite
                         ///////////////////////////////////////////////////////////
 
-                        Log.v("Transaction count", Integer.toString(mDB.getTransactionCount()));
+                        Log.i(TAG, "Transaction count"+ Integer.toString(mDB.getTransactionCount()));
 
                         mDB.addTransactionRecord(
                                 response.getString("sponsorCode")
@@ -365,9 +366,9 @@ public class getWsData extends IntentService {
                                 , Integer.parseInt(response.getString("amount"))
                         );
 
-                        Log.v("Trans ID      @@@@@", mDB.getTransactionTitle(Integer.parseInt(response.getString("idTransaction"))));
-                        Log.v("Trans Date @@@@@@@@   ", mDB.getTransactionEventDate(Integer.parseInt(response.getString("idTransaction"))));
-                        Log.v("Trans Count   @@@@@", Integer.toString(mDB.getTransactionCount()));
+                        Log.i(TAG, "Trans ID      @@@@@"+ mDB.getTransactionTitle(Integer.parseInt(response.getString("idTransaction"))));
+                        Log.i(TAG, "Trans Date @@@@@@@@   "+ mDB.getTransactionEventDate(Integer.parseInt(response.getString("idTransaction"))));
+                        Log.i(TAG, "Trans Count   @@@@@"+ Integer.toString(mDB.getTransactionCount()));
 
                         mDB.close();
 
@@ -383,10 +384,10 @@ public class getWsData extends IntentService {
                 public void onErrorResponse(VolleyError error) {
 
                     if (error.getMessage() == null) {
-                        Log.v("login   -  ", "Login has failed!" + "\n\n");
+                        Log.i(TAG, "login   -  "+ "Login has failed!" + "\n\n");
                         // TODO: reset your password, create a new account
                     } else {
-                        Log.v("login   -  ", "onErrorResponse(): " + error.getMessage());
+                        Log.i(TAG, "login   -  "+ "onErrorResponse(): " + error.getMessage());
                     }
                 }
             });
@@ -394,7 +395,7 @@ public class getWsData extends IntentService {
         }
 
         }catch (SQLiteException e) {
-            Log.v("Service: ", "Database is unavailable!");
+            Log.i(TAG, "Service: "+ "Database is unavailable!");
             pharmagoDatabaseHelper.close();
         }
 
@@ -409,6 +410,7 @@ public class getWsData extends IntentService {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private void handleActionGetQuiz(String email, String password) {
+    final String TAG="handleActionGetLogin";
     // TODO: SQLite connection
 
     try {
@@ -435,7 +437,7 @@ private void handleActionGetQuiz(String email, String password) {
                     String j_companyLatitude = response.getString("companyLatitude");
                     String j_companyLongitude = response.getString("companyLongitude");
 
-                    Log.v("@@@@@@@@@@","\n-------------------------------------------------------------------------\n\n");
+                    Log.i(TAG, "@@@@@@@@@@"+"\n-------------------------------------------------------------------------\n\n");
                     txtMsg = "Username: " + j_name + "\n"
                             + "Email: " + j_email + "\n"
                             + "CPF: " + j_cpf + "\n"
@@ -446,7 +448,7 @@ private void handleActionGetQuiz(String email, String password) {
                             + "Company Longitude: " + j_companyLongitude + "\n"
                             + "\n-------------------------------------------------------------------------\n\n";
 
-                    Log.v("WS action = login", " FROM JSON OBJECT\n\n" + txtMsg + "\n\n");
+                    Log.i(TAG, "WS action = login"+ " FROM JSON OBJECT\n\n" + txtMsg + "\n\n");
 
 
 
@@ -466,16 +468,16 @@ private void handleActionGetQuiz(String email, String password) {
             public void onErrorResponse(VolleyError error) {
 
                 if (error.getMessage() == null) {
-                    Log.v("login   -  ", "Login has failed!" + "\n\n");
+                    Log.i(TAG, "login   -  "+ "Login has failed!" + "\n\n");
                     // TODO: reset your password, create a new account
                 } else {
-                    Log.v("login   -  ", "onErrorResponse(): " + error.getMessage());
+                    Log.i(TAG, "login   -  "+ "onErrorResponse(): " + error.getMessage());
                 }
             }
         });
         queue.add(jsonObjectRequest);   // replace for the correct object name
     } catch (SQLiteException e) {
-        Log.v("Service: ", "Database is unavailable!");
+        Log.i(TAG, "Service: "+ "Database is unavailable!");
     }
 }
 
@@ -490,7 +492,7 @@ private void handleActionGetQuiz(String email, String password) {
      * parameters.
      */
     private void handleActionTestServices(String email, String password) {
-
+        final String TAG = "ActionTestServices: ";
         final PharmagoDatabaseHelper mDB;
         final SQLiteOpenHelper pharmagoDatabaseHelper = new PharmagoDatabaseHelper(this);
         final SQLiteDatabase db = pharmagoDatabaseHelper.getWritableDatabase();
@@ -505,9 +507,9 @@ private void handleActionGetQuiz(String email, String password) {
             String uName = mDB.getUserName(1);
             //int tCount = mDB.getTransactionCount();
 
-            Log.v("USER  NAME *****",uName);
-            //Log.v("USER  COUNT *****",Integer.toString(uCount));
-            //Log.v("TRANS COUNT *****",Integer.toString(tCount));
+            Log.i(TAG, "USER  NAME *****"+uName);
+            //Log.i(TAG, "USER  COUNT *****",Integer.toString(uCount));
+            //Log.i(TAG, "TRANS COUNT *****",Integer.toString(tCount));
          /**
             RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -524,7 +526,7 @@ private void handleActionGetQuiz(String email, String password) {
                         //  TODO UPDATE USER LOGIN DATA IN SQlite
                         ///////////////////////////////////////////////////////////
 
-                        Log.v("User count", Integer.toString(mDB.getUserCount(db)));
+                        Log.i(TAG, "User count", Integer.toString(mDB.getUserCount(db)));
 
                         mDB.addUserRecord(
                                 response.getString("email")
@@ -537,9 +539,9 @@ private void handleActionGetQuiz(String email, String password) {
                                 , response.getString("companyLongitude")
                         );
 
-                        Log.v("User CPF   @@@@@@@@   ", mDB.getUserCpf(1));
-                        Log.v("User Name  @@@@@@@@   ", mDB.getUserName(1));
-                        Log.v("User Count @@@@@@@@   ", Integer.toString(mDB.getUserCount(db)));
+                        Log.i(TAG, "User CPF   @@@@@@@@   ", mDB.getUserCpf(1));
+                        Log.i(TAG, "User Name  @@@@@@@@   ", mDB.getUserName(1));
+                        Log.i(TAG, "User Count @@@@@@@@   ", Integer.toString(mDB.getUserCount(db)));
 
                         mDB.close();
 
@@ -555,10 +557,10 @@ private void handleActionGetQuiz(String email, String password) {
                 public void onErrorResponse(VolleyError error) {
 
                     if (error.getMessage() == null) {
-                        Log.v("login   -  ", "Login has failed!" + "\n\n");
+                        Log.i(TAG, "login   -  ", "Login has failed!" + "\n\n");
                         // TODO: reset your password, create a new account
                     } else {
-                        Log.v("login   -  ", "onErrorResponse(): " + error.getMessage());
+                        Log.i(TAG, "login   -  ", "onErrorResponse(): " + error.getMessage());
                     }
                 }
             });
@@ -568,11 +570,11 @@ private void handleActionGetQuiz(String email, String password) {
 
         } catch (SQLiteException e) {
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            Log.v("Service: ", "Database is unavailable!");
+            Log.i(TAG, "Service: "+ "Database is unavailable!");
             db.close();
         }
         db.close();
-        Log.v("Service: ", "Database Close!");
+        Log.i(TAG, "Service: "+ "Database Close!");
     }
 
 

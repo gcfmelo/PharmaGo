@@ -204,7 +204,8 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
     //The following methods are responsible for creating, updating, and deleting the records:
 
     public void recreateUserTable(SQLiteDatabase db){
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER+";");
+        String mySql = "\"DROP TABLE IF EXISTS \" + TABLE_USER+\";\"";
+        db.execSQL(mySql);
 
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS " + TABLE_USER + " (_id INTEGER PRIMARY KEY AUTOINCREMENT," +

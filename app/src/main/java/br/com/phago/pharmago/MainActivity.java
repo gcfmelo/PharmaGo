@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
                                     long id) {
                 if (position == 0) {
 
-                    // TODO do the "AccountMenuActivity" need to handle this Intent in some way?
+                    // TODO do the "UserMenuActivity" need to handle this Intent in some way?
                     Toast.makeText(MainActivity.this, "You have selected \"User\"", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, UserMenuActivity.class);
                     startActivity(intent);

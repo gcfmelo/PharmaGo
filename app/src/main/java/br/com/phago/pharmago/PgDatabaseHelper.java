@@ -556,6 +556,65 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         return sponsors;
     }
 
+    /*
+* getting all Campaign
+* */
+    public List<Campaign> getAllCampaigns() {
+        List<Campaign> campaigns = new ArrayList<Campaign>();
+        String selectQuery = "SELECT  * FROM " + TABLE_CAMPAIGN;
+
+        //Log.e(LOG, selectQuery);
+        // CREATE TABLE pg_campaign(_id INTEGER PRIMARY KEY, idCampaign TEXT, sponsorCode TEXT,
+        // sponsorName TEXT, startDate TEXT, endDate TEXT,
+        // numberOfQuestions INTEGER, pointsForRightAnswer INTEGER, pointsForParticipation INTEGER,
+        // status TEXT);
+
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Campaign cp = new Campaign();
+
+                // _id PRIMARY KEY
+                cp.set_id(c.getInt((c.getColumnIndex(KEY_ID))));
+                //setIdCampaign(String sponsorCode, String startDate, int numberOfQuestions,
+                //int pointsForRightAnswer, int pointsForParticipation)
+
+                // idCampaign
+                cp.setIdCampaign((c.getString(c.getColumnIndex("sponsorCode"))),
+                                                (c.getString(c.getColumnIndex("startDate"))),
+                                                (c.getInt(c.getColumnIndex("numberOfQuestions"))),
+                                                (c.getInt(c.getColumnIndex("pointsForRightAnswer"))),
+                                                (c.getInt(c.getColumnIndex("pointsForParticipation"))));
+                // sponsorCode
+                cp.setSponsorCode(c.getString(c.getColumnIndex("sponsorCode")));
+                // sponsorName
+                cp.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
+                // startDate
+                cp.setStartDate(c.getString(c.getColumnIndex("startDate")));
+                // endDate
+                cp.setEndDate(c.getString(c.getColumnIndex("endDate")));
+                // numberOfQuestions
+                cp.setNumberOfQuestions(c.getInt(c.getColumnIndex("numberOfQuestions")));
+                // pointsForRightAnswer
+                cp.setPointsForRightAnswer(c.getInt(c.getColumnIndex("pointsForRightAnswer")));
+                // pointsForParticipation
+                cp.setPointsForParticipation(c.getInt(c.getColumnIndex("pointsForParticipation")));
+                // status
+                cp.setStatus(c.getString(c.getColumnIndex("status")));
+
+
+                // adding to todo list
+                campaigns.add(cp);
+            } while (c.moveToNext());
+        }
+
+        return campaigns;
+    }
+
     /**
      * get datetime
      */

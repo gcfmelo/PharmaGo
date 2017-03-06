@@ -114,6 +114,10 @@ public class Campaign {
     // setters
 
 
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
     public void setIdCampaign(String sponsorCode, String startDate, int numberOfQuestions,
                               int pointsForRightAnswer, int pointsForParticipation) {
         this.idCampaign = sponsorCode+

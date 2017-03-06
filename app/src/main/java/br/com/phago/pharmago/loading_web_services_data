@@ -1,0 +1,51 @@
+
+// Update local User data by WS_ACTION = "login"
+// if action 'login' is successful, then find record with _ID=1
+// if find is not successful then AddUser(...)
+// else, UpdateUser(...)
+// it is not allowed to have more than one user in one device
+
+
+// IF WS action 'getQuiz' is successful,
+DELETE * FROM 'TABLE_QUIZ'
+DELETE * FROM 'TABLE_SPONSOR'
+DELETE * FROM 'TABLE_CAMPAIGN'
+DELETE * FROM 'TABLE_CAMPAIGN_QUESTIONS'
+DELETE * FROM 'TABLE_CAMPAIGN_QUESTIONS_OPTIONS'
+
+and then ADD the returned data from WS
+
+TABLE_QUIZ: is at level 1 of returned WS_ACTION = 'getQuiz'
+// Iterate at top level of WS return and INSERT a record for each
+// Update local User data by WS_ACTION = "getQuiz"
+// if getQuiz is successful, DELETE * FROM 'TABLE_QUIZ' and then ADD the returned data from WS
+AddQuiz(idQuiz, token, status)
+
+Iterate by Quiz and find "campaign" ArrayList.
+In each "campaign", in it's top level object there are information to fill two tables: TABLE_SPONSOR and TABLE_CAMPAIGN
+
+TABLE_SPONSOR:
+AddSponsor(sponsorId INTEGER, sponsorCode TEXT, sponsorName TEXT)
+
+TABLE_CAMPAIGN:
+AddCampaign(sponsorCode, sponsorName,
+            startDate,endDate, numberOfQuestions,
+            pointsForRightAnswer, pointsForParticipation)
+
+Iterate inside 'campaign' and find 'question' ArrayList.
+In each 'question' in it's top level object there are information to fill table: TABLE_CAMPAIGN_QUESTION
+
+AddCampaignQuestion(idQuestion, idCampaign**, questionLabel)
+** parent
+
+Iterate inside 'question' and find 'options' ArrayList.
+In each 'options' there are information to fill table: TABLE_CAMPAIGN_QUESTIONS_OPTIONS
+
+AddCampaignQuestion (idCampaign**, idQuestion**, ...,optionLabel, rightAnswer, userAnswer=-1)
+** parent
+
+We will also need UpdateUserAnswer(userCPF, token, quizId, campaignId, questionId, optionId, optionSequential, userAnswer(=0 for false or =1 for true).
+
+// IF WS action 'getTransactions' is successful,
+DELETE * FROM 'TABLE_TRANSACTION'
+AddTransaction(...)

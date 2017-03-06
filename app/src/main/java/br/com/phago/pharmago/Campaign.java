@@ -69,53 +69,122 @@ package br.com.phago.pharmago;
 
 public class Campaign {
     private int _id;  // local unique id of the Campaign (autoincrement in SQLite)
-    private int idSponsor;  // unique id of the Sponsor originally: idLaboratory
-    private int idCampaign;    // unique id of this Campaign
-    private int sequential;    // sequential number of this Campaign returned by Web Services
+    private String idCampaign; // concatenation of sponsorCode+startDate+numberOfQuestions+pointsForRightAnswer+pointsForParticipation
+    private String  sponsorCode;  // unique id of the Sponsor originally: idLaboratory
     private String sponsorName;  // name of the sponsor (orig: nameOfLaboratory)
-    private String eventDateOfCampaign;  // format YYYY-MM-DD like in "2017-01-17"
-    private int questionsOfCampaign   ;   // number of questions in this campaign
-    private int pointsForRightAnswer;     // sponsor defined: maximum number of points attainable from 100% correct answers
+    private String startDate;  // format YYYY-MM-DD like in "2017-01-17"
+    private String endDate;  // format YYYY-MM-DD like in "2017-01-17"
+    private int numberOfQuestions   ;   // number of questions in this campaign
+    private int pointsForRightAnswer;    // sponsor defined: maximum number of points attainable from 100% correct answers
     private int pointsForParticipation;  // sponsor defined: points granted for ay user submitting a complete answer for this campaign
     private String status;  // Possible values are: "ANSWERED", TODO define possible statuses
-    private String createdAt; // Timestamp for the creation of this Campaign in String format like "2017-01-17 13:53:38.0"
 
-    // empty constructor
+
+    // empty constructors
     public Campaign(){
     }
-    // Complete constructor for Campaign
-    public Campaign(int idSponsor, int idCampaign, int sequential,
-                    String sponsorName, String eventDateOfCampaign,
-                    int questionsOfCampaign, int pointsForRightAnswer,
-                    int pointsForParticipation, String status, String createdAt) {
-        this.idSponsor = idSponsor;
-        this.idCampaign = idCampaign;
-        this.sequential = sequential;
+
+    public Campaign(String sponsorCode, String sponsorName, String startDate, String endDate, int numberOfQuestions,
+                                                int pointsForRightAnswer, int pointsForParticipation, String status) {
+        this.idCampaign=sponsorCode+startDate+Integer.toString(numberOfQuestions)+Integer.toString(pointsForRightAnswer)+Integer.toString(pointsForParticipation);
+        this.sponsorCode = sponsorCode;
         this.sponsorName = sponsorName;
-        this.eventDateOfCampaign = eventDateOfCampaign;
-        this.questionsOfCampaign = questionsOfCampaign;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.numberOfQuestions = numberOfQuestions;
         this.pointsForRightAnswer = pointsForRightAnswer;
         this.pointsForParticipation = pointsForParticipation;
         this.status = status;
-        this.createdAt = createdAt;
     }
 
+    public Campaign(int _id, String sponsorCode, String sponsorName, String startDate, String endDate, int numberOfQuestions,
+                                                        int pointsForRightAnswer, int pointsForParticipation, String status) {
+        this._id = _id;
+        this.idCampaign=sponsorCode+startDate+Integer.toString(numberOfQuestions)+Integer.toString(pointsForRightAnswer)+Integer.toString(pointsForParticipation);
+        this.sponsorCode = sponsorCode;
+        this.sponsorName = sponsorName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.numberOfQuestions = numberOfQuestions;
+        this.pointsForRightAnswer = pointsForRightAnswer;
+        this.pointsForParticipation = pointsForParticipation;
+        this.status = status;
+    }
+
+    // setters
+
+
+    public void setIdCampaign(String sponsorCode, String startDate, int numberOfQuestions,
+                              int pointsForRightAnswer, int pointsForParticipation) {
+        this.idCampaign = sponsorCode+
+                startDate+
+                Integer.toString(numberOfQuestions)+
+                Integer.toString(pointsForRightAnswer)+
+                Integer.toString(pointsForParticipation);
+    }
+
+    public void setSponsorCode(String sponsorCode) {
+        this.sponsorCode = sponsorCode;
+    }
+
+    public void setSponsorName(String sponsorName) {
+        this.sponsorName = sponsorName;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setNumberOfQuestions(int numberOfQuestions) {
+        this.numberOfQuestions = numberOfQuestions;
+    }
+
+    public void setPointsForRightAnswer(int pointsForRightAnswer) {
+        this.pointsForRightAnswer = pointsForRightAnswer;
+    }
+
+    public void setPointsForParticipation(int pointsForParticipation) {
+        this.pointsForParticipation = pointsForParticipation;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
     /// getters
+
 
     public int get_id() {
         return _id;
     }
 
-    public int getIdCampaign() {
+    public String getIdCampaign() {
         return idCampaign;
     }
 
-    public String getEventDate() {
-        return eventDateOfCampaign;
+    public String getSponsorCode() {
+        return sponsorCode;
     }
 
-    public int getQuestions() {
-        return questionsOfCampaign;
+    public String getSponsorName() {
+        return sponsorName;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public int getNumberOfQuestions() {
+        return numberOfQuestions;
     }
 
     public int getPointsForRightAnswer() {
@@ -128,14 +197,5 @@ public class Campaign {
 
     public String getStatus() {
         return status;
-    }
-
-    @Override
-    public String toString() {
-        return "Campaign{" +
-                "createdAt='" + createdAt + '\'' +
-                ", sponsorName='" + sponsorName + '\'' +
-                ", idCampaign=" + idCampaign +
-                '}';
     }
 }

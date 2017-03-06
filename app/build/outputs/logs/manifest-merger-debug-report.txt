@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:2:1-46:12
+ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:2:1-43:12
 	package
 		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:3:5-36
 		INJECTED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml
@@ -18,7 +18,7 @@ ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:5:5-67
 	android:name
 		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:5:22-64
 application
-ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:7:5-44:19
+ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:7:5-41:19
 MERGED from [com.android.support:design:25.2.0] C:\Users\Lenovo\.android\build-cache\c502f1d6e8d24bf5a7e8a121817f550c3894ccaa\output\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:appcompat-v7:25.2.0] C:\Users\Lenovo\.android\build-cache\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\output\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:animated-vector-drawable:25.2.0] C:\Users\Lenovo\.android\build-cache\2aef44bb4545a41f39d5fcde5fa339400d67fcc8\output\AndroidManifest.xml:22:5-20
@@ -73,34 +73,28 @@ ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:26:9-28:67
 		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:28:13-64
 	android:name
 		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:27:13-48
-activity#br.com.phago.pharmago.AboutMenuActivity
-ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:29:9-31:65
-	android:label
-		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:31:13-62
-	android:name
-		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:30:13-46
 activity#br.com.phago.pharmago.CampaignsMenuActivity
-ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:32:9-34:69
+ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:29:9-31:69
 	android:label
-		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:34:13-66
+		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:31:13-66
 	android:name
-		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:33:13-50
+		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:30:13-50
 service#br.com.phago.pharmago.getWsData
-ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:36:9-38:40
+ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:33:9-35:40
 	android:exported
-		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:38:13-37
+		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:35:13-37
 	android:name
-		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:37:13-38
+		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:34:13-38
 activity#br.com.phago.pharmago.ClosedCampaignsListActivity
-ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:40:9-42:51
+ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:37:9-39:51
 	android:label
-		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:42:13-48
+		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:39:13-48
 	android:name
-		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:41:13-56
+		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:38:13-56
 activity#br.com.phago.pharmago.CampaignsActivityList
-ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:43:9-68
+ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:40:9-68
 	android:name
-		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:43:19-56
+		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:40:19-56
 uses-sdk
 INJECTED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:design:25.2.0] C:\Users\Lenovo\.android\build-cache\c502f1d6e8d24bf5a7e8a121817f550c3894ccaa\output\AndroidManifest.xml:21:5-23:62

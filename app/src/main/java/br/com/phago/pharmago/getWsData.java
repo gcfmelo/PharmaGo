@@ -29,14 +29,14 @@ import java.net.URL;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  * ***************************************************************************
- *  This Intent Service will invoke Web Services
- *  with INTENT to put all returned data into local SQLlite DataBase
- *  INTENT EXTRA parameters will define Service BEHAVIOUR
- *  Candidate Parameters are:
- *  user data: email (EXTRA_EMAIL), cpf (EXTRA_CPF), password (EXTRA_PASSWORD)
- *  Action data: ACTION_REQUEST [ "login", "getCampaigns"]
- *  Context data: token (provisioned for potential future use)
- *  **************************************************************************
+ * This Intent Service will invoke Web Services
+ * with INTENT to put all returned data into local SQLlite DataBase
+ * INTENT EXTRA parameters will define Service BEHAVIOUR
+ * Candidate Parameters are:
+ * user data: email (EXTRA_EMAIL), cpf (EXTRA_CPF), password (EXTRA_PASSWORD)
+ * Action data: ACTION_REQUEST [ "login", "getCampaigns"]
+ * Context data: token (provisioned for potential future use)
+ * **************************************************************************
  */
 
 public class getWsData extends IntentService {
@@ -50,7 +50,7 @@ public class getWsData extends IntentService {
 
     // TODO: Rename parameters
     public static final String EXTRA_EMAIL = "br.com.phago.pharmago.extra.PARAM1";
-   // public static final String EXTRA_CPF = "br.com.phago.pharmago.extra.PARAM2";
+    // public static final String EXTRA_CPF = "br.com.phago.pharmago.extra.PARAM2";
     public static final String EXTRA_PASSWORD = "br.com.phago.pharmago.extra.PARAM2";
 
     public getWsData() {
@@ -126,7 +126,7 @@ public class getWsData extends IntentService {
     }
 
 
-// here goes the code to run when service is called
+    // here goes the code to run when service is called
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
@@ -188,10 +188,10 @@ public class getWsData extends IntentService {
                         //  TODO UPDATE USER LOGIN DATA IN SQlite
                         ///////////////////////////////////////////////////////////
 
-                        Log.i(TAG, "User count"+ Integer.toString(mDB.getUserCount()));
+                        Log.i(TAG, "User count" + Integer.toString(mDB.getUserCount()));
 
                         mDB.addUserRecord(
-                                  response.getString("email")
+                                response.getString("email")
                                 , response.getString("name")
                                 , response.getString("status")
                                 , response.getString("cpf")
@@ -201,9 +201,9 @@ public class getWsData extends IntentService {
                                 , response.getString("companyLongitude")
                         );
 
-                        Log.i(TAG, "User CPF   @@@@@@@@   "+ mDB.getUserCpf(1));
-                        Log.i(TAG, "User Name  @@@@@@@@   "+ mDB.getUserName(1));
-                        Log.i(TAG, "User Count @@@@@@@@   "+ Integer.toString(mDB.getUserCount()));
+                        Log.i(TAG, "User CPF   @@@@@@@@   " + mDB.getUserCpf(1));
+                        Log.i(TAG, "User Name  @@@@@@@@   " + mDB.getUserName(1));
+                        Log.i(TAG, "User Count @@@@@@@@   " + Integer.toString(mDB.getUserCount()));
 
                         mDB.close();
 
@@ -219,16 +219,16 @@ public class getWsData extends IntentService {
                 public void onErrorResponse(VolleyError error) {
 
                     if (error.getMessage() == null) {
-                        Log.i(TAG, "login   -  "+ "Login has failed!" + "\n\n");
+                        Log.i(TAG, "login   -  " + "Login has failed!" + "\n\n");
                         // TODO: reset your password, create a new account
                     } else {
-                        Log.i(TAG, "login   -  "+ "onErrorResponse(): " + error.getMessage());
+                        Log.i(TAG, "login   -  " + "onErrorResponse(): " + error.getMessage());
                     }
                 }
             });
             queue.add(jsonObjectRequest);   // replace for the correct object name
         } catch (SQLiteException e) {
-            Log.i(TAG, "Service: "+ "Database is unavailable!");
+            Log.i(TAG, "Service: " + "Database is unavailable!");
             pharmagoDatabaseHelper.close();
         }
         pharmagoDatabaseHelper.close();
@@ -253,25 +253,24 @@ public class getWsData extends IntentService {
 
 
         try {
-        mDB = new PharmagoDatabaseHelper(this);
+            mDB = new PharmagoDatabaseHelper(this);
 
-        //mDB.recreateTransactionTable(db);
+            //mDB.recreateTransactionTable(db);
 
-        RequestQueue queue = Volley.newRequestQueue(this);
+            RequestQueue queue = Volley.newRequestQueue(this);
 
-        URL urlObj = createURL(email, password, "getTransactions", "123456789");     //format URL to call WS
-        //final String mEmail = email;
-        //final String mPassword = password;
-        String url = urlObj.toString();
+            URL urlObj = createURL(email, password, "getTransactions", "123456789");     //format URL to call WS
+            //final String mEmail = email;
+            //final String mPassword = password;
+            String url = urlObj.toString();
 
-        if (useText) {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     String myJsonString = response.toString();
-                    Log.i(TAG, "TEXT RETURNED:   @@@   "+ myJsonString);
-                    if (myJsonString.startsWith("[")){
-                        myJsonString="{\"transaction\":"+myJsonString+"}";
+                    Log.i(TAG, "TEXT RETURNED:   @@@   " + myJsonString);
+                    if (myJsonString.startsWith("[")) {
+                        myJsonString = "{\"transaction\":" + myJsonString + "}";
                     }
                     // converting to JSONObject
                     JSONObject jsonObj = null;
@@ -281,28 +280,28 @@ public class getWsData extends IntentService {
                         e.printStackTrace();
                     }
 
-                    Log.i(TAG, "JSON OBJ RETURN: @@@   "+ jsonObj.toString());
+                    Log.i(TAG, "JSON OBJ RETURN: @@@   " + jsonObj.toString());
 
                     JSONArray tr = null;
                     try {
                         tr = jsonObj.getJSONArray("transaction");
-                        Log.i(TAG, "transaction: @@@   "+ tr.toString());
+                        Log.i(TAG, "transaction: @@@   " + tr.toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                     if (tr != null) {
 
-                        for (int i=0;i< tr.length(); i++){
+                        for (int i = 0; i < tr.length(); i++) {
                             try {
                                 JSONObject obj = tr.getJSONObject(i);
                                 // TODO remove
-                                String txtLog = obj.getString("sponsorCode")+
-                                        obj.getInt("idCampaign")+
-                                        obj.getInt("idTransaction")+
-                                        obj.getString("eventDate")+
-                                        obj.getString("title")+
-                                        obj.getString("nature")+
+                                String txtLog = obj.getString("sponsorCode") +
+                                        obj.getInt("idCampaign") +
+                                        obj.getInt("idTransaction") +
+                                        obj.getString("eventDate") +
+                                        obj.getString("title") +
+                                        obj.getString("nature") +
                                         obj.getInt("amount");
 
                                 mDB.addTransactionRecord(
@@ -314,13 +313,13 @@ public class getWsData extends IntentService {
                                         obj.getString("nature"),
                                         obj.getInt("amount"));
 
-                                Log.i(TAG, "sponsorCode: @@@   "+obj.getString("sponsorCode"));
-                                Log.i(TAG, "idCampaign: @@@   "+obj.getString("idCampaign"));
-                                Log.i(TAG, "idTransaction: @@@   "+obj.getString("idTransaction"));
-                                Log.i(TAG, "eventDate : @@@   "+obj.getString("eventDate"));
-                                Log.i(TAG, "title : @@@   "+obj.getString("title"));
-                                Log.i(TAG, "nature: @@@   "+obj.getString("nature"));
-                                Log.i(TAG, "amount: @@@   "+obj.getString("amount"));
+                                Log.i(TAG, "sponsorCode: @@@   " + obj.getString("sponsorCode"));
+                                Log.i(TAG, "idCampaign: @@@   " + obj.getString("idCampaign"));
+                                Log.i(TAG, "idTransaction: @@@   " + obj.getString("idTransaction"));
+                                Log.i(TAG, "eventDate : @@@   " + obj.getString("eventDate"));
+                                Log.i(TAG, "title : @@@   " + obj.getString("title"));
+                                Log.i(TAG, "nature: @@@   " + obj.getString("nature"));
+                                Log.i(TAG, "amount: @@@   " + obj.getString("amount"));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -329,49 +328,80 @@ public class getWsData extends IntentService {
                         mDB.close();
                     }
 
-
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
                     if (error.getMessage() == null) {
-                        Log.i(TAG, "TRANSACTION ERROR: @@@ "+"Transactions Sync has Failed!");
+                        Log.i(TAG, "TRANSACTION ERROR: @@@ " + "Transactions Sync has Failed!");
                         // TODO: retrieve your password
                     } else {
-                        Log.i(TAG, "ERROR RETURNED:    @@@ "+ error.getMessage());
+                        Log.i(TAG, "ERROR RETURNED:    @@@ " + error.getMessage());
                     }
                 }
             });
             queue.add(stringRequest);
-        } else {
+
+        } catch (SQLiteException e) {
+            Log.i(TAG, "Service: " + "Database is unavailable!");
+            pharmagoDatabaseHelper.close();
+        }
+
+        pharmagoDatabaseHelper.close();
+
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void handleActionGetQuiz(String email, String password) {
+        final String TAG = "handleActionGetLogin";
+        // TODO: SQLite connection
+
+        try {
+            //final SQLiteOpenHelper pharmagoDatabaseHelper = new PharmagoDatabaseHelper(this);
+            //final SQLiteDatabase db = pharmagoDatabaseHelper.getWritableDatabase();
+            RequestQueue queue = Volley.newRequestQueue(this);
+
+            URL urlObj = createURL(email, password, "getQuiz", "123456789");     //format URL to call WS
+            final String mEmail = email;
+            final String mPassword = password;
+            String url = urlObj.toString();
+
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
+                        String txtMsg = "";
+                        String j_email = response.getString("email");
+                        String j_name = response.getString("name");
+                        String j_status = response.getString("status");
+                        String j_cpf = response.getString("cpf");
+                        String j_companyCode = response.getString("companyCode");
+                        String j_companyName = response.getString("companyName");
+                        String j_companyLatitude = response.getString("companyLatitude");
+                        String j_companyLongitude = response.getString("companyLongitude");
+
+                        Log.i(TAG, "@@@@@@@@@@" + "\n-------------------------------------------------------------------------\n\n");
+                        txtMsg = "Username: " + j_name + "\n"
+                                + "Email: " + j_email + "\n"
+                                + "CPF: " + j_cpf + "\n"
+                                + "Status: " + j_status + "\n"
+                                + "Company Code (CNPJ): " + j_companyCode + "\n"
+                                + "Company Name: " + j_companyName + "\n"
+                                + "Company Latitude: " + j_companyLatitude + "\n"
+                                + "Company Longitude: " + j_companyLongitude + "\n"
+                                + "\n-------------------------------------------------------------------------\n\n";
+
+                        Log.i(TAG, "WS action = login" + " FROM JSON OBJECT\n\n" + txtMsg + "\n\n");
+
 
                         ///////////////////////////////////////////////////////////
                         //  TODO UPDATE USER LOGIN DATA IN SQlite
                         ///////////////////////////////////////////////////////////
-
-                        Log.i(TAG, "Transaction count"+ Integer.toString(mDB.getTransactionCount()));
-
-                        mDB.addTransactionRecord(
-                                response.getString("sponsorCode")
-                                ,Integer.parseInt(response.getString("idCampaign"))
-                                ,Integer.parseInt(response.getString("idTransaction"))
-                                , response.getString("eventDate")
-                                , response.getString("title")
-                                , response.getString("nature")
-                                , Integer.parseInt(response.getString("amount"))
-                        );
-
-                        Log.i(TAG, "Trans ID      @@@@@"+ mDB.getTransactionTitle(Integer.parseInt(response.getString("idTransaction"))));
-                        Log.i(TAG, "Trans Date @@@@@@@@   "+ mDB.getTransactionEventDate(Integer.parseInt(response.getString("idTransaction"))));
-                        Log.i(TAG, "Trans Count   @@@@@"+ Integer.toString(mDB.getTransactionCount()));
-
-                        mDB.close();
-
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -384,102 +414,18 @@ public class getWsData extends IntentService {
                 public void onErrorResponse(VolleyError error) {
 
                     if (error.getMessage() == null) {
-                        Log.i(TAG, "login   -  "+ "Login has failed!" + "\n\n");
+                        Log.i(TAG, "login   -  " + "Login has failed!" + "\n\n");
                         // TODO: reset your password, create a new account
                     } else {
-                        Log.i(TAG, "login   -  "+ "onErrorResponse(): " + error.getMessage());
+                        Log.i(TAG, "login   -  " + "onErrorResponse(): " + error.getMessage());
                     }
                 }
             });
             queue.add(jsonObjectRequest);   // replace for the correct object name
+        } catch (SQLiteException e) {
+            Log.i(TAG, "Service: " + "Database is unavailable!");
         }
-
-        }catch (SQLiteException e) {
-            Log.i(TAG, "Service: "+ "Database is unavailable!");
-            pharmagoDatabaseHelper.close();
-        }
-
-        pharmagoDatabaseHelper.close();
-
     }
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-private void handleActionGetQuiz(String email, String password) {
-    final String TAG="handleActionGetLogin";
-    // TODO: SQLite connection
-
-    try {
-        //final SQLiteOpenHelper pharmagoDatabaseHelper = new PharmagoDatabaseHelper(this);
-        //final SQLiteDatabase db = pharmagoDatabaseHelper.getWritableDatabase();
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        URL urlObj = createURL(email, password, "getQuiz", "123456789");     //format URL to call WS
-        final String mEmail = email;
-        final String mPassword = password;
-        String url = urlObj.toString();
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String txtMsg = "";
-                    String j_email = response.getString("email");
-                    String j_name = response.getString("name");
-                    String j_status = response.getString("status");
-                    String j_cpf = response.getString("cpf");
-                    String j_companyCode = response.getString("companyCode");
-                    String j_companyName = response.getString("companyName");
-                    String j_companyLatitude = response.getString("companyLatitude");
-                    String j_companyLongitude = response.getString("companyLongitude");
-
-                    Log.i(TAG, "@@@@@@@@@@"+"\n-------------------------------------------------------------------------\n\n");
-                    txtMsg = "Username: " + j_name + "\n"
-                            + "Email: " + j_email + "\n"
-                            + "CPF: " + j_cpf + "\n"
-                            + "Status: " + j_status + "\n"
-                            + "Company Code (CNPJ): " + j_companyCode + "\n"
-                            + "Company Name: " + j_companyName + "\n"
-                            + "Company Latitude: " + j_companyLatitude + "\n"
-                            + "Company Longitude: " + j_companyLongitude + "\n"
-                            + "\n-------------------------------------------------------------------------\n\n";
-
-                    Log.i(TAG, "WS action = login"+ " FROM JSON OBJECT\n\n" + txtMsg + "\n\n");
-
-
-
-
-                    ///////////////////////////////////////////////////////////
-                    //  TODO UPDATE USER LOGIN DATA IN SQlite
-                    ///////////////////////////////////////////////////////////
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }  // onResponse
-        }
-
-                , new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                if (error.getMessage() == null) {
-                    Log.i(TAG, "login   -  "+ "Login has failed!" + "\n\n");
-                    // TODO: reset your password, create a new account
-                } else {
-                    Log.i(TAG, "login   -  "+ "onErrorResponse(): " + error.getMessage());
-                }
-            }
-        });
-        queue.add(jsonObjectRequest);   // replace for the correct object name
-    } catch (SQLiteException e) {
-        Log.i(TAG, "Service: "+ "Database is unavailable!");
-    }
-}
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -507,74 +453,72 @@ private void handleActionGetQuiz(String email, String password) {
             String uName = mDB.getUserName(1);
             //int tCount = mDB.getTransactionCount();
 
-            Log.i(TAG, "USER  NAME *****"+uName);
+            Log.i(TAG, "USER  NAME *****" + uName);
             //Log.i(TAG, "USER  COUNT *****",Integer.toString(uCount));
             //Log.i(TAG, "TRANS COUNT *****",Integer.toString(tCount));
-         /**
-            RequestQueue queue = Volley.newRequestQueue(this);
+            /**
+             RequestQueue queue = Volley.newRequestQueue(this);
 
-            URL urlObj = createURL(email, password, "login", "123456789");     //format URL to call WS
+             URL urlObj = createURL(email, password, "login", "123456789");     //format URL to call WS
 
-            String url = urlObj.toString();
+             String url = urlObj.toString();
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
+             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            @Override public void onResponse(JSONObject response) {
+            try {
 
-                        ///////////////////////////////////////////////////////////
-                        //  TODO UPDATE USER LOGIN DATA IN SQlite
-                        ///////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////
+            //  TODO UPDATE USER LOGIN DATA IN SQlite
+            ///////////////////////////////////////////////////////////
 
-                        Log.i(TAG, "User count", Integer.toString(mDB.getUserCount(db)));
+            Log.i(TAG, "User count", Integer.toString(mDB.getUserCount(db)));
 
-                        mDB.addUserRecord(
-                                response.getString("email")
-                                , response.getString("name")
-                                , response.getString("status")
-                                , response.getString("cpf")
-                                , response.getString("companyCode")
-                                , response.getString("companyName")
-                                , response.getString("companyLatitude")
-                                , response.getString("companyLongitude")
-                        );
+            mDB.addUserRecord(
+            response.getString("email")
+            , response.getString("name")
+            , response.getString("status")
+            , response.getString("cpf")
+            , response.getString("companyCode")
+            , response.getString("companyName")
+            , response.getString("companyLatitude")
+            , response.getString("companyLongitude")
+            );
 
-                        Log.i(TAG, "User CPF   @@@@@@@@   ", mDB.getUserCpf(1));
-                        Log.i(TAG, "User Name  @@@@@@@@   ", mDB.getUserName(1));
-                        Log.i(TAG, "User Count @@@@@@@@   ", Integer.toString(mDB.getUserCount(db)));
+            Log.i(TAG, "User CPF   @@@@@@@@   ", mDB.getUserCpf(1));
+            Log.i(TAG, "User Name  @@@@@@@@   ", mDB.getUserName(1));
+            Log.i(TAG, "User Count @@@@@@@@   ", Integer.toString(mDB.getUserCount(db)));
 
-                        mDB.close();
+            mDB.close();
 
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }  // onResponse
+            } catch (Exception e) {
+            e.printStackTrace();
+            }
+            }  // onResponse
             }
 
-                    , new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
+             , new Response.ErrorListener() {
+            @Override public void onErrorResponse(VolleyError error) {
 
-                    if (error.getMessage() == null) {
-                        Log.i(TAG, "login   -  ", "Login has failed!" + "\n\n");
-                        // TODO: reset your password, create a new account
-                    } else {
-                        Log.i(TAG, "login   -  ", "onErrorResponse(): " + error.getMessage());
-                    }
-                }
+            if (error.getMessage() == null) {
+            Log.i(TAG, "login   -  ", "Login has failed!" + "\n\n");
+            // TODO: reset your password, create a new account
+            } else {
+            Log.i(TAG, "login   -  ", "onErrorResponse(): " + error.getMessage());
+            }
+            }
             });
-            queue.add(jsonObjectRequest);   // replace for the correct object name
+             queue.add(jsonObjectRequest);   // replace for the correct object name
 
-        */
+             */
 
         } catch (SQLiteException e) {
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            Log.i(TAG, "Service: "+ "Database is unavailable!");
+            Log.i(TAG, "Service: " + "Database is unavailable!");
             db.close();
         }
         db.close();
-        Log.i(TAG, "Service: "+ "Database Close!");
+        Log.i(TAG, "Service: " + "Database Close!");
     }
 
 
@@ -586,7 +530,7 @@ private void handleActionGetQuiz(String email, String password) {
 
     private URL createURL(String email, String password, String action, String token) {
         String baseURL = "http://www.benben.net.br/apiPharmaGo?";
-                // LoginActivity.super.getString(R.string.web_sevice_base_url);
+        // LoginActivity.super.getString(R.string.web_sevice_base_url);
         try {
             // create URL for specified email and password
             String baseUrl = "http://www.benben.net.br/apiPharmaGo?";

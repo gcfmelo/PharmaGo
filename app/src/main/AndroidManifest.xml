@@ -27,9 +27,6 @@
             android:name=".AccountMenuActivity"
             android:label="@string/title_activity_account_menu" />
         <activity
-            android:name=".AboutMenuActivity"
-            android:label="@string/title_activity_about_menu" />
-        <activity
             android:name=".CampaignsMenuActivity"
             android:label="@string/title_activity_campaigns_menu" />
 

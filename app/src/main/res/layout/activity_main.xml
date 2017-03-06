@@ -10,29 +10,44 @@
     android:weightSum="1">
 
 
-    <Button
-        android:text="@string/button_text"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/button2"
-        android:onClick="onClickStartServices"/>
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="194dp"
-        android:layout_height="69dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        app:srcCompat="@mipmap/pharmago_logo"
-        android:id="@+id/imageView_pharmago_logo"
-        android:cropToPadding="false"
-        android:adjustViewBounds="false"
-        android:scaleType="fitStart"
-        android:background="?attr/colorPrimary"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            android:id="@+id/head_title_linear_layout">
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/list_options"
-        android:entries="@array/options" />
+            <EditText
+                android:id="@+id/head_title_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="none"
+                android:selectAllOnFocus="false"
+                android:text="Campaign activities"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:visibility="visible"
+                tools:focusable="false"
+                tools:focusableInTouchMode="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/campaign_list_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/head_title_linear_layout"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+    </RelativeLayout>
+
 </LinearLayout>

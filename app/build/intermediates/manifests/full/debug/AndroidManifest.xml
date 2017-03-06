@@ -33,9 +33,6 @@
             android:name="br.com.phago.pharmago.AccountMenuActivity"
             android:label="@string/title_activity_account_menu" />
         <activity
-            android:name="br.com.phago.pharmago.AboutMenuActivity"
-            android:label="@string/title_activity_about_menu" />
-        <activity
             android:name="br.com.phago.pharmago.CampaignsMenuActivity"
             android:label="@string/title_activity_campaigns_menu" />
 

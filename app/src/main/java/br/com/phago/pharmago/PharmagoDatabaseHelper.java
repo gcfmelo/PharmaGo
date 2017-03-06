@@ -9,13 +9,28 @@ import android.util.Log;
 
 /**
  * Created by Gustavo on 26/02/2017.
+ *
+ // TIPS to debugging SQLite databases ...
+ // adb root         //// to get logger as root in adb
+ // adb -e shell
+ // su /// prompt = '$' if you are not rooted root, if you are rooted your prompt will be '#'
+ //                  run 'su' command to change to #
+ // cd /data/data/br.com.phago.pharmago/databases/
+ // ls -l
+ // rm <filename>   ////  to DELETE a FILE
+ // sqlite3 phago.db
+ // .tables
+ // .schema <tablename>
+ // SELECT * FROM <tablename>;
+ // DROP TABLE <tablename>;
+ // .help
  */
 
 public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "phago.db";  // our database name
     private static final int DB_VERSION = 1; // this is the current version of our database
     // TABLE NAMES
-    private static final String TABLE_USER = "user";
+    private static final String TABLE_USER = "pguser";
     /**
     {
         "email":"gcfmelo@gmail.com",
@@ -28,7 +43,7 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
         "companyLongitude":"-47.0930623"
     }
      */
-    private static final String TABLE_TRANSACTION = "transaction";
+    private static final String TABLE_TRANSACTION = "pgtransaction";
     /**
         [
             {
@@ -40,7 +55,7 @@ public class PharmagoDatabaseHelper extends SQLiteOpenHelper {
             }
         ]
      */
-    private static final String TABLE_QUIZ = "quiz";
+    private static final String TABLE_QUIZ = "pgquiz";
     /**
     [
    {

@@ -76,7 +76,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
     // Table Create Statements  -  pg_user
     private static final String CREATE_TABLE_USER = "CREATE TABLE " +
-            TABLE_USER + "(" + KEY_ID + " INTEGER PRIMARY KEY," +
+            TABLE_USER + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             FIELD_USER_NAME + " TEXT," +
             FIELD_USER_EMAIL + " TEXT, " +
             FIELD_USER_CPF + "TEXT, " +
@@ -112,7 +112,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
     // Table Create Statements  -  pg_transaction
     private static final String CREATE_TABLE_TRANSACTION = "CREATE TABLE " +
-            TABLE_TRANSACTION + "(" + KEY_ID + " INTEGER PRIMARY KEY," +
+            TABLE_TRANSACTION + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             FIELD_TRANSACTION_ID_TRANSACTION + " TEXT, " +
             FIELD_TRANSACTION_ID_CAMPAIGN + " TEXT, " +
             FIELD_TRANSACTION_CAMPAIGN_TITLE + " TEXT, " +
@@ -253,13 +253,13 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
     // Table Create Statements  -  pg_sponsor
     private static final String CREATE_TABLE_SPONSOR = "CREATE TABLE " +
-            TABLE_SPONSOR + "(" + KEY_ID + " INTEGER PRIMARY KEY," +
+            TABLE_SPONSOR + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             FIELD_SPONSOR_CODE + " TEXT, " +
             FIELD_SPONSOR_NAME + " TEXT );";
 
     // Table Create Statements  -  pg_sponsor
     private static final String CREATE_TABLE_TEMP_SPONSOR = "CREATE TABLE " +
-            TABLE_TEMP_SPONSOR + "(" + KEY_ID + " INTEGER PRIMARY KEY," +
+            TABLE_TEMP_SPONSOR + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             FIELD_SPONSOR_CODE + " TEXT, " +
             FIELD_SPONSOR_NAME + " TEXT);";
 
@@ -275,7 +275,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
     // Table Create Statements  -  pg_quiz
     private static final String CREATE_TABLE_QUIZ = "CREATE TABLE " +
-            TABLE_QUIZ + "(" + KEY_ID + " INTEGER PRIMARY KEY," +
+            TABLE_QUIZ + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             FIELD_QUIZ_ID + " INTEGER, " +
             FIELD_QUIZ_SPONSOR_CODE + " TEXT, " +
             FIELD_QUIZ_TOKEN + " TEXT, " +
@@ -287,7 +287,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     // pointsForRightAnswer INTEGER, pointsForParticipation INTEGER
     // Array of 'questions' objects
     //
-    // CREATE TABLE pg_campaign(_id INTEGER PRIMARY KEY, idCampaign TEXT, sponsorCode TEXT, sponsorName TEXT,
+    // CREATE TABLE pg_campaign(_id INTEGER PRIMARY KEY AUTOINCREMENT, idCampaign TEXT, sponsorCode TEXT, sponsorName TEXT,
     // startDate TEXT, endDate TEXT, numberOfQuestions INTEGER, pointsForRightAnswer INTEGER, pointsForParticipation INTEGER, status TEXT);
 
 
@@ -304,14 +304,14 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
     // Table Create Statements  -  pg_campaign
 
-    //CREATE TABLE pg_campaign(_id INTEGER PRIMARY KEY, idCampaign TEXT, sponsorCode TEXT, sponsorName TEXT,
+    //CREATE TABLE pg_campaign(_id INTEGER PRIMARY KEY AUTOINCREMENT, idCampaign TEXT, sponsorCode TEXT, sponsorName TEXT,
     // startDate TEXT, endDate TEXT,
     // numberOfQuestions INTEGER, pointsForRightAnswer INTEGER, pointsForParticipation INTEGER,
     // status TEXT);
 
 
     private static final String CREATE_TABLE_CAMPAIGN = "CREATE TABLE " +
-            TABLE_CAMPAIGN + "(" + KEY_ID + " INTEGER PRIMARY KEY," +
+            TABLE_CAMPAIGN + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             FIELD_CAMPAIGN_ID + " TEXT, " +
             FIELD_CAMPAIGN_SPONSOR_CODE + " TEXT, " +
             FIELD_CAMPAIGN_SPONSOR_NAME + " TEXT, " +
@@ -329,21 +329,26 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     // Table: pg_question - Field Names
     private static final String FIELD_CAMPAIGN_QUESTION_ID = "idQuestion";
     private static final String FIELD_CAMPAIGN_QUESTION_CAMPAIGN_ID = "idCampaign";
+    private static final String FIELD_CAMPAIGN_QUESTION_SEQUENTIAL_NUMBER = "seqNumber";
     private static final String FIELD_CAMPAIGN_QUESTION_LABEL = "questionLabel";
 
     // Table Create Statements  -  pg_question
+
+    // CREATE TABLE pg_question (_id INTEGER PRIMARY KEY AUTOINCREMENT, idQuestion TEXT, idCampaign TEXT, seqNumber INTEGER, questionLabel TEXT);
+
     private static final String CREATE_TABLE_CAMPAIGN_QUESTIONS = "CREATE TABLE " +
-            TABLE_CAMPAIGN_QUESTIONS + "(" + KEY_ID + " INTEGER PRIMARY KEY," +
-            FIELD_CAMPAIGN_QUESTION_ID + " INTEGER, " +
-            FIELD_CAMPAIGN_QUESTION_CAMPAIGN_ID + " INTEGER, " +
-            FIELD_CAMPAIGN_QUESTION_LABEL + " TEXT, " +
-            KEY_CREATED_AT + " TEXT" + ");";
+            TABLE_CAMPAIGN_QUESTIONS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            FIELD_CAMPAIGN_QUESTION_ID + " TEXT, " +
+            FIELD_CAMPAIGN_QUESTION_CAMPAIGN_ID + " TEXT, " +
+            FIELD_CAMPAIGN_QUESTION_SEQUENTIAL_NUMBER + " INTEGER, " +
+            FIELD_CAMPAIGN_QUESTION_LABEL + " TEXT );";
 
 
     // idOption* INTEGER, idQuestion* INTEGER, sequential INTEGER, optionLabel TEXT, rightAnswer INTEGER, userAnswer INTEGER
 
     // Table: pg_option - Field Names
     private static final String FIELD_CAMPAIGN_QUESTION_OPTION_ID = "idOption";
+    private static final String FIELD_CAMPAIGN_QUESTION_OPTION_CAMPAIGN_ID = "idCampaign";
     private static final String FIELD_CAMPAIGN_QUESTION_OPTION_QUESTION_ID = "idQuestion";
     private static final String FIELD_CAMPAIGN_QUESTION_OPTION_SEQUENTIAL = "sequential";
     private static final String FIELD_CAMPAIGN_QUESTION_OPTION_LABEL = "optionLabel";
@@ -352,8 +357,8 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
     // Table Create Statements  -  pg_option
     private static final String CREATE_TABLE_CAMPAIGN_QUESTIONS_OPTIONS = "CREATE TABLE " +
-            TABLE_CAMPAIGN_QUESTIONS_OPTIONS + "(" + KEY_ID + " INTEGER PRIMARY KEY," +
-            FIELD_CAMPAIGN_QUESTION_OPTION_ID + " INTEGER, " +
+            TABLE_CAMPAIGN_QUESTIONS_OPTIONS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            FIELD_CAMPAIGN_QUESTION_OPTION_CAMPAIGN_ID + " INTEGER, " +
             FIELD_CAMPAIGN_QUESTION_OPTION_QUESTION_ID + " INTEGER, " +
             FIELD_CAMPAIGN_QUESTION_OPTION_SEQUENTIAL + " INTEGER, " +
             FIELD_CAMPAIGN_QUESTION_OPTION_LABEL + " TEXT, " +
@@ -498,6 +503,27 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         return camp_id;
     }
 
+    public long createQuestion(Question question) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // TODO
+        // constructor: Quiz(int idQuiz, String sponsorCode, String token, String status, String createdAt)
+//        ContentValues values = new ContentValues();
+//        values.put(FIELD_QUIZ_ID, quiz.getIdQuiz());
+//        values.put(FIELD_QUIZ_SPONSOR_CODE, quiz.getSponsorCode());
+//        values.put(FIELD_QUIZ_TOKEN, quiz.getToken());
+//        values.put(FIELD_QUIZ_STATUS, quiz.getStatus());
+        //values.put(KEY_CREATED_AT, getDateTime());
+
+        // insert row
+ //       long question_id = db.insert(TABLE_CAMPAIGN_QUESTIONS, null, values);
+        long question_id = (long) 1;
+
+        return question_id;
+
+    }
+
     public long createSponsor(Sponsor sponsor) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -564,7 +590,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         String selectQuery = "SELECT  * FROM " + TABLE_CAMPAIGN;
 
         //Log.e(LOG, selectQuery);
-        // CREATE TABLE pg_campaign(_id INTEGER PRIMARY KEY, idCampaign TEXT, sponsorCode TEXT,
+        // CREATE TABLE pg_campaign(_id INTEGER PRIMARY KEY AUTOINCREMENT, idCampaign TEXT, sponsorCode TEXT,
         // sponsorName TEXT, startDate TEXT, endDate TEXT,
         // numberOfQuestions INTEGER, pointsForRightAnswer INTEGER, pointsForParticipation INTEGER,
         // status TEXT);
@@ -625,6 +651,12 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         //closeDB();
     }
 
+    public void createTableUser(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(CREATE_TABLE_USER);
+        //closeDB();
+    }
+
     public void createTableSponsor(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(CREATE_TABLE_SPONSOR);
@@ -638,7 +670,21 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         //closeDB();
     }
 
-    public void cleanTableSponsor(){
+    public void createTableQuestion(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        dropTable(TABLE_CAMPAIGN_QUESTIONS);
+        db.execSQL(CREATE_TABLE_CAMPAIGN_QUESTIONS);
+        //closeDB();
+    }
+
+    public void createTableQuestionOption(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        dropTable(TABLE_CAMPAIGN_QUESTIONS_OPTIONS);
+        db.execSQL(CREATE_TABLE_CAMPAIGN_QUESTIONS_OPTIONS);
+        //closeDB();
+    }
+
+    public void clearTableSponsor(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE * FROM "+TABLE_SPONSOR);
         //closeDB();

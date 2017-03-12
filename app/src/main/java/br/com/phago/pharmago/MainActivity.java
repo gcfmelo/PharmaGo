@@ -21,6 +21,8 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
     public static final String KEY_COUNTER = "COUNTER";
+    public static final String WS_RETURN_OK = "SUCCESSFUL";
+    public static final String WS_RETURN_ERROR = "ERROR";
     // global variables to hold user data
     public static String user_id, user_name, user_email;
     public static int mCounter = 0;
@@ -36,9 +38,8 @@ public class MainActivity extends AppCompatActivity {
         final String TAG = "Main Activity";
         Log.i(TAG,"... onCreate");
         //UpdateUser("gcfmelo@gmail.com", "abc123");
-        //UpdateSponsorAndQuiz("gcfmelo@gmail.com", "abc123");
         UpdateSponsor("gcfmelo@gmail.com", "abc123");
-        //UpdateCampaign("gcfmelo@gmail.com", "abc123");
+        UpdateCampaign("gcfmelo@gmail.com", "abc123");
         //UpdateQuestion("gcfmelo@gmail.com", "abc123");
 
 /*
@@ -184,111 +185,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void UpdateSponsorAndQuiz(String email, String password) {
-
-        final String TAG = "UpdateSponsorAndQuiz";
-        db = new PgDatabaseHelper(getApplicationContext());
-        try {
-
-            RequestQueue queue = Volley.newRequestQueue(this);
-
-            URL urlObj = createURL(email, password, "getQuiz", "123456789");     //format URL to call WS
-            final String mEmail = email;
-            final String mPassword = password;
-            String url = urlObj.toString();
-            Log.i(TAG, "URL:   " + url);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    String myJsonString = response.toString();
-                    Quiz quiz;
-                    Sponsor sponsor;
-                    Log.i(TAG, "TEXT RETURNED:   @@@   " + myJsonString);
-                    if (myJsonString.startsWith("[")) {
-                        myJsonString = "{\"quiz\":" + myJsonString + "}";
-                    }
-                    // converting to JSONObject
-                    JSONObject jsonObjRoot = null;
-                    JSONArray jsonArryQuiz = null;
-
-                    try {
-                        jsonObjRoot = new JSONObject(myJsonString);
-
-                        // drop table pg_sponsor
-                        db.dropTable("pg_sponsor");
-
-                        // create a new table pg_sponsor
-                        db.createTableSponsor();
-
-                        // create a temp table for sponsor
-                        db.createTableTempSponsor();
-
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    try {
-                        // top level array of Quizes
-                        jsonArryQuiz = jsonObjRoot.getJSONArray("quiz");
-                        Log.i(TAG, "JSON Quiz @@@   " + jsonArryQuiz.toString());
-                        Log.i(TAG, "JSON Quiz @@@   # quiz " + Integer.toString(jsonArryQuiz.length()));
-
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    }
-                    if (jsonArryQuiz != null) {
-                        Log.v(TAG, "231 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                        for (int i = 0; i < jsonArryQuiz.length(); i++) {    // for each quiz
-                            try {
-                                // each element of the Array of quizes is a JSONObject, a specific Quiz
-                                Log.v(TAG, " 235 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                                JSONObject obj = jsonArryQuiz.getJSONObject(i);
-
-                                // calling constructors:
-                                Log.v(TAG, " 239 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                                quiz = new Quiz(obj.getInt("idQuiz"), obj.getJSONObject("campaign").getString("sponsorCode").toString(),
-                                        obj.getString("token"), obj.getString("status"));
-                                db.createQuiz(quiz);
-                                // Sponsor data are provided as fields (tags) in JSON Object of a campaign
-                                sponsor = new Sponsor(obj.getJSONObject("campaign").getString("sponsorCode").toString(), obj.getJSONObject("campaign").getString("sponsorName").toString());
-                                db.createSponsor(sponsor);
-                                Log.v(TAG, " 245 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                    // to eliminate duplicate sponsors...
-                    // recreate table pg_sponsor with distinct rows from temp_pg_sponsor (removing duplicated records)
-                    Log.i(TAG, "285: db.insertTempDataIntoTableSponsor()");
-                    db.insertTempDataIntoTableSponsor();
-                    // drop temp table temp_pg_sponsor
-                    Log.i(TAG, "258: db.dropTable('temp_pg_sponsor')");
-                    db.dropTable("temp_pg_sponsor");
-
-                }
-
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                    if (error.getMessage() == null) {
-                        Log.i(TAG, " Web Service has failed!" + "\n\n");
-                        // TODO: reset your password, create a new account
-                    } else {
-                        Log.i(TAG, "onErrorResponse(): " + error.getMessage());
-                    }
-                }
-            });
-            queue.add(stringRequest);   // replace for the correct object name
-        } catch (SQLiteException e) {
-            Log.i(TAG, "Service: " + "Database is unavailable!");
-        }
-
-    }
-
     // this version is updated for new WS at 2017-03-11
     public void UpdateSponsor(String email, String password) {
 
@@ -328,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         jsonObjRoot = new JSONObject(myJsonString);
 
-                        if (jsonObjRoot.getString("status").toString().equals("SUCCESSFUL")){
+                        if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_OK)){
 
                             jsonArry = jsonObjRoot.getJSONArray("json");
                             Log.i(TAG, "328_jsonArry: @@@"+jsonArry.toString());
@@ -446,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+/*
     public void UpdateCampaign_x(String email, String password) {
 
         final String TAG = "UpdateCampaign";
@@ -542,22 +438,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+*/
     // this version is updated for new WS at 2017-03-11
     public void UpdateCampaign(String email, String password) {
 
         final String TAG = "UpdateCampaign";
         db = new PgDatabaseHelper(getApplicationContext());
 
-        // db.dropTable("pg_sponsor");
-        // db.createTableSponsor();
-        db.clearTableSponsor();
+
+        db.clearTableCampaign();
 
         try {
 
             RequestQueue queue = Volley.newRequestQueue(this);
 
-            URL urlObj = createURL(email, password, "findAllSponsors", "123456789");     //format URL to call WS
+            URL urlObj = createURL(email, password, "findAllCampaigns", "123456789");     //format URL to call WS
             final String mEmail = email;
             final String mPassword = password;
             String url = urlObj.toString();
@@ -566,14 +461,12 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     String myJsonString = response.toString();
-                    Log.i(TAG, "309_TEXT RETURNED:   @@@   " + myJsonString);
+                    Log.i(TAG, "462_TEXT RETURNED:   @@@   " + myJsonString);
                     myJsonString = myJsonString.replace("\\\"", "\"");
-                    Log.i(TAG, "311_Removed Escapes:   @@@   " + myJsonString);
-                    myJsonString = myJsonString.replace("\"[{", "[{");
-                    myJsonString = myJsonString.replace("]\"}", "]}");
-                    Log.i(TAG, "314_removed \":   @@@   " + myJsonString);
-
-
+                    Log.i(TAG, "464_Removed Escapes:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace(":\"[{", ":[{");
+                    myJsonString = myJsonString.replace("}]\"}", "}]}");
+                    Log.i(TAG, "467_removed \":   @@@   " + myJsonString);
 
                     // converting to JSONObject
                     JSONObject jsonObjRoot = null;
@@ -582,39 +475,52 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         jsonObjRoot = new JSONObject(myJsonString);
 
-                        if (jsonObjRoot.getString("status").toString().equals("SUCCESSFUL")){
+                        if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_OK)){
 
                             jsonArry = jsonObjRoot.getJSONArray("json");
                             Log.i(TAG, "328_jsonArry: @@@"+jsonArry.toString());
 
                             if (jsonArry != null) {
                                 for (int i = 0; i < jsonArry.length(); i++) {
+                                    String mCpId = jsonArry.getJSONObject(i).getString("idCampaign").toString();
                                     String mSpId = jsonArry.getJSONObject(i).getString("idSponsor").toString();
-                                    String mSpCode = jsonArry.getJSONObject(i).getString("sponsorCode").toString();
-                                    String mSpName = jsonArry.getJSONObject(i).getString("sponsorName").toString();
+                                    String mCpTit = jsonArry.getJSONObject(i).getString("title").toString();
+                                    String mCpStDt = jsonArry.getJSONObject(i).getString("startDate").toString();
+                                    String mCpEndDt = jsonArry.getJSONObject(i).getString("endDate").toString();
+                                    String mCpNumQ = jsonArry.getJSONObject(i).getString("numberOfQuestions").toString();
+                                    String mCpPtRightAnswer = jsonArry.getJSONObject(i).getString("pointsForRightAnswer").toString();
+                                    String mCpPtPartic = jsonArry.getJSONObject(i).getString("pointsForParticipation").toString();
+                                    String mCpStatus = jsonArry.getJSONObject(i).getString("status").toString();
 
+                                    Log.i(TAG, "Element:   idCampaign   @@@ ( " + Integer.toString(i)+" ) = "+ mCpId);
                                     Log.i(TAG, "Element:   idSponsor   @@@ ( " + Integer.toString(i)+" ) = "+ mSpId);
-                                    Log.i(TAG, "Element:   sponsorCode @@@ ( " + Integer.toString(i)+" ) = "+ mSpCode);
-                                    Log.i(TAG, "Element:   sponsorName @@@ ( " + Integer.toString(i)+" ) = "+ mSpName);
+                                    Log.i(TAG, "Element:   title @@@ ( " + Integer.toString(i)+" ) = "+ mCpTit);
+                                    Log.i(TAG, "Element:   startDate @@@ ( " + Integer.toString(i)+" ) = "+ mCpStDt);
+                                    Log.i(TAG, "Element:   endDate   @@@ ( " + Integer.toString(i)+" ) = "+ mCpEndDt);
+                                    Log.i(TAG, "Element:   numberOfQuestions   @@@ ( " + Integer.toString(i)+" ) = "+ mCpNumQ);
+                                    Log.i(TAG, "Element:   pointsForRightAnswer   @@@ ( " + Integer.toString(i)+" ) = "+ mCpPtRightAnswer);
+                                    Log.i(TAG, "Element:   pointsForParticipation   @@@ ( " + Integer.toString(i)+" ) = "+ mCpPtPartic);
+                                    Log.i(TAG, "Element:   status   @@@ ( " + Integer.toString(i)+" ) = "+ mCpStatus);
 
+                                    Campaign campaign = new     Campaign(Integer.parseInt(mCpId),
+                                                                        Integer.parseInt(mSpId),
+                                                                        mCpTit, mCpStDt, mCpEndDt,
+                                                                        Integer.parseInt(mCpNumQ),
+                                                                        Integer.parseInt(mCpPtRightAnswer),
+                                                                        Integer.parseInt(mCpPtPartic),
+                                                                        mCpStatus);
 
-                                    Sponsor sponsor = new Sponsor(Integer.parseInt(mSpId), mSpCode, mSpName);
-
-                                    db.addSponsor(sponsor);
-
+                                    db.addCampaign(campaign);
                                     Log.i(TAG, "Element:   @@@   " + Integer.toString(i)+" "+ jsonArry.getJSONObject(i));
-                                    //
-                                    // implement table update here
-                                    //
-
-                                }
-
+                                }  // process the next element from JSON
                             }
-
-
                         } else {
-                            // WS responded with:
-                            Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString());
+                            // WS responded not OK so...
+                            if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_ERROR)){
+                                Log.i(TAG, "WS responded with: ERROR:  " + jsonObjRoot.getString("errorMessage").toString());
+                            } else {
+                                Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString() + "  " + jsonObjRoot.getString("errorMessage").toString());
+                            }
                         }
 
 

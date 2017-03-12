@@ -6,7 +6,7 @@ package br.com.phago.pharmago;
  *
  */
 public class Sponsor {
-    private int id;
+    private int sponsorId;
     private String sponsorCode;
     private String sponsorName;
     //private String createdAt;
@@ -22,8 +22,8 @@ public class Sponsor {
         this.sponsorName = sponsorName;
     }
 
-    public Sponsor(int id, int sponsorId, String sponsorCode, String sponsorName) {
-        this.id = id;
+    public Sponsor(int id, String sponsorCode, String sponsorName) {
+        this.sponsorId = id;
         this.sponsorCode = sponsorCode;
         this.sponsorName = sponsorName;
     }
@@ -38,15 +38,15 @@ public class Sponsor {
         this.sponsorName = sponsorName;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setSponsorId(int sponsorId) {
+        this.sponsorId = sponsorId;
     }
 
 // getters
 
 
-    public int getId() {
-        return id;
+    public int getSponsorId() {
+        return sponsorId;
     }
 
     public String getSponsorCode() {

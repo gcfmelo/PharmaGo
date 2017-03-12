@@ -79,12 +79,12 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
             TABLE_USER + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             FIELD_USER_NAME + " TEXT," +
             FIELD_USER_EMAIL + " TEXT, " +
-            FIELD_USER_CPF + "TEXT, " +
-            FIELD_USER_STATUS + "TEXT, " +
-            FIELD_USER_COMPANY_CODE + "TEXT, " +
-            FIELD_USER_COMPANY_NAME + "TEXT, " +
-            FIELD_USER_COMPANY_LATITUDE + "TEXT, " +
-            FIELD_USER_COMPANY_LONGITUDE + "TEXT, " +
+            FIELD_USER_CPF + " TEXT, " +
+            FIELD_USER_STATUS + " TEXT, " +
+            FIELD_USER_COMPANY_CODE + " TEXT, " +
+            FIELD_USER_COMPANY_NAME + " TEXT, " +
+            FIELD_USER_COMPANY_LATITUDE + " TEXT, " +
+            FIELD_USER_COMPANY_LONGITUDE + " TEXT, " +
             KEY_CREATED_AT + " TEXT" + ");";
 
     /**
@@ -254,6 +254,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     // Table Create Statements  -  pg_sponsor
     private static final String CREATE_TABLE_SPONSOR = "CREATE TABLE " +
             TABLE_SPONSOR + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            FIELD_SPONSOR_ID + " INTEGER, "+
             FIELD_SPONSOR_CODE + " TEXT, " +
             FIELD_SPONSOR_NAME + " TEXT );";
 
@@ -541,14 +542,32 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public long addSponsor(Sponsor sponsor) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // constructor: Quiz(int idQuiz, String sponsorCode, String token, String status, String createdAt)
+        ContentValues values = new ContentValues();
+        values.put(FIELD_SPONSOR_ID, sponsor.getSponsorId());
+        values.put(FIELD_SPONSOR_CODE, sponsor.getSponsorCode());
+        values.put(FIELD_SPONSOR_NAME, sponsor.getSponsorName());
+
+        // insert row
+        //String TempTableSponsor = "temp_"+TABLE_SPONSOR;
+        long sponsor_id = db.insert(TABLE_SPONSOR, null, values);
+
+        return sponsor_id;
+
+    }
+
     public Sponsor getSponsorByCode(String sponsorCode){
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery = "SELECT sponsorName from " + TABLE_SPONSOR +" WHERE sponsorCode = '"+ sponsorCode + "';";
+        String selectQuery = "SELECT "+FIELD_SPONSOR_NAME+" FROM " + TABLE_SPONSOR +" WHERE sponsorCode = '"+ sponsorCode + "';";
         Cursor c = db.rawQuery(selectQuery, null);
         if (c != null)
             c.moveToFirst();
         Sponsor sp = new Sponsor();
-        sp.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        sp.setSponsorId(c.getInt(c.getColumnIndex("sponsorId")));
         sp.setSponsorCode(c.getString(c.getColumnIndex("sponsorCode")));
         sp.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
         return sp;
@@ -570,7 +589,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         if (c.moveToFirst()) {
             do {
                 Sponsor sp = new Sponsor();
-                sp.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+                sp.setSponsorId(c.getInt((c.getColumnIndex("sponsorId"))));
                 sp.setSponsorCode(c.getString(c.getColumnIndex("sponsorCode")));
                 sp.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
 
@@ -686,7 +705,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
     public void clearTableSponsor(){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE * FROM "+TABLE_SPONSOR);
+        db.execSQL("DELETE FROM "+TABLE_SPONSOR);
         //closeDB();
     }
 

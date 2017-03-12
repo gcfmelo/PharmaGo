@@ -32,11 +32,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         final String TAG = "Main Activity";
         Log.i(TAG,"... onCreate");
-        // UpdateUser("gcfmelo@gmail.com", "abc123");
-        // UpdateSponsorAndQuiz("gcfmelo@gmail.com", "abc123");
-        UpdateCampaign("gcfmelo@gmail.com", "abc123");
+        //UpdateUser("gcfmelo@gmail.com", "abc123");
+        //UpdateSponsorAndQuiz("gcfmelo@gmail.com", "abc123");
+        UpdateSponsor("gcfmelo@gmail.com", "abc123");
+        //UpdateCampaign("gcfmelo@gmail.com", "abc123");
+        //UpdateQuestion("gcfmelo@gmail.com", "abc123");
 
 /*
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
@@ -131,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(String response) {
                     String myJsonString = response.toString();
                     User user;
-                    Log.i(TAG, "TEXT RETURNED:   @@@   " + myJsonString);
+                    Log.i(TAG, "TEXT RETURNED:   135 @@@   " + myJsonString);
                     if (myJsonString.startsWith("[")) {
                         myJsonString = "{\"transaction\":" + myJsonString + "}";
                     }
@@ -180,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 
     public void UpdateSponsorAndQuiz(String email, String password) {
 
@@ -287,7 +289,165 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void UpdateCampaign(String email, String password) {
+    // this version is updated for new WS at 2017-03-11
+    public void UpdateSponsor(String email, String password) {
+
+        final String TAG = "UpdateSponsor";
+        db = new PgDatabaseHelper(getApplicationContext());
+
+        // db.dropTable("pg_sponsor");
+        // db.createTableSponsor();
+        db.clearTableSponsor();
+
+        try {
+
+            RequestQueue queue = Volley.newRequestQueue(this);
+
+            URL urlObj = createURL(email, password, "findAllSponsors", "123456789");     //format URL to call WS
+            final String mEmail = email;
+            final String mPassword = password;
+            String url = urlObj.toString();
+            Log.i(TAG, "URL:   " + url);
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    String myJsonString = response.toString();
+                    Log.i(TAG, "309_TEXT RETURNED:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace("\\\"", "\"");
+                    Log.i(TAG, "311_Removed Escapes:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace("\"[{", "[{");
+                    myJsonString = myJsonString.replace("]\"}", "]}");
+                    Log.i(TAG, "314_removed \":   @@@   " + myJsonString);
+
+
+
+                    // converting to JSONObject
+                    JSONObject jsonObjRoot = null;
+                    JSONArray jsonArry = null;
+
+                    try {
+                        jsonObjRoot = new JSONObject(myJsonString);
+
+                        if (jsonObjRoot.getString("status").toString().equals("SUCCESSFUL")){
+
+                            jsonArry = jsonObjRoot.getJSONArray("json");
+                            Log.i(TAG, "328_jsonArry: @@@"+jsonArry.toString());
+
+                            if (jsonArry != null) {
+                                for (int i = 0; i < jsonArry.length(); i++) {
+                                    String mSpId = jsonArry.getJSONObject(i).getString("idSponsor").toString();
+                                    String mSpCode = jsonArry.getJSONObject(i).getString("sponsorCode").toString();
+                                    String mSpName = jsonArry.getJSONObject(i).getString("sponsorName").toString();
+
+                                    Log.i(TAG, "Element:   idSponsor   @@@ ( " + Integer.toString(i)+" ) = "+ mSpId);
+                                    Log.i(TAG, "Element:   sponsorCode @@@ ( " + Integer.toString(i)+" ) = "+ mSpCode);
+                                    Log.i(TAG, "Element:   sponsorName @@@ ( " + Integer.toString(i)+" ) = "+ mSpName);
+
+
+                                    Sponsor sponsor = new Sponsor(Integer.parseInt(mSpId), mSpCode, mSpName);
+
+                                    db.addSponsor(sponsor);
+
+                                    Log.i(TAG, "Element:   @@@   " + Integer.toString(i)+" "+ jsonArry.getJSONObject(i));
+                                    //
+                                    // implement table update here
+                                    //
+
+                                }
+
+                                }
+
+
+                        } else {
+                            // WS responded with:
+                            Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString());
+                        }
+
+
+
+
+
+
+
+                        // drop table pg_sponsor
+                        //db.dropTable("pg_sponsor");
+
+                        // create a new table pg_sponsor
+                        //db.createTableSponsor();
+
+                        // create a temp table for sponsor
+                        // db.createTableTempSponsor();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    //try {
+                        // top level array of Quizes
+
+//                        jsonArry = jsonObjRoot.getJSONArray("json");
+//                        jsonArryQuiz = jsonObjRoot.getJSONArray("quiz");
+//                        Log.i(TAG, "JSON Quiz @@@   " + jsonArryQuiz.toString());
+//                        Log.i(TAG, "JSON Quiz @@@   # quiz " + Integer.toString(jsonArryQuiz.length()));
+
+                    //} catch (JSONException e1) {
+                       // e1.printStackTrace();
+                    //}
+//                    if (jsonArryQuiz != null) {
+//                        Log.v(TAG, "231 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//                        for (int i = 0; i < jsonArryQuiz.length(); i++) {    // for each quiz
+//                            try {
+//                                // each element of the Array of quizes is a JSONObject, a specific Quiz
+//                                Log.v(TAG, " 235 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//                                JSONObject obj = jsonArryQuiz.getJSONObject(i);
+//
+//                                // calling constructors:
+//                                Log.v(TAG, " 239 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//                                quiz = new Quiz(obj.getInt("idQuiz"), obj.getJSONObject("campaign").getString("sponsorCode").toString(),
+//                                        obj.getString("token"), obj.getString("status"));
+//                                db.createQuiz(quiz);
+//                                // Sponsor data are provided as fields (tags) in JSON Object of a campaign
+//                                sponsor = new Sponsor(obj.getJSONObject("campaign").getString("sponsorCode").toString(), obj.getJSONObject("campaign").getString("sponsorName").toString());
+//                                db.createSponsor(sponsor);
+//                                Log.v(TAG, " 245 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+
+                    // to eliminate duplicate sponsors...
+                    // recreate table pg_sponsor with distinct rows from temp_pg_sponsor (removing duplicated records)
+//                    Log.i(TAG, "285: db.insertTempDataIntoTableSponsor()");
+//                    db.insertTempDataIntoTableSponsor();
+                    // drop temp table temp_pg_sponsor
+//                    Log.i(TAG, "258: db.dropTable('temp_pg_sponsor')");
+//                    db.dropTable("temp_pg_sponsor");
+
+                }
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    if (error.getMessage() == null) {
+                        Log.i(TAG, " Web Service has failed!" + "\n\n");
+                        // TODO: reset your password, create a new account
+                    } else {
+                        Log.i(TAG, "onErrorResponse(): " + error.getMessage());
+                    }
+                }
+            });
+            queue.add(stringRequest);   // replace for the correct object name
+        } catch (SQLiteException e) {
+            Log.i(TAG, "Service: " + "Database is unavailable!");
+        }
+
+    }
+
+
+    public void UpdateCampaign_x(String email, String password) {
 
         final String TAG = "UpdateCampaign";
         db = new PgDatabaseHelper(getApplicationContext());
@@ -383,6 +543,163 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // this version is updated for new WS at 2017-03-11
+    public void UpdateCampaign(String email, String password) {
+
+        final String TAG = "UpdateCampaign";
+        db = new PgDatabaseHelper(getApplicationContext());
+
+        // db.dropTable("pg_sponsor");
+        // db.createTableSponsor();
+        db.clearTableSponsor();
+
+        try {
+
+            RequestQueue queue = Volley.newRequestQueue(this);
+
+            URL urlObj = createURL(email, password, "findAllSponsors", "123456789");     //format URL to call WS
+            final String mEmail = email;
+            final String mPassword = password;
+            String url = urlObj.toString();
+            Log.i(TAG, "URL:   " + url);
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    String myJsonString = response.toString();
+                    Log.i(TAG, "309_TEXT RETURNED:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace("\\\"", "\"");
+                    Log.i(TAG, "311_Removed Escapes:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace("\"[{", "[{");
+                    myJsonString = myJsonString.replace("]\"}", "]}");
+                    Log.i(TAG, "314_removed \":   @@@   " + myJsonString);
+
+
+
+                    // converting to JSONObject
+                    JSONObject jsonObjRoot = null;
+                    JSONArray jsonArry = null;
+
+                    try {
+                        jsonObjRoot = new JSONObject(myJsonString);
+
+                        if (jsonObjRoot.getString("status").toString().equals("SUCCESSFUL")){
+
+                            jsonArry = jsonObjRoot.getJSONArray("json");
+                            Log.i(TAG, "328_jsonArry: @@@"+jsonArry.toString());
+
+                            if (jsonArry != null) {
+                                for (int i = 0; i < jsonArry.length(); i++) {
+                                    String mSpId = jsonArry.getJSONObject(i).getString("idSponsor").toString();
+                                    String mSpCode = jsonArry.getJSONObject(i).getString("sponsorCode").toString();
+                                    String mSpName = jsonArry.getJSONObject(i).getString("sponsorName").toString();
+
+                                    Log.i(TAG, "Element:   idSponsor   @@@ ( " + Integer.toString(i)+" ) = "+ mSpId);
+                                    Log.i(TAG, "Element:   sponsorCode @@@ ( " + Integer.toString(i)+" ) = "+ mSpCode);
+                                    Log.i(TAG, "Element:   sponsorName @@@ ( " + Integer.toString(i)+" ) = "+ mSpName);
+
+
+                                    Sponsor sponsor = new Sponsor(Integer.parseInt(mSpId), mSpCode, mSpName);
+
+                                    db.addSponsor(sponsor);
+
+                                    Log.i(TAG, "Element:   @@@   " + Integer.toString(i)+" "+ jsonArry.getJSONObject(i));
+                                    //
+                                    // implement table update here
+                                    //
+
+                                }
+
+                            }
+
+
+                        } else {
+                            // WS responded with:
+                            Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString());
+                        }
+
+
+
+
+
+
+
+                        // drop table pg_sponsor
+                        //db.dropTable("pg_sponsor");
+
+                        // create a new table pg_sponsor
+                        //db.createTableSponsor();
+
+                        // create a temp table for sponsor
+                        // db.createTableTempSponsor();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    //try {
+                    // top level array of Quizes
+
+//                        jsonArry = jsonObjRoot.getJSONArray("json");
+//                        jsonArryQuiz = jsonObjRoot.getJSONArray("quiz");
+//                        Log.i(TAG, "JSON Quiz @@@   " + jsonArryQuiz.toString());
+//                        Log.i(TAG, "JSON Quiz @@@   # quiz " + Integer.toString(jsonArryQuiz.length()));
+
+                    //} catch (JSONException e1) {
+                    // e1.printStackTrace();
+                    //}
+//                    if (jsonArryQuiz != null) {
+//                        Log.v(TAG, "231 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//                        for (int i = 0; i < jsonArryQuiz.length(); i++) {    // for each quiz
+//                            try {
+//                                // each element of the Array of quizes is a JSONObject, a specific Quiz
+//                                Log.v(TAG, " 235 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//                                JSONObject obj = jsonArryQuiz.getJSONObject(i);
+//
+//                                // calling constructors:
+//                                Log.v(TAG, " 239 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//                                quiz = new Quiz(obj.getInt("idQuiz"), obj.getJSONObject("campaign").getString("sponsorCode").toString(),
+//                                        obj.getString("token"), obj.getString("status"));
+//                                db.createQuiz(quiz);
+//                                // Sponsor data are provided as fields (tags) in JSON Object of a campaign
+//                                sponsor = new Sponsor(obj.getJSONObject("campaign").getString("sponsorCode").toString(), obj.getJSONObject("campaign").getString("sponsorName").toString());
+//                                db.createSponsor(sponsor);
+//                                Log.v(TAG, " 245 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+
+                    // to eliminate duplicate sponsors...
+                    // recreate table pg_sponsor with distinct rows from temp_pg_sponsor (removing duplicated records)
+//                    Log.i(TAG, "285: db.insertTempDataIntoTableSponsor()");
+//                    db.insertTempDataIntoTableSponsor();
+                    // drop temp table temp_pg_sponsor
+//                    Log.i(TAG, "258: db.dropTable('temp_pg_sponsor')");
+//                    db.dropTable("temp_pg_sponsor");
+
+                }
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    if (error.getMessage() == null) {
+                        Log.i(TAG, " Web Service has failed!" + "\n\n");
+                        // TODO: reset your password, create a new account
+                    } else {
+                        Log.i(TAG, "onErrorResponse(): " + error.getMessage());
+                    }
+                }
+            });
+            queue.add(stringRequest);   // replace for the correct object name
+        } catch (SQLiteException e) {
+            Log.i(TAG, "Service: " + "Database is unavailable!");
+        }
+
+    }
+
     public void UpdateQuestion(String email, String password) {
 
         final String TAG = "UpdateQuestion";
@@ -423,11 +740,11 @@ public class MainActivity extends AppCompatActivity {
 
                         // drop table pg_sponsor, pg_campaign, ...
                         db.dropTable("pg_question");
-                        db.dropTable("pg_option");
+                        //db.dropTable("pg_option");
 
                         // create a new table pg_sponsor, pg_campaign, ...
                         db.createTableQuestion();
-                        db.createTableQuestionOption();
+                        //db.createTableQuestionOption();
 
                     } catch (JSONException e1) {
                         e1.printStackTrace();

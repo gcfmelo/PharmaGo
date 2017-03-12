@@ -98,7 +98,6 @@ public class User {
 
     // getters
 
-
     public int getId() {
         return id;
     }

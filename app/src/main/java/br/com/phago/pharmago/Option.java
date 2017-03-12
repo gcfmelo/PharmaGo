@@ -18,6 +18,17 @@ public class Option {
     // constructors
     public Option() {
     }
+    //// withou user answer... set user answer = "U" for Undifined
+    public Option(Integer idSponsor, Integer idCampaign, Integer idQuestion, Integer sequential, String label, String rightAnswer) {
+        this.idSponsor = idSponsor;
+        this.idCampaign = idCampaign;
+        this.idQuestion = idQuestion;
+        this.sequential = sequential;
+        this.label = label;
+        this.rightAnswer = rightAnswer;
+        this.userAnswer = "U";
+    }
+
     public Option(Integer idSponsor, Integer idCampaign, Integer idQuestion, Integer sequential, String label, String rightAnswer, String userAnswer) {
         this.idSponsor = idSponsor;
         this.idCampaign = idCampaign;

@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         UpdateUser("gcfmelo@gmail.com", "abc123");
         UpdateSponsor("gcfmelo@gmail.com", "abc123");
         UpdateCampaign("gcfmelo@gmail.com", "abc123");
-        UpdateQuestion("gcfmelo@gmail.com", "abc123");
+        UpdateQuestionOption("gcfmelo@gmail.com", "abc123");
 
 /*
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
@@ -582,18 +582,17 @@ public class MainActivity extends AppCompatActivity {
                                     // lets process each OPTION inside this Question element of jsonArry
                                     // there is one inner JSONArray inside
                                     // lets extract the Options:
-                                    jsonArryOptions = null;
                                     jsonArryOptions = jsonArryQuestion.getJSONObject(i).getJSONArray("options");
                                     if (jsonArryOptions != null) {
-                                        for (int j = 0; j < jsonArryOptions.length(); i++) {
+                                        for (int j = 0; j < jsonArryOptions.length(); j++) {
 
-                                            String mOpSpId = jsonArryOptions.getJSONObject(i).getString("idSponsor").toString();
-                                            String mOpCpId = jsonArryOptions.getJSONObject(i).getString("idCampaign").toString();
-                                            String mOpQtId = jsonArryOptions.getJSONObject(i).getString("idQuestion").toString();
-                                            String mOpSeq = jsonArryOptions.getJSONObject(i).getString("sequential").toString();
-                                            String mOpLabel = jsonArryOptions.getJSONObject(i).getString("label").toString();
-                                            String mOpRightAnsw = jsonArryOptions.getJSONObject(i).getString("rightAnswer").toString();
-                                            String mOpUsrAnsw = jsonArryOptions.getJSONObject(i).getString("userAnswer").toString();
+                                            String mOpSpId = jsonArryOptions.getJSONObject(j).getString("idSponsor").toString();
+                                            String mOpCpId = jsonArryOptions.getJSONObject(j).getString("idCampaign").toString();
+                                            String mOpQtId = jsonArryOptions.getJSONObject(j).getString("idQuestion").toString();
+                                            String mOpSeq = jsonArryOptions.getJSONObject(j).getString("sequential").toString();
+                                            String mOpLabel = jsonArryOptions.getJSONObject(j).getString("label").toString();
+                                            String mOpRightAnsw = jsonArryOptions.getJSONObject(j).getString("rightAnswer").toString();
+                                            //String mOpUsrAnsw = jsonArryOptions.getJSONObject(j).getString("userAnswer").toString();
 
                                             Log.i(TAG, "Element:   idSponsor   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpSpId);
                                             Log.i(TAG, "Element:   idCampaign   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpCpId);
@@ -601,7 +600,7 @@ public class MainActivity extends AppCompatActivity {
                                             Log.i(TAG, "Element:   sequential   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpSeq);
                                             Log.i(TAG, "Element:   label   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpLabel);
                                             Log.i(TAG, "Element:   rightAnswer   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpRightAnsw);
-                                            Log.i(TAG, "Element:   userAnswer   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpUsrAnsw);
+                                            //Log.i(TAG, "Element:   userAnswer   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpUsrAnsw);
 
 
 
@@ -610,7 +609,7 @@ public class MainActivity extends AppCompatActivity {
                                                                         Integer.parseInt(mOpCpId),
                                                                         Integer.parseInt(mOpQtId),
                                                                         Integer.parseInt(mOpSeq),
-                                                                        mOpLabel, mOpRightAnsw, mOpUsrAnsw);
+                                                                        mOpLabel, mOpRightAnsw);
                                             db.addOption(option);
                                         }  // process nex Option
                                     }

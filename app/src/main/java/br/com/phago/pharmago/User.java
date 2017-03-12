@@ -14,11 +14,10 @@ package br.com.phago.pharmago;
 
 public class User {
 
-    private int id;
     private String email;
     private String cpf;
     private String name;
-    private String status;
+    private String userAccountStatus;
     private String companyCode;
     private String companyName;
     private String companyLatitude;
@@ -30,22 +29,11 @@ public class User {
     public User(){
 
     }
-    public User(String email, String cpf, String name, String Status, String companyCode, String companyName, String companyLatitude, String companyLongitude) {
+    public User(String email, String cpf, String name, String status, String companyCode, String companyName, String companyLatitude, String companyLongitude) {
         this.email = email;
         this.cpf = cpf;
         this.name = name;
-        this.status = status;
-        this.companyCode = companyCode;
-        this.companyName = companyName;
-        this.companyLatitude = companyLatitude;
-        this.companyLongitude = companyLongitude;
-    }
-
-    public User(int id, String email, String cpf, String name, String Status, String companyCode, String companyName, String companyLatitude, String companyLongitude) {
-        this.id = id;
-        this.email = email;
-        this.cpf = cpf;
-        this.name = name;
+        this.userAccountStatus = userAccountStatus;
         this.companyCode = companyCode;
         this.companyName = companyName;
         this.companyLatitude = companyLatitude;
@@ -55,10 +43,6 @@ public class User {
 
     // setters
 
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -72,8 +56,8 @@ public class User {
         this.name = name;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setUserAccountStatus(String status) {
+        this.userAccountStatus = status;
     }
 
     public void setCompanyCode(String companyCode) {
@@ -98,10 +82,6 @@ public class User {
 
     // getters
 
-    public int getId() {
-        return id;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -114,8 +94,8 @@ public class User {
         return name;
     }
 
-    public String getStatus() {
-        return status;
+    public String getUserAccountStatus() {
+        return userAccountStatus;
     }
 
     public String getCompanyCode() {

@@ -37,10 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         final String TAG = "Main Activity";
         Log.i(TAG,"... onCreate");
-        //UpdateUser("gcfmelo@gmail.com", "abc123");
+        UpdateUser("gcfmelo@gmail.com", "abc123");
         UpdateSponsor("gcfmelo@gmail.com", "abc123");
         UpdateCampaign("gcfmelo@gmail.com", "abc123");
-        //UpdateQuestion("gcfmelo@gmail.com", "abc123");
+        UpdateQuestion("gcfmelo@gmail.com", "abc123");
 
 /*
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
@@ -116,65 +116,90 @@ public class MainActivity extends AppCompatActivity {
 
     }
     */
-
+    // this version is updated for new WS at 2017-03-11
     public void UpdateUser(String email, String password) {
 
-        final String TAG = "UpdateUser: ";
+        final String TAG = "UpdateUser";
         db = new PgDatabaseHelper(getApplicationContext());
+
+        db.clearTableUser();
 
         try {
 
             RequestQueue queue = Volley.newRequestQueue(this);
 
-            URL urlObj = createURL(email, password, "login", "123456789");     //format URL to call WS
+            URL urlObj = createURL(email, password, "doLogin", "123456789");     //format URL to call WS
             final String mEmail = email;
             final String mPassword = password;
             String url = urlObj.toString();
+            Log.i(TAG, "URL:   " + url);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     String myJsonString = response.toString();
-                    User user;
-                    Log.i(TAG, "TEXT RETURNED:   135 @@@   " + myJsonString);
-                    if (myJsonString.startsWith("[")) {
-                        myJsonString = "{\"transaction\":" + myJsonString + "}";
-                    }
+                    Log.i(TAG, "514_TEXT RETURNED:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace("\\\"", "\"");
+                    Log.i(TAG, "516_Removed Escapes:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace("\":\"{", "\":{");
+                    myJsonString = myJsonString.replace("}\"}", "}}");
+                    Log.i(TAG, "519_removed \":   @@@   " + myJsonString);
+
                     // converting to JSONObject
-                    JSONObject jsonObj = null;
+                    JSONObject jsonObjRoot = null;
+                    JSONObject jsonObjUser = null;
+
                     try {
+                        jsonObjRoot = new JSONObject(myJsonString);
 
-                        // drop table pg_user
-                        db.dropTable("pg_user");
+                        if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_OK)){
 
-                        // create a new table pg_user
-                        db.createTableUser();
+                            jsonObjUser = jsonObjRoot.getJSONObject("json");
+                            Log.i(TAG, "531_jsonArry: @@@"+jsonObjUser.toString());
 
-                        jsonObj = new JSONObject(myJsonString);
-                        // constructor: public User(String email, String cpf, String name, String status, String companyCode, String companyName, String companyLatitude, String companyLongitude)
-                        user = new User(jsonObj.getString("email"), jsonObj.getString("cpf"), jsonObj.getString("name"),
-                                jsonObj.getString("status"), jsonObj.getString("companyCode"),
-                                jsonObj.getString("companyName"), jsonObj.getString("companyLatitude"),
-                                jsonObj.getString("companyLongitude"));
+                            if (jsonObjUser != null) {
+                                //for (int i = 0; i < jsonArry.length(); i++) {
+                                String mUsrEmail = jsonObjUser.getString("email").toString();
+                                String mUsrName = jsonObjUser.getString("name").toString();
+                                String mUsrStatus = jsonObjUser.getString("userAccountStatus").toString();
+                                String mUsrCpf = jsonObjUser.getString("cpf").toString();
+                                String mUsrCpnyCode = jsonObjUser.getString("companyCode").toString();
+                                String mUsrCpnyNme = jsonObjUser.getString("companyName").toString();
+                                String mUsrCpnyLat = jsonObjUser.getString("companyLatitude").toString();
+                                String mUsrCpnyLon = jsonObjUser.getString("companyLongitude").toString();
 
-                        db.createUser(user);
+                                Log.i(TAG, "Element:   email   @@@ "+ mUsrEmail);
+                                Log.i(TAG, "Element:   name @@@ " + mUsrName);
+                                Log.i(TAG, "Element:   status @@@ " + mUsrStatus);
+                                Log.i(TAG, "Element:   cpf   @@@ " + mUsrCpf);
+                                Log.i(TAG, "Element:   companyCode @@@ " + mUsrCpnyCode);
+                                Log.i(TAG, "Element:   companyName @@@ " + mUsrCpnyNme);
+                                Log.i(TAG, "Element:   companyLatitude   @@@ " + mUsrCpnyLat);
+                                Log.i(TAG, "Element:   companyLongitude @@@ " + mUsrCpnyLon);
 
-                        Log.i(TAG, "user created: @@@   " + jsonObj.toString());
+                                User user = new User(mUsrEmail, mUsrName, mUsrStatus, mUsrCpf, mUsrCpnyCode, mUsrCpnyNme, mUsrCpnyLat, mUsrCpnyLon);
+
+                                db.addUser(user);
+
+                                //}
+                            }
+                        } else {
+                            // WS responded with:
+                            Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString());
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-                    Log.i(TAG, "JSON OBJ RETURN: 153 @@@   " + jsonObj.toString());
-
                 }
+
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
                     if (error.getMessage() == null) {
-                        Log.i(TAG, "login   -  " + "Login has failed!" + "\n\n");
+                        Log.i(TAG, " Web Service has failed!" + "\n\n");
                         // TODO: reset your password, create a new account
                     } else {
-                        Log.i(TAG, "login   -  " + "onErrorResponse(): " + error.getMessage());
+                        Log.i(TAG, "onErrorResponse(): " + error.getMessage());
                     }
                 }
             });
@@ -184,15 +209,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
     // this version is updated for new WS at 2017-03-11
     public void UpdateSponsor(String email, String password) {
 
         final String TAG = "UpdateSponsor";
         db = new PgDatabaseHelper(getApplicationContext());
 
-        // db.dropTable("pg_sponsor");
-        // db.createTableSponsor();
         db.clearTableSponsor();
 
         try {
@@ -259,12 +281,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString());
                         }
 
-
-
-
-
-
-
                         // drop table pg_sponsor
                         //db.dropTable("pg_sponsor");
 
@@ -277,50 +293,6 @@ public class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-                    //try {
-                        // top level array of Quizes
-
-//                        jsonArry = jsonObjRoot.getJSONArray("json");
-//                        jsonArryQuiz = jsonObjRoot.getJSONArray("quiz");
-//                        Log.i(TAG, "JSON Quiz @@@   " + jsonArryQuiz.toString());
-//                        Log.i(TAG, "JSON Quiz @@@   # quiz " + Integer.toString(jsonArryQuiz.length()));
-
-                    //} catch (JSONException e1) {
-                       // e1.printStackTrace();
-                    //}
-//                    if (jsonArryQuiz != null) {
-//                        Log.v(TAG, "231 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-//                        for (int i = 0; i < jsonArryQuiz.length(); i++) {    // for each quiz
-//                            try {
-//                                // each element of the Array of quizes is a JSONObject, a specific Quiz
-//                                Log.v(TAG, " 235 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-//                                JSONObject obj = jsonArryQuiz.getJSONObject(i);
-//
-//                                // calling constructors:
-//                                Log.v(TAG, " 239 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-//                                quiz = new Quiz(obj.getInt("idQuiz"), obj.getJSONObject("campaign").getString("sponsorCode").toString(),
-//                                        obj.getString("token"), obj.getString("status"));
-//                                db.createQuiz(quiz);
-//                                // Sponsor data are provided as fields (tags) in JSON Object of a campaign
-//                                sponsor = new Sponsor(obj.getJSONObject("campaign").getString("sponsorCode").toString(), obj.getJSONObject("campaign").getString("sponsorName").toString());
-//                                db.createSponsor(sponsor);
-//                                Log.v(TAG, " 245 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-//
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }
-
-                    // to eliminate duplicate sponsors...
-                    // recreate table pg_sponsor with distinct rows from temp_pg_sponsor (removing duplicated records)
-//                    Log.i(TAG, "285: db.insertTempDataIntoTableSponsor()");
-//                    db.insertTempDataIntoTableSponsor();
-                    // drop temp table temp_pg_sponsor
-//                    Log.i(TAG, "258: db.dropTable('temp_pg_sponsor')");
-//                    db.dropTable("temp_pg_sponsor");
-
                 }
 
             }, new Response.ErrorListener() {
@@ -341,104 +313,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-/*
-    public void UpdateCampaign_x(String email, String password) {
-
-        final String TAG = "UpdateCampaign";
-        db = new PgDatabaseHelper(getApplicationContext());
-        try {
-
-            RequestQueue queue = Volley.newRequestQueue(this);
-
-            URL urlObj = createURL(email, password, "getQuiz", "123456789");     //format URL to call WS
-            final String mEmail = email;
-            final String mPassword = password;
-            String url = urlObj.toString();
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    String myJsonString = response.toString();
-                    Quiz quiz;
-                    Sponsor sponsor;
-                    Campaign campaign;
-                    Question question;
-                    QuestionOption questionOption;
-
-                    Log.i(TAG, "TEXT RETURNED:   @@@   " + myJsonString);
-                    if (myJsonString.startsWith("[")) {
-                        myJsonString = "{\"quiz\":" + myJsonString + "}";
-                    }
-                    // converting to JSONObject
-                    JSONObject jsonObjRoot = null;
-                    JSONArray jsonArryQuiz = null;
-
-                    try {
-                        jsonObjRoot = new JSONObject(myJsonString);
-
-                        // drop table pg_sponsor
-                        db.dropTable("pg_campaign");
-                        // create a new table pg_sponsor, pg_campaign, ...
-                        db.createTableCampaign();
-
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    try {
-                        // top level array of Quizes
-                        jsonArryQuiz = jsonObjRoot.getJSONArray("quiz");
-
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    }
-                    if (jsonArryQuiz != null) {
-                        Log.v(TAG, " 239 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                        for (int i = 0; i < jsonArryQuiz.length(); i++) {    // for each quiz
-                            try {
-                                // each element of the Array of quizes is a JSONObject, a specific Quiz
-                                Log.v(TAG, " 242 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                                JSONObject obj = jsonArryQuiz.getJSONObject(i);
-                                Log.v(TAG, " 249 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                                // campaigns are JSON Objects composing a Quiz
-                                campaign = new Campaign(obj.getJSONObject("campaign").getString("sponsorCode").toString(),
-                                        obj.getJSONObject("campaign").getString("sponsorName").toString(),
-                                        obj.getJSONObject("campaign").getString("startDate").toString(),
-                                        obj.getJSONObject("campaign").getString("endDate").toString(),
-                                        obj.getJSONObject("campaign").getInt("numberOfQuestions"),
-                                        obj.getJSONObject("campaign").getInt("pointsForRightAnswer"),
-                                        obj.getJSONObject("campaign").getInt("pointsForParticipation"),
-                                        obj.getString("status").toString());
-                                Log.v(TAG, " 349 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                                db.createCampaign(campaign);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                }
-
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                    if (error.getMessage() == null) {
-                        Log.i(TAG, "login   -  " + "Login has failed!" + "\n\n");
-                        // TODO: reset your password, create a new account
-                    } else {
-                        Log.i(TAG, "login   -  " + "onErrorResponse(): " + error.getMessage());
-                    }
-                }
-            });
-            queue.add(stringRequest);   // replace for the correct object name
-        } catch (SQLiteException e) {
-            Log.i(TAG, "Service: " + "Database is unavailable!");
-        }
-
-    }
-*/
     // this version is updated for new WS at 2017-03-11
     public void UpdateCampaign(String email, String password) {
 
@@ -523,68 +397,104 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
 
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    if (error.getMessage() == null) {
+                        Log.i(TAG, " Web Service has failed!" + "\n\n");
+                        // TODO: reset your password, create a new account
+                    } else {
+                        Log.i(TAG, "onErrorResponse(): " + error.getMessage());
+                    }
+                }
+            });
+            queue.add(stringRequest);   // replace for the correct object name
+        } catch (SQLiteException e) {
+            Log.i(TAG, "Service: " + "Database is unavailable!");
+        }
+
+    }
+    // this version is updated for new WS at 2017-03-11
+    public void UpdateQuestion(String email, String password) {
+
+        final String TAG = "UpdateQuestion";
+        db = new PgDatabaseHelper(getApplicationContext());
+
+        db.clearTableQuestion();
+
+        try {
+
+            RequestQueue queue = Volley.newRequestQueue(this);
+
+            URL urlObj = createURL(email, password, "findAllQuestions", "123456789");     //format URL to call WS
+            final String mEmail = email;
+            final String mPassword = password;
+            String url = urlObj.toString();
+            Log.i(TAG, "URL:   " + url);
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    String myJsonString = response.toString();
+                    Log.i(TAG, "531 RETURNED:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace("\\\"", "\"");
+                    Log.i(TAG, "533_Removed Escapes:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace(":\"[{", ":[{");
+                    myJsonString = myJsonString.replace("}]\"}", "}]}");
+                    Log.i(TAG, "536_removed \":   @@@   " + myJsonString);
+
+                    // converting to JSONObject
+                    JSONObject jsonObjRoot = null;
+                    JSONArray jsonArry = null;
+
+                    try {
+                        jsonObjRoot = new JSONObject(myJsonString);
+
+                        if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_OK)){
+
+                            jsonArry = jsonObjRoot.getJSONArray("json");
+                            Log.i(TAG, "328_jsonArry: @@@"+jsonArry.toString());
+
+                            if (jsonArry != null) {
+                                for (int i = 0; i < jsonArry.length(); i++) {
+                                    String mQtId = jsonArry.getJSONObject(i).getString("idQuestion").toString();
+                                    String mQtCpId = jsonArry.getJSONObject(i).getString("idCampaign").toString();
+                                    String mQtSpId = jsonArry.getJSONObject(i).getString("idSponsor").toString();
+                                    String mQtLabel = jsonArry.getJSONObject(i).getString("label").toString();
 
 
+                                    Log.i(TAG, "Element:   idQuestion   @@@ ( " + Integer.toString(i)+" ) = "+ mQtId);
+                                    Log.i(TAG, "Element:   idCampaign   @@@ ( " + Integer.toString(i)+" ) = "+ mQtCpId);
+                                    Log.i(TAG, "Element:   idSponsor @@@ ( " + Integer.toString(i)+" ) = "+ mQtSpId);
+                                    Log.i(TAG, "Element:   label @@@ ( " + Integer.toString(i)+" ) = "+ mQtLabel);
 
 
+                                    Question question = new     Question(Integer.parseInt(mQtId),
+                                            Integer.parseInt(mQtCpId),
+                                            Integer.parseInt(mQtSpId),
+                                            mQtLabel);
 
-
-                        // drop table pg_sponsor
-                        //db.dropTable("pg_sponsor");
-
-                        // create a new table pg_sponsor
-                        //db.createTableSponsor();
-
-                        // create a temp table for sponsor
-                        // db.createTableTempSponsor();
+                                    db.addQuestion(question);
+                                    Log.i(TAG, "Element:   @@@   " + Integer.toString(i)+" "+ jsonArry.getJSONObject(i));
+                                }  // process the next element from JSON
+                            }
+                        } else {
+                            // WS responded not OK so...
+                            if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_ERROR)){
+                                Log.i(TAG, "WS responded with: ERROR:  " + jsonObjRoot.getString("errorMessage").toString());
+                            } else {
+                                Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString() + "  " + jsonObjRoot.getString("errorMessage").toString());
+                            }
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-                    //try {
-                    // top level array of Quizes
-
-//                        jsonArry = jsonObjRoot.getJSONArray("json");
-//                        jsonArryQuiz = jsonObjRoot.getJSONArray("quiz");
-//                        Log.i(TAG, "JSON Quiz @@@   " + jsonArryQuiz.toString());
-//                        Log.i(TAG, "JSON Quiz @@@   # quiz " + Integer.toString(jsonArryQuiz.length()));
-
-                    //} catch (JSONException e1) {
-                    // e1.printStackTrace();
-                    //}
-//                    if (jsonArryQuiz != null) {
-//                        Log.v(TAG, "231 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-//                        for (int i = 0; i < jsonArryQuiz.length(); i++) {    // for each quiz
-//                            try {
-//                                // each element of the Array of quizes is a JSONObject, a specific Quiz
-//                                Log.v(TAG, " 235 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-//                                JSONObject obj = jsonArryQuiz.getJSONObject(i);
-//
-//                                // calling constructors:
-//                                Log.v(TAG, " 239 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-//                                quiz = new Quiz(obj.getInt("idQuiz"), obj.getJSONObject("campaign").getString("sponsorCode").toString(),
-//                                        obj.getString("token"), obj.getString("status"));
-//                                db.createQuiz(quiz);
-//                                // Sponsor data are provided as fields (tags) in JSON Object of a campaign
-//                                sponsor = new Sponsor(obj.getJSONObject("campaign").getString("sponsorCode").toString(), obj.getJSONObject("campaign").getString("sponsorName").toString());
-//                                db.createSponsor(sponsor);
-//                                Log.v(TAG, " 245 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-//
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }
-
-                    // to eliminate duplicate sponsors...
-                    // recreate table pg_sponsor with distinct rows from temp_pg_sponsor (removing duplicated records)
-//                    Log.i(TAG, "285: db.insertTempDataIntoTableSponsor()");
-//                    db.insertTempDataIntoTableSponsor();
-                    // drop temp table temp_pg_sponsor
-//                    Log.i(TAG, "258: db.dropTable('temp_pg_sponsor')");
-//                    db.dropTable("temp_pg_sponsor");
-
                 }
 
             }, new Response.ErrorListener() {
@@ -606,127 +516,119 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void UpdateQuestion(String email, String password) {
+    public void UpdateQuestionOption(String email, String password) {
 
-        final String TAG = "UpdateQuestion";
+        final String TAG = "UpdateQuestionOption";
         db = new PgDatabaseHelper(getApplicationContext());
+
+        db.clearTableQuestion();
+        db.clearTableOption();
+
         try {
 
             RequestQueue queue = Volley.newRequestQueue(this);
 
-            URL urlObj = createURL(email, password, "getQuiz", "123456789");     //format URL to call WS
+            URL urlObj = createURL(email, password, "findAllQuestions", "123456789");     //format URL to call WS
             final String mEmail = email;
             final String mPassword = password;
             String url = urlObj.toString();
+            Log.i(TAG, "URL:   " + url);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     String myJsonString = response.toString();
-                    Quiz quiz;
-                    Sponsor sponsor;
-                    Campaign campaign;
-                    Question question;
-                    QuestionOption questionOption;
+                    Log.i(TAG, "531 RETURNED:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace("\\\"", "\"");
+                    Log.i(TAG, "533_Removed Escapes:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace(":\"[{", ":[{");
+                    myJsonString = myJsonString.replace("}]\"}", "}]}");
+                    Log.i(TAG, "536_removed \":   @@@   " + myJsonString);
 
-                    Log.i(TAG, "TEXT RETURNED:   @@@   " + myJsonString);
-                    if (myJsonString.startsWith("[")) {
-                        myJsonString = "{\"quiz\":" + myJsonString + "}";
-                    }
                     // converting to JSONObject
                     JSONObject jsonObjRoot = null;
-                    JSONArray jsonArryQuiz = null;
-
                     JSONArray jsonArryQuestion = null;
-                    JSONObject jsonObjQuestion = null;
-                    JSONArray jsonArryQuestionOptions = null;
-
+                    JSONArray jsonArryOptions = null;
 
                     try {
                         jsonObjRoot = new JSONObject(myJsonString);
 
-                        // drop table pg_sponsor, pg_campaign, ...
-                        db.dropTable("pg_question");
-                        //db.dropTable("pg_option");
+                        if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_OK)){
 
-                        // create a new table pg_sponsor, pg_campaign, ...
-                        db.createTableQuestion();
-                        //db.createTableQuestionOption();
+                            jsonArryQuestion = jsonObjRoot.getJSONArray("json");
+                            Log.i(TAG, "328_jsonArry: @@@"+jsonArryQuestion.toString());
 
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    }
+                            if (jsonArryQuestion != null) {
+                                for (int i = 0; i < jsonArryQuestion.length(); i++) {
+                                    String mQtId = jsonArryQuestion.getJSONObject(i).getString("idQuestion").toString();
+                                    String mQtCpId = jsonArryQuestion.getJSONObject(i).getString("idCampaign").toString();
+                                    String mQtSpId = jsonArryQuestion.getJSONObject(i).getString("idSponsor").toString();
+                                    String mQtLabel = jsonArryQuestion.getJSONObject(i).getString("label").toString();
 
-                    try {
-                        // top level array of Quizes
-                        jsonArryQuiz = jsonObjRoot.getJSONArray("quiz");
 
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    }
-                    if (jsonArryQuiz != null) {
-                        for (int i = 0; i < jsonArryQuiz.length(); i++) {    // for each quiz
-                            try {
-                                // each element of the Array of quizes is a JSONObject, a specific Quiz
-                                JSONObject obj = jsonArryQuiz.getJSONObject(i);
+                                    Log.i(TAG, "Element:   idQuestion   @@@ ( " + Integer.toString(i)+" ) = "+ mQtId);
+                                    Log.i(TAG, "Element:   idCampaign   @@@ ( " + Integer.toString(i)+" ) = "+ mQtCpId);
+                                    Log.i(TAG, "Element:   idSponsor @@@ ( " + Integer.toString(i)+" ) = "+ mQtSpId);
+                                    Log.i(TAG, "Element:   label @@@ ( " + Integer.toString(i)+" ) = "+ mQtLabel);
 
-                                // calling constructors:
-                                /*quiz = new Quiz(obj.getInt("idQuiz"), obj.getJSONObject("campaign").getString("sponsorCode").toString(),
-                                        obj.getString("token"), obj.getString("status"));
-                                */
-                                // campaigns are JSON Objects composing a Quiz
-                                /*campaign = new Campaign(obj.getJSONObject("campaign").getString("sponsorCode").toString(),
-                                        obj.getJSONObject("campaign").getString("sponsorName").toString(),
-                                        obj.getJSONObject("campaign").getString("startDate").toString(),
-                                        obj.getJSONObject("campaign").getString("endDate").toString(),
-                                        obj.getJSONObject("campaign").getInt("numberOfQuestions"),
-                                        obj.getJSONObject("campaign").getInt("pointsForRightAnswer"),
-                                        obj.getJSONObject("campaign").getInt("pointsForParticipation"),
-                                        obj.getString("status").toString());
-                                        */
-                                // Sponsor data are provided as fields (tags) in JSON Object of a campaign
-                                // sponsor = new Sponsor(obj.getJSONObject("campaign").getString("sponsorCode").toString(), obj.getJSONObject("campaign").getString("sponsorName").toString());
 
-                                // Every campaign contains an JSON Array of JSON Objects defining QUESTIONS
-                                jsonArryQuestion = obj.getJSONObject("campaign").getJSONArray("questions");
-                                if (jsonArryQuestion != null){
-                                    for (int j = 0; j < jsonArryQuestion.length(); j++) {    // for each Question
-                                        JSONObject qtn = jsonArryQuestion.getJSONObject(i);
-                                        // calling constructor for Question
-                                        // Question(String sponsorCode, String startDate, int numberOfQuestions,
-                                        //                 int pointsForRightAnswer, int pointsForParticipation,
-                                        //                                   int seqNumber, String questionLabel)
+                                    Question question = new     Question(Integer.parseInt(mQtId),
+                                            Integer.parseInt(mQtCpId),
+                                            Integer.parseInt(mQtSpId),
+                                            mQtLabel);
 
-                                        question = new Question(obj.getJSONObject("campaign").getString("sponsorCode").toString(),
-                                                                    obj.getJSONObject("campaign").getString("startDate").toString(),
-                                                                    obj.getJSONObject("campaign").getInt("numberOfQuestions"),
-                                                                    obj.getJSONObject("campaign").getInt("pointsForRightAnswer"),
-                                                                    obj.getJSONObject("campaign").getInt("pointsForParticipation"),
-                                                                    j,
-                                                                    qtn.getJSONObject("questionLabel").toString());
+                                    db.addQuestion(question);
+                                    Log.i(TAG, "Element:   @@@   " + Integer.toString(i)+" "+ jsonArryQuestion.getJSONObject(i));
 
-                                        db.createQuestion(question);
+                                    // lets process each OPTION inside this Question element of jsonArry
+                                    // there is one inner JSONArray inside
+                                    // lets extract the Options:
+                                    jsonArryOptions = null;
+                                    jsonArryOptions = jsonArryQuestion.getJSONObject(i).getJSONArray("options");
+                                    if (jsonArryOptions != null) {
+                                        for (int j = 0; j < jsonArryOptions.length(); i++) {
 
-                                        JSONArray opts = qtn.getJSONArray("options");
+                                            String mOpSpId = jsonArryOptions.getJSONObject(i).getString("idSponsor").toString();
+                                            String mOpCpId = jsonArryOptions.getJSONObject(i).getString("idCampaign").toString();
+                                            String mOpQtId = jsonArryOptions.getJSONObject(i).getString("idQuestion").toString();
+                                            String mOpSeq = jsonArryOptions.getJSONObject(i).getString("sequential").toString();
+                                            String mOpLabel = jsonArryOptions.getJSONObject(i).getString("label").toString();
+                                            String mOpRightAnsw = jsonArryOptions.getJSONObject(i).getString("rightAnswer").toString();
+                                            String mOpUsrAnsw = jsonArryOptions.getJSONObject(i).getString("userAnswer").toString();
 
-                                        for (int k = 0; k < qtn.length(); k++) {    // for each Option (inside a question)
-                                            JSONObject opt = opts.getJSONObject(i);
-                                            // TODO call the option constructor
-                                            // option = new Option(....);
-                                            // add option to database
-                                            // db.createOption(option);
-                                        }
+                                            Log.i(TAG, "Element:   idSponsor   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpSpId);
+                                            Log.i(TAG, "Element:   idCampaign   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpCpId);
+                                            Log.i(TAG, "Element:   idQuestion   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpQtId);
+                                            Log.i(TAG, "Element:   sequential   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpSeq);
+                                            Log.i(TAG, "Element:   label   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpLabel);
+                                            Log.i(TAG, "Element:   rightAnswer   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpRightAnsw);
+                                            Log.i(TAG, "Element:   userAnswer   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpUsrAnsw);
 
+
+
+                                            // Option(Integer idSponsor, Integer idCampaign, Integer idQuestion, Integer sequential, String label, String rightAnswer, String userAnswer)
+                                            Option option = new Option(Integer.parseInt(mOpSpId),
+                                                                        Integer.parseInt(mOpCpId),
+                                                                        Integer.parseInt(mOpQtId),
+                                                                        Integer.parseInt(mOpSeq),
+                                                                        mOpLabel, mOpRightAnsw, mOpUsrAnsw);
+                                            db.addOption(option);
+                                        }  // process nex Option
                                     }
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+
+                                }  // process the next element from JSON
+                            }
+                        } else {
+                            // WS responded not OK so...
+                            if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_ERROR)){
+                                Log.i(TAG, "WS responded with: ERROR:  " + jsonObjRoot.getString("errorMessage").toString());
+                            } else {
+                                Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString() + "  " + jsonObjRoot.getString("errorMessage").toString());
                             }
                         }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-
-                    // to eliminate duplicate sponsors...
-                    // recreate table pg_sponsor with distinct rows from temp_pg_sponsor (removing duplicated records)
-
                 }
 
             }, new Response.ErrorListener() {
@@ -734,10 +636,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
 
                     if (error.getMessage() == null) {
-                        Log.i(TAG, "login   -  " + "Login has failed!" + "\n\n");
+                        Log.i(TAG, " Web Service has failed!" + "\n\n");
                         // TODO: reset your password, create a new account
                     } else {
-                        Log.i(TAG, "login   -  " + "onErrorResponse(): " + error.getMessage());
+                        Log.i(TAG, "onErrorResponse(): " + error.getMessage());
                     }
                 }
             });
@@ -748,10 +650,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // TODO UpdateOptions
 
-    // Utility
+    // TODO UpdateTransactions     findAllTransactions
+    // TODO SendUserAnswers
 
-
+    // Utilities
     private URL createURL(String email, String password, String action, String token) {
         String baseURL = "http://www.benben.net.br/apiPharmaGo?";
         // LoginActivity.super.getString(R.string.web_sevice_base_url);

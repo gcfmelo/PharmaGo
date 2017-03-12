@@ -5,31 +5,54 @@ package br.com.phago.pharmago;
  */
 
 public class Question {
-    private int id;
-    private String idSponsor;
-    private String idCampaign;       // concatenation of sponsorCode+startDate+numberOfQuestions+pointsForRightAnswer+pointsForParticipation
-    private int seqNumber;           // from the iterator in ArrayList
-    private String questionLabel;
+    private int idQuestion;
+    private int idCampaign;
+    private int idSponsor;     // not necessary due to relation 1 Sponsor : N Campaign
+    private String label;
 
-    public void setIdCampaign(String sponsorCode, String startDate, int numberOfQuestions,
-                              int pointsForRightAnswer, int pointsForParticipation) {
-        this.idCampaign = sponsorCode+
-                startDate+
-                Integer.toString(numberOfQuestions)+
-                Integer.toString(pointsForRightAnswer)+
-                Integer.toString(pointsForParticipation);
+    // constructors
+    public Question() {
+    }
+    public Question(int idQuestion, int idCampaign, int idSponsor, String label) {
+        this.idQuestion = idQuestion;
+        this.idCampaign = idCampaign;
+        this.idSponsor = idSponsor;
+        this.label = label;
     }
 
-    public Question(String sponsorCode, String startDate, int numberOfQuestions,
-                    int pointsForRightAnswer, int pointsForParticipation, int seqNumber, String questionLabel) {
-        this.idSponsor = sponsorCode;
-        this.seqNumber = seqNumber;
-        this.questionLabel = questionLabel;
-        this.idCampaign = sponsorCode+
-                startDate+
-                Integer.toString(numberOfQuestions)+
-                Integer.toString(pointsForRightAnswer)+
-                Integer.toString(pointsForParticipation);
+    // setters
+
+    public void setIdQuestion(int idQuestion) {
+        this.idQuestion = idQuestion;
     }
 
+    public void setIdCampaign(int idCampaign) {
+        this.idCampaign = idCampaign;
+    }
+
+    public void setIdSponsor(int idSponsor) {
+        this.idSponsor = idSponsor;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    // getters
+
+    public int getIdQuestion() {
+        return idQuestion;
+    }
+
+    public int getIdCampaign() {
+        return idCampaign;
+    }
+
+    public int getIdSponsor() {
+        return idSponsor;
+    }
+
+    public String getLabel() {
+        return label;
+    }
 }

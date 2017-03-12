@@ -60,18 +60,18 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     // Table Names - pg_option
     private static final String TABLE_OPTION = "pg_option";
 
-    // TODO review
+    // OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK
     // Table: pg_user - Field Names
     private static final String FIELD_USER_NAME = "name";
     private static final String FIELD_USER_EMAIL = "email";
     private static final String FIELD_USER_CPF = "cpf";
-    private static final String FIELD_USER_STATUS = "status";
+    private static final String FIELD_USER_STATUS = "userAccountStatus";
     private static final String FIELD_USER_COMPANY_CODE = "companyCode";
     private static final String FIELD_USER_COMPANY_NAME = "companyName";
     private static final String FIELD_USER_COMPANY_LATITUDE = "companyLatitude";
     private static final String FIELD_USER_COMPANY_LONGITUDE = "companyLongitude";
 
-    // TODO review
+    // OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK
     // Table Create Statements  -  pg_user
     private static final String CREATE_TABLE_USER = "CREATE TABLE " +
             TABLE_USER + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -149,42 +149,43 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
             FIELD_CAMPAIGN_POINTS_PARTICIPATION + " INTEGER, " +
             FIELD_CAMPAIGN_STATUS + " TEXT" + ");";
 
-
-    // TODO review
+    // OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK
     // Table: pg_question - Field Names
-    private static final String FIELD_CAMPAIGN_QUESTION_ID = "idQuestion";
-    private static final String FIELD_CAMPAIGN_QUESTION_CAMPAIGN_ID = "idCampaign";
-    private static final String FIELD_CAMPAIGN_QUESTION_SEQUENTIAL_NUMBER = "seqNumber";
-    private static final String FIELD_CAMPAIGN_QUESTION_LABEL = "questionLabel";
+    private static final String FIELD_QUESTION_ID = "idQuestion";
+    private static final String FIELD_QUESTION_CAMPAIGN_ID = "idCampaign";
+    private static final String FIELD_QUESTION_SPONSOR_ID = "idSponsor";
+    private static final String FIELD_QUESTION_LABEL = "label";
 
+    // OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK OK
     // Table Create Statements  -  pg_question
-    // TODO review
     private static final String CREATE_TABLE_QUESTION = "CREATE TABLE " +
             TABLE_QUESTION + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-            FIELD_CAMPAIGN_QUESTION_ID + " TEXT, " +
-            FIELD_CAMPAIGN_QUESTION_CAMPAIGN_ID + " TEXT, " +
-            FIELD_CAMPAIGN_QUESTION_SEQUENTIAL_NUMBER + " INTEGER, " +
-            FIELD_CAMPAIGN_QUESTION_LABEL + " TEXT );";
+            FIELD_QUESTION_ID + " INTEGER, " +
+            FIELD_QUESTION_CAMPAIGN_ID + " INTEGER, " +
+            FIELD_QUESTION_SPONSOR_ID + " INTEGER, " +
+            FIELD_QUESTION_LABEL + " TEXT );";
 
     // TODO review
+    // Option(Integer idSponsor, Integer idCampaign, Integer idQuestion, Integer sequential, String label, String rightAnswer, String userAnswer)
     // Table: pg_option - Field Names
-    private static final String FIELD_OPTION_ID = "idOption";
+    private static final String FIELD_OPTION_SPONSOR_ID = "idSponsor";
     private static final String FIELD_OPTION_CAMPAIGN_ID = "idCampaign";
     private static final String FIELD_OPTION_QUESTION_ID = "idQuestion";
     private static final String FIELD_OPTION_SEQUENTIAL = "sequential";
-    private static final String FIELD_OPTION_LABEL = "optionLabel";
-    private static final String FIELD_OPTION_IS_RIGHT_ANSWER = "rightAnswer";
+    private static final String FIELD_OPTION_LABEL = "label";
+    private static final String FIELD_OPTION_RIGHT_ANSWER = "rightAnswer";
     private static final String FIELD_OPTION_USER_ANSWER = "userAnswer";
 
     // TODO review
     // Table Create Statements  -  pg_option
     private static final String CREATE_TABLE_OPTION = "CREATE TABLE " +
             TABLE_OPTION + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            FIELD_OPTION_SPONSOR_ID + " INTEGER, " +
             FIELD_OPTION_CAMPAIGN_ID + " INTEGER, " +
             FIELD_OPTION_QUESTION_ID + " INTEGER, " +
             FIELD_OPTION_SEQUENTIAL + " INTEGER, " +
             FIELD_OPTION_LABEL + " TEXT, " +
-            FIELD_OPTION_IS_RIGHT_ANSWER + " INTEGER, " +
+            FIELD_OPTION_RIGHT_ANSWER + " INTEGER, " +
             FIELD_OPTION_USER_ANSWER + " INTEGER, " +
             KEY_CREATED_AT + " TEXT" + ");";
 
@@ -240,7 +241,6 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         return user_id;
     }
 
-
     public long createCampaign(Campaign campaign) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -262,60 +262,40 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
-    public long createQuestion(Question question) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        // TODO
-        // constructor: Quiz(int idQuiz, String sponsorCode, String token, String status, String createdAt)
-//        ContentValues values = new ContentValues();
-//        values.put(FIELD__ID, quiz.getIdQuiz());
-//        values.put(FIELD__SPONSOR_CODE, quiz.getSponsorCode());
-//        values.put(FIELD__TOKEN, quiz.getToken());
-//        values.put(FIELD_STATUS, quiz.getStatus());
-        //values.put(KEY_CREATED_AT, getDateTime());
-
-        // insert row
-
-        long question_id = (long) 1;
-
-        return question_id;
-
-    }
-
-    public long createSponsor(Sponsor sponsor) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        // constructor: Quiz(int idQuiz, String sponsorCode, String token, String status, String createdAt)
-        ContentValues values = new ContentValues();
-        values.put(FIELD_SPONSOR_CODE, sponsor.getSponsorCode());
-        values.put(FIELD_SPONSOR_NAME, sponsor.getSponsorName());
-
-        // insert row
-        String TempTableSponsor = "temp_"+TABLE_SPONSOR;
-        long sponsor_id = db.insert(TempTableSponsor, null, values);
-
-        return sponsor_id;
-
-    }
-
     public long addSponsor(Sponsor sponsor) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // constructor: Quiz(int idQuiz, String sponsorCode, String token, String status, String createdAt)
         ContentValues values = new ContentValues();
         values.put(FIELD_SPONSOR_ID, sponsor.getSponsorId());
         values.put(FIELD_SPONSOR_CODE, sponsor.getSponsorCode());
         values.put(FIELD_SPONSOR_NAME, sponsor.getSponsorName());
 
         // insert row
-        //String TempTableSponsor = "temp_"+TABLE_SPONSOR;
         long sponsor_id = db.insert(TABLE_SPONSOR, null, values);
 
         return sponsor_id;
+    }
+
+    public long addUser(User user) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(FIELD_USER_EMAIL, user.getEmail());
+        values.put(FIELD_USER_NAME, user.getName());
+        values.put(FIELD_USER_STATUS, user.getUserAccountStatus());
+        values.put(FIELD_USER_CPF, user.getCpf());
+        values.put(FIELD_USER_COMPANY_CODE, user.getCompanyCode());
+        values.put(FIELD_USER_COMPANY_NAME, user.getCompanyName());
+        values.put(FIELD_USER_COMPANY_LATITUDE, user.getCompanyLatitude());
+        values.put(FIELD_USER_COMPANY_LONGITUDE, user.getCompanyLongitude());
+
+        // insert row
+        //String TempTableSponsor = "temp_"+TABLE_SPONSOR;
+        long user_id = db.insert(TABLE_USER, null, values);
+
+        return user_id;
 
     }
 
@@ -338,6 +318,39 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
         return campaign_id;
 
+    }
+
+    public long addQuestion(Question question) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(FIELD_QUESTION_ID, question.getIdQuestion());
+        values.put(FIELD_QUESTION_CAMPAIGN_ID, question.getIdCampaign());
+        values.put(FIELD_QUESTION_SPONSOR_ID, question.getIdSponsor());
+        values.put(FIELD_QUESTION_LABEL, question.getLabel());
+
+        long question_id = db.insert(TABLE_QUESTION, null, values);
+
+        return question_id;
+    }
+
+    public long addOption(Option option) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(FIELD_OPTION_CAMPAIGN_ID, option.getIdCampaign());
+        values.put(FIELD_OPTION_QUESTION_ID, option.getIdQuestion());
+        values.put(FIELD_OPTION_SEQUENTIAL, option.getSequential());
+        values.put(FIELD_OPTION_LABEL, option.getLabel());
+        values.put(FIELD_OPTION_SPONSOR_ID, option.getIdSponsor());
+        values.put(FIELD_OPTION_RIGHT_ANSWER, option.getRightAnswer());
+        values.put(FIELD_OPTION_USER_ANSWER, option.getUserAnswer());
+
+        long option_id = db.insert(TABLE_OPTION, null, values);
+
+        return option_id;
     }
 
     public Sponsor getSponsorByCode(String sponsorCode){
@@ -448,51 +461,58 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     public void dropTable(String TableName){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TableName);
-        //closeDB();
     }
 
     public void createTableUser(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(CREATE_TABLE_USER);
-        //closeDB();
     }
 
     public void createTableSponsor(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(CREATE_TABLE_SPONSOR);
-        //closeDB();
     }
 
     public void createTableCampaign(){
         SQLiteDatabase db = this.getWritableDatabase();
         dropTable(TABLE_CAMPAIGN);
         db.execSQL(CREATE_TABLE_CAMPAIGN);
-        //closeDB();
     }
 
     public void createTableQuestion(){
         SQLiteDatabase db = this.getWritableDatabase();
         dropTable(TABLE_QUESTION);
         db.execSQL(CREATE_TABLE_QUESTION);
-        //closeDB();
     }
 
-    public void createTableQuestionOption(){
+    public void createTableOption(){
         SQLiteDatabase db = this.getWritableDatabase();
         dropTable(TABLE_OPTION);
         db.execSQL(CREATE_TABLE_OPTION);
-        //closeDB();
+    }
+
+    public void clearTableUser(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM "+TABLE_USER);
     }
 
     public void clearTableSponsor(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+TABLE_SPONSOR);
-        //closeDB();
     }
     public void clearTableCampaign(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+TABLE_CAMPAIGN);
-        //closeDB();
+    }
+
+    public void clearTableQuestion(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM "+TABLE_QUESTION);
+    }
+
+    public void clearTableOption(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM "+TABLE_OPTION);
     }
 
     private void updatePgDatabase(SQLiteDatabase db, int oldVersion, int newVersion){

@@ -38,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
         final String TAG = "Main Activity";
         Log.i(TAG,"... onCreate");
-//        UpdateUser("gcfmelo@gmail.com", "abc123");
-//        UpdateSponsor("gcfmelo@gmail.com", "abc123");
-//        UpdateCampaign("gcfmelo@gmail.com", "abc123");
-//        UpdateQuestionOption("gcfmelo@gmail.com", "abc123");
+        UpdateUser("gcfmelo@gmail.com", "abc123");
+        UpdateSponsor("gcfmelo@gmail.com", "abc123");
+        UpdateCampaign("gcfmelo@gmail.com", "abc123");
+        UpdateQuestionOption("gcfmelo@gmail.com", "abc123");
         UpdateTransaction("gcfmelo@gmail.com", "abc123");
         TestCampaignList();
 
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     */
-    // this version is updated for new WS at 2017-03-11
+
     public void UpdateUser(String email, String password) {
 
         final String TAG = "UpdateUser";
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    // this version is updated for new WS at 2017-03-11
+
     public void UpdateSponsor(String email, String password) {
 
         final String TAG = "UpdateSponsor";
@@ -313,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    // this version is updated for new WS at 2017-03-11
+
     public void UpdateCampaign(String email, String password) {
 
         final String TAG = "UpdateCampaign";
@@ -420,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    // this version is updated for new WS at 2017-03-11
+
     public void UpdateQuestion(String email, String password) {
 
         final String TAG = "UpdateQuestion";
@@ -515,7 +515,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    // this version is updated for new WS at 2017-03-11
+
     public void UpdateQuestionOption(String email, String password) {
 
         final String TAG = "UpdateQuestionOption";

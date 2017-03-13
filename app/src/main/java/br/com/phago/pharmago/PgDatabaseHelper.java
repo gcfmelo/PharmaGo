@@ -99,8 +99,8 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     // Table Create Statements  -  pg_transaction
     private static final String CREATE_TABLE_TRANSACTION = "CREATE TABLE " +
             TABLE_TRANSACTION + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-            FIELD_TRANSACTION_ID + " TEXT, " +
-            FIELD_TRANSACTION_ID_CAMPAIGN + " TEXT, " +
+            FIELD_TRANSACTION_ID + " INTEGER, " +
+            FIELD_TRANSACTION_ID_CAMPAIGN + " INTEGER, " +
             FIELD_TRANSACTION_CAMPAIGN_TITLE + " TEXT, " +
             FIELD_TRANSACTION_SPONSOR_CODE + " TEXT, " +
             FIELD_TRANSACTION_EVENT_DATE + " TEXT, " +
@@ -427,6 +427,12 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         dropTable(TABLE_OPTION);
         db.execSQL(CREATE_TABLE_OPTION);
     }
+
+    public void createTableTransaction(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(CREATE_TABLE_TRANSACTION);
+    }
+
 
     public void clearTableUser(){
         SQLiteDatabase db = this.getWritableDatabase();

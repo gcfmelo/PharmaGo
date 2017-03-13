@@ -38,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
         final String TAG = "Main Activity";
         Log.i(TAG,"... onCreate");
-        UpdateUser("gcfmelo@gmail.com", "abc123");
-        UpdateSponsor("gcfmelo@gmail.com", "abc123");
-        UpdateCampaign("gcfmelo@gmail.com", "abc123");
-        UpdateQuestionOption("gcfmelo@gmail.com", "abc123");
+//        UpdateUser("gcfmelo@gmail.com", "abc123");
+//        UpdateSponsor("gcfmelo@gmail.com", "abc123");
+//        UpdateCampaign("gcfmelo@gmail.com", "abc123");
+//        UpdateQuestionOption("gcfmelo@gmail.com", "abc123");
         UpdateTransaction("gcfmelo@gmail.com", "abc123");
         TestCampaignList();
 
@@ -654,6 +654,10 @@ public class MainActivity extends AppCompatActivity {
         final String TAG = "UpdateTransaction";
         db = new PgDatabaseHelper(getApplicationContext());
 
+        // TODO remove
+        db.dropTable("pg_transaction");
+        db.createTableTransaction();
+
         db.clearTableTransaction();
 
         try {
@@ -689,26 +693,30 @@ public class MainActivity extends AppCompatActivity {
                             Log.i(TAG, "689_jsonArry: @@@"+jsonArry.toString());
                             /*
 
-                            private String sponsorCode, eventDate, eventDate, nature;
-                            private int idCampaign, idTransaction, amount;
+                            Transaction(String sponsorCode, String eventDate, String title, String nature, int idCampaign, int idTransaction, int amount)
                              */
 
                             if (jsonArry != null) {
                                 for (int i = 0; i < jsonArry.length(); i++) {
-                                    String mTrCode = jsonArry.getJSONObject(i).getString("sponsorCode").toString();
+                                    String mTrSpCode = jsonArry.getJSONObject(i).getString("sponsorCode").toString();
                                     String mTrDate = jsonArry.getJSONObject(i).getString("eventDate").toString();
+                                    String mTrTitle = jsonArry.getJSONObject(i).getString("title").toString();
                                     String mTrNature = jsonArry.getJSONObject(i).getString("nature").toString();
 
                                     int mTrIdCp = jsonArry.getJSONObject(i).getInt("idCampaign");
                                     int mTrIdTr = jsonArry.getJSONObject(i).getInt("idTransaction");
                                     int mTrAmount = jsonArry.getJSONObject(i).getInt("amount");
 
-                                    Log.i(TAG, "Element:   idSponsor   @@@ ( " + Integer.toString(i)+" ) = "+ mSpId);
-                                    Log.i(TAG, "Element:   sponsorCode @@@ ( " + Integer.toString(i)+" ) = "+ mSpCode);
-                                    Log.i(TAG, "Element:   sponsorName @@@ ( " + Integer.toString(i)+" ) = "+ mSpName);
+                                    Log.i(TAG, "Element:   sponsorCode   @@@ ( " + Integer.toString(i)+" ) = "+ mTrSpCode);
+                                    Log.i(TAG, "Element:   eventDate @@@ ( " + Integer.toString(i)+" ) = "+ mTrDate);
+                                    Log.i(TAG, "Element:   title @@@ ( " + Integer.toString(i)+" ) = "+ mTrTitle);
+                                    Log.i(TAG, "Element:   nature @@@ ( " + Integer.toString(i)+" ) = "+ mTrNature);
+                                    Log.i(TAG, "Element:   idCampaign @@@ ( " + Integer.toString(i)+" ) = "+ mTrIdCp);
+                                    Log.i(TAG, "Element:   idTransaction @@@ ( " + Integer.toString(i)+" ) = "+ mTrIdTr);
+                                    Log.i(TAG, "Element:   amount @@@ ( " + Integer.toString(i)+" ) = "+ mTrAmount);
 
 
-                                    Transaction tr = new Sponsor(Integer.parseInt(mSpId), mSpCode, mSpName);
+                                    Transaction tr = new Transaction(mTrSpCode, mTrDate, mTrTitle, mTrNature, mTrIdCp, mTrIdTr, mTrAmount);
 
                                     db.addTransaction(tr);
 
@@ -726,15 +734,6 @@ public class MainActivity extends AppCompatActivity {
                             // WS responded with:
                             Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString());
                         }
-
-                        // drop table pg_sponsor
-                        //db.dropTable("pg_sponsor");
-
-                        // create a new table pg_sponsor
-                        //db.createTableSponsor();
-
-                        // create a temp table for sponsor
-                        // db.createTableTempSponsor();
 
                     } catch (JSONException e) {
                         e.printStackTrace();

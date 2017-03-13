@@ -19,6 +19,9 @@ public class Transaction {
     private String sponsorCode, eventDate, title, nature;
     private int idCampaign, idTransaction, amount;
 
+    // CREATE TABLE pg_transaction(_id INTEGER PRIMARY KEY AUTOINCREMENT, idTransaction INTEGER, idCampaign INTEGER, title TEXT, sponsorCode TEXT, eventDate TEXT, nature TEXT, amount INTEGER, created_at TEXT);
+
+
     public Transaction() {
     }
 

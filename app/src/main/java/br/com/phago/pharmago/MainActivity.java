@@ -17,6 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     // DatabaseHelper
     PgDatabaseHelper db;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         UpdateSponsor("gcfmelo@gmail.com", "abc123");
         UpdateCampaign("gcfmelo@gmail.com", "abc123");
         UpdateQuestionOption("gcfmelo@gmail.com", "abc123");
+        UpdateTransaction("gcfmelo@gmail.com", "abc123");
+        TestCampaignList();
 
 /*
         AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
@@ -82,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(itemClickListener);
       */
     }
-
     /*
     public void onClickStartServices(View view) {
 
@@ -236,8 +238,6 @@ public class MainActivity extends AppCompatActivity {
                     myJsonString = myJsonString.replace("\"[{", "[{");
                     myJsonString = myJsonString.replace("]\"}", "]}");
                     Log.i(TAG, "314_removed \":   @@@   " + myJsonString);
-
-
 
                     // converting to JSONObject
                     JSONObject jsonObjRoot = null;
@@ -515,7 +515,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+    // this version is updated for new WS at 2017-03-11
     public void UpdateQuestionOption(String email, String password) {
 
         final String TAG = "UpdateQuestionOption";
@@ -592,7 +592,7 @@ public class MainActivity extends AppCompatActivity {
                                             String mOpSeq = jsonArryOptions.getJSONObject(j).getString("sequential").toString();
                                             String mOpLabel = jsonArryOptions.getJSONObject(j).getString("label").toString();
                                             String mOpRightAnsw = jsonArryOptions.getJSONObject(j).getString("rightAnswer").toString();
-                                            //String mOpUsrAnsw = jsonArryOptions.getJSONObject(j).getString("userAnswer").toString();
+                                            String mOpUsrAnsw = jsonArryOptions.getJSONObject(j).getString("userAnswer").toString();
 
                                             Log.i(TAG, "Element:   idSponsor   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpSpId);
                                             Log.i(TAG, "Element:   idCampaign   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpCpId);
@@ -600,7 +600,7 @@ public class MainActivity extends AppCompatActivity {
                                             Log.i(TAG, "Element:   sequential   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpSeq);
                                             Log.i(TAG, "Element:   label   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpLabel);
                                             Log.i(TAG, "Element:   rightAnswer   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpRightAnsw);
-                                            //Log.i(TAG, "Element:   userAnswer   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpUsrAnsw);
+                                            Log.i(TAG, "Element:   userAnswer   @@@ ( " + Integer.toString(i*1000+j)+" ) = "+ mOpUsrAnsw);
 
 
 
@@ -609,7 +609,7 @@ public class MainActivity extends AppCompatActivity {
                                                                         Integer.parseInt(mOpCpId),
                                                                         Integer.parseInt(mOpQtId),
                                                                         Integer.parseInt(mOpSeq),
-                                                                        mOpLabel, mOpRightAnsw);
+                                                                        mOpLabel, mOpRightAnsw, mOpUsrAnsw);
                                             db.addOption(option);
                                         }  // process nex Option
                                     }
@@ -649,7 +649,127 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // TODO UpdateOptions
+    public void UpdateTransaction(String email, String password) {
+
+        final String TAG = "UpdateTransaction";
+        db = new PgDatabaseHelper(getApplicationContext());
+
+        db.clearTableTransaction();
+
+        try {
+
+            RequestQueue queue = Volley.newRequestQueue(this);
+
+            URL urlObj = createURL(email, password, "findAllTransactions", "123456789");     //format URL to call WS
+            final String mEmail = email;
+            final String mPassword = password;
+            String url = urlObj.toString();
+            Log.i(TAG, "URL:   " + url);
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    String myJsonString = response.toString();
+                    Log.i(TAG, "309_TEXT RETURNED:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace("\\\"", "\"");
+                    Log.i(TAG, "311_Removed Escapes:   @@@   " + myJsonString);
+                    myJsonString = myJsonString.replace(":\"[{", ":[{");
+                    myJsonString = myJsonString.replace("}]\"}", "}]}");
+                    Log.i(TAG, "314_removed \":   @@@   " + myJsonString);
+
+                    // converting to JSONObject
+                    JSONObject jsonObjRoot = null;
+                    JSONArray jsonArry = null;
+
+                    try {
+                        jsonObjRoot = new JSONObject(myJsonString);
+
+                        if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_OK)){
+
+                            jsonArry = jsonObjRoot.getJSONArray("json");
+                            Log.i(TAG, "689_jsonArry: @@@"+jsonArry.toString());
+                            /*
+
+                            private String sponsorCode, eventDate, eventDate, nature;
+                            private int idCampaign, idTransaction, amount;
+                             */
+
+                            if (jsonArry != null) {
+                                for (int i = 0; i < jsonArry.length(); i++) {
+                                    String mTrCode = jsonArry.getJSONObject(i).getString("sponsorCode").toString();
+                                    String mTrDate = jsonArry.getJSONObject(i).getString("eventDate").toString();
+                                    String mTrNature = jsonArry.getJSONObject(i).getString("nature").toString();
+
+                                    int mTrIdCp = jsonArry.getJSONObject(i).getInt("idCampaign");
+                                    int mTrIdTr = jsonArry.getJSONObject(i).getInt("idTransaction");
+                                    int mTrAmount = jsonArry.getJSONObject(i).getInt("amount");
+
+                                    Log.i(TAG, "Element:   idSponsor   @@@ ( " + Integer.toString(i)+" ) = "+ mSpId);
+                                    Log.i(TAG, "Element:   sponsorCode @@@ ( " + Integer.toString(i)+" ) = "+ mSpCode);
+                                    Log.i(TAG, "Element:   sponsorName @@@ ( " + Integer.toString(i)+" ) = "+ mSpName);
+
+
+                                    Transaction tr = new Sponsor(Integer.parseInt(mSpId), mSpCode, mSpName);
+
+                                    db.addTransaction(tr);
+
+                                    Log.i(TAG, "Element:   @@@   " + Integer.toString(i)+" "+ jsonArry.getJSONObject(i));
+                                    //
+                                    // implement table update here
+                                    //
+
+                                }
+
+                            }
+
+
+                        } else {
+                            // WS responded with:
+                            Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString());
+                        }
+
+                        // drop table pg_sponsor
+                        //db.dropTable("pg_sponsor");
+
+                        // create a new table pg_sponsor
+                        //db.createTableSponsor();
+
+                        // create a temp table for sponsor
+                        // db.createTableTempSponsor();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    if (error.getMessage() == null) {
+                        Log.i(TAG, " Web Service has failed!" + "\n\n");
+                        // TODO: reset your password, create a new account
+                    } else {
+                        Log.i(TAG, "onErrorResponse(): " + error.getMessage());
+                    }
+                }
+            });
+            queue.add(stringRequest);   // replace for the correct object name
+        } catch (SQLiteException e) {
+            Log.i(TAG, "Service: " + "Database is unavailable!");
+        }
+
+    }
+
+    public void TestCampaignList(){
+        final String TAG = "TestCampaignList";
+        db = new PgDatabaseHelper(getApplicationContext());
+        List<CampaignListClass> cpList = new ArrayList<CampaignListClass>();
+        cpList = db.getAllCampaigns();
+        for (int i=0; i < cpList.size(); i++){
+            Log.i(TAG," item("+Integer.toString(i)+") ===> "+cpList.get(i).toString());
+        }
+    }
+
 
     // TODO UpdateTransactions     findAllTransactions
     // TODO SendUserAnswers

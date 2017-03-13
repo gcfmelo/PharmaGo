@@ -15,4 +15,76 @@ package br.com.phago.pharmago;
  */
 
 public class Transaction {
+
+    private String sponsorCode, eventDate, title, nature;
+    private int idCampaign, idTransaction, amount;
+
+    public Transaction() {
+    }
+
+    public Transaction(String sponsorCode, String eventDate, String title, String nature, int idCampaign, int idTransaction, int amount) {
+        this.sponsorCode = sponsorCode;
+        this.eventDate = eventDate;
+        this.title = title;
+        this.nature = nature;
+        this.idCampaign = idCampaign;
+        this.idTransaction = idTransaction;
+        this.amount = amount;
+    }
+
+    public String getSponsorCode() {
+        return sponsorCode;
+    }
+
+    public void setSponsorCode(String sponsorCode) {
+        this.sponsorCode = sponsorCode;
+    }
+
+    public String getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(String eventDate) {
+        this.eventDate = eventDate;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getNature() {
+        return nature;
+    }
+
+    public void setNature(String nature) {
+        this.nature = nature;
+    }
+
+    public int getIdCampaign() {
+        return idCampaign;
+    }
+
+    public void setIdCampaign(int idCampaign) {
+        this.idCampaign = idCampaign;
+    }
+
+    public int getIdTransaction() {
+        return idTransaction;
+    }
+
+    public void setIdTransaction(int idTransaction) {
+        this.idTransaction = idTransaction;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 }

@@ -87,7 +87,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
     // TODO review
     // Table: pg_transaction - Field Names
-    private static final String FIELD_TRANSACTION_ID_TRANSACTION = "idTransaction";
+    private static final String FIELD_TRANSACTION_ID = "idTransaction";
     private static final String FIELD_TRANSACTION_ID_CAMPAIGN = "idCampaign";
     private static final String FIELD_TRANSACTION_CAMPAIGN_TITLE = "title";
     private static final String FIELD_TRANSACTION_SPONSOR_CODE = "sponsorCode";
@@ -99,7 +99,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     // Table Create Statements  -  pg_transaction
     private static final String CREATE_TABLE_TRANSACTION = "CREATE TABLE " +
             TABLE_TRANSACTION + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-            FIELD_TRANSACTION_ID_TRANSACTION + " TEXT, " +
+            FIELD_TRANSACTION_ID + " TEXT, " +
             FIELD_TRANSACTION_ID_CAMPAIGN + " TEXT, " +
             FIELD_TRANSACTION_CAMPAIGN_TITLE + " TEXT, " +
             FIELD_TRANSACTION_SPONSOR_CODE + " TEXT, " +
@@ -215,53 +215,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // oldVersion = 0 to create from zero
         updatePgDatabase(db, 0, DATABASE_VERSION);
-
     }
-
-    public long createUser(User user) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-// constructor:
-// User(String String email, String cpf, String name, String companyCode, String companyName, String companyLatitude, String companyLongitude)
-
-        ContentValues values = new ContentValues();
-        values.put(FIELD_USER_EMAIL, user.getEmail());
-        values.put(FIELD_USER_CPF, user.getCpf());
-        values.put(FIELD_USER_NAME, user.getName());
-        values.put(FIELD_USER_COMPANY_CODE, user.getCompanyCode());
-        values.put(FIELD_USER_COMPANY_NAME, user.getCompanyName());
-        values.put(FIELD_USER_COMPANY_LATITUDE, user.getCompanyLatitude());
-        values.put(FIELD_USER_COMPANY_LONGITUDE, user.getCompanyLongitude());
-        values.put(KEY_CREATED_AT, getDateTime());
-
-        // insert row
-        long user_id = db.insert(TABLE_USER, null, values);
-
-        return user_id;
-    }
-
-    public long createCampaign(Campaign campaign) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(FIELD_CAMPAIGN_ID, campaign.getIdCampaign());
-        values.put(FIELD_CAMPAIGN_SPONSOR_ID, campaign.getIdSponsor());
-        values.put(FIELD_CAMPAIGN_TITLE, campaign.getTitle());
-        values.put(FIELD_CAMPAIGN_START_DATE, campaign.getStartDate());
-        values.put(FIELD_CAMPAIGN_END_DATE, campaign.getEndDate());
-        values.put(FIELD_CAMPAIGN_NUMBER_OF_QUESTIONS, campaign.getNumberOfQuestions());
-        values.put(FIELD_CAMPAIGN_POINTS_RIGHT_ANSWER, campaign.getPointsForRightAnswer());
-        values.put(FIELD_CAMPAIGN_POINTS_PARTICIPATION, campaign.getPointsForParticipation());
-        values.put(FIELD_CAMPAIGN_STATUS, campaign.getStatus());
-
-        long campaign_id = db.insert(TABLE_CAMPAIGN, null, values);
-
-        return campaign_id;
-    }
-
-
     public long addSponsor(Sponsor sponsor) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -353,45 +307,28 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         return option_id;
     }
 
-    public Sponsor getSponsorByCode(String sponsorCode){
-        SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery = "SELECT "+FIELD_SPONSOR_NAME+" FROM " + TABLE_SPONSOR +" WHERE sponsorCode = '"+ sponsorCode + "';";
-        Cursor c = db.rawQuery(selectQuery, null);
-        if (c != null)
-            c.moveToFirst();
-        Sponsor sp = new Sponsor();
-        sp.setSponsorId(c.getInt(c.getColumnIndex("sponsorId")));
-        sp.setSponsorCode(c.getString(c.getColumnIndex("sponsorCode")));
-        sp.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
-        return sp;
-    }
+    public long addTransaction(Transaction tr) {
 
-    /*
- * getting all Sponsors
- * */
-    public List<Sponsor> getAllSponsors() {
-        List<Sponsor> sponsors = new ArrayList<Sponsor>();
-        String selectQuery = "SELECT  * FROM " + TABLE_SPONSOR;
+        /*
+        Constructor:
+        Transaction(String sponsorCode, String eventDate, String title, String nature, int idCampaign, int idTransaction, int amount)
+         */
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        //Log.e(LOG, selectQuery);
+        ContentValues values = new ContentValues();
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, null);
+        values.put(FIELD_TRANSACTION_SPONSOR_CODE, tr.getSponsorCode());
+        values.put(FIELD_TRANSACTION_EVENT_DATE, tr.getEventDate());
+        values.put(FIELD_TRANSACTION_CAMPAIGN_TITLE, tr.getTitle());
+        values.put(FIELD_TRANSACTION_NATURE, tr.getSponsorCode());
+        values.put(FIELD_TRANSACTION_ID_CAMPAIGN, tr.getIdCampaign());
+        values.put(FIELD_TRANSACTION_ID, tr.getIdTransaction());
+        values.put(FIELD_TRANSACTION_AMOUNT, tr.getAmount());
 
-        // looping through all rows and adding to list
-        if (c.moveToFirst()) {
-            do {
-                Sponsor sp = new Sponsor();
-                sp.setSponsorId(c.getInt((c.getColumnIndex("sponsorId"))));
-                sp.setSponsorCode(c.getString(c.getColumnIndex("sponsorCode")));
-                sp.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
+        // insert row
+        long tr_id = db.insert(TABLE_SPONSOR, null, values);
 
-                // adding to todo list
-                sponsors.add(sp);
-            } while (c.moveToNext());
-        }
-
-        return sponsors;
+        return tr_id;
     }
 
     /*
@@ -500,6 +437,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+TABLE_SPONSOR);
     }
+
     public void clearTableCampaign(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+TABLE_CAMPAIGN);
@@ -515,6 +453,139 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM "+TABLE_OPTION);
     }
 
+    public void clearTableTransaction(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM "+TABLE_TRANSACTION);
+    }
+
+
+    public Sponsor getSponsorByCode(String sponsorCode){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT "+FIELD_SPONSOR_NAME+" FROM " + TABLE_SPONSOR +" WHERE sponsorCode = '"+ sponsorCode + "';";
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c != null)
+            c.moveToFirst();
+        Sponsor sp = new Sponsor();
+        sp.setSponsorId(c.getInt(c.getColumnIndex("sponsorId")));
+        sp.setSponsorCode(c.getString(c.getColumnIndex("sponsorCode")));
+        sp.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
+        return sp;
+    }
+
+    public List<Sponsor> getAllSponsors() {
+        List<Sponsor> sponsors = new ArrayList<Sponsor>();
+        String selectQuery = "SELECT  * FROM " + TABLE_SPONSOR;
+
+        //Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Sponsor sp = new Sponsor();
+                sp.setSponsorId(c.getInt((c.getColumnIndex("sponsorId"))));
+                sp.setSponsorCode(c.getString(c.getColumnIndex("sponsorCode")));
+                sp.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
+
+                // adding to todo list
+                sponsors.add(sp);
+            } while (c.moveToNext());
+        }
+
+        return sponsors;
+    }
+
+    public List<CampaignListClass> getAllCampaigns() {
+        List<CampaignListClass> campList = new ArrayList<CampaignListClass>();
+        String selectQuery = "SELECT cp." + FIELD_CAMPAIGN_TITLE + " campaignName, " +
+                " sp." + FIELD_SPONSOR_NAME + " sponsorName, " +
+                " cp." + FIELD_CAMPAIGN_START_DATE + " startDate, " +
+                " cp." + FIELD_CAMPAIGN_STATUS + " campaignStatus " +
+                " FROM " + TABLE_CAMPAIGN + " cp, " + TABLE_SPONSOR + " sp "+
+                " WHERE " + "(cp." + FIELD_CAMPAIGN_SPONSOR_ID + " = sp." + FIELD_SPONSOR_ID +");";
+
+        //Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows returned by cursor and adding to the list of CampaignListClass
+        // CampaignListClass(String campaignName, String sponsorName, String startDate, String campaignStatus)
+        if (c.moveToFirst()) {
+            do {
+                CampaignListClass mCampaignListItem = new CampaignListClass();
+                mCampaignListItem.setCampaignName(c.getString((c.getColumnIndex("campaignName"))));
+                mCampaignListItem.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
+                mCampaignListItem.setStartDate(c.getString(c.getColumnIndex("startDate")));
+                mCampaignListItem.setCampaignStatus(c.getString(c.getColumnIndex("campaignStatus")));
+
+                // adding to todo list
+                campList.add(mCampaignListItem);
+            } while (c.moveToNext());
+        }
+
+        return campList;
+    }
+
+
+    public List<CampaignDetailListClass> getAllDetailedCampaigns() {
+        List<CampaignDetailListClass> campDetailedList = new ArrayList<CampaignDetailListClass>();
+        String selectQuery = "SELECT cp." + FIELD_CAMPAIGN_TITLE +
+                " campaignTitle, sp." + FIELD_SPONSOR_NAME +
+                " sponsorName, cp." + FIELD_CAMPAIGN_START_DATE +
+                " startDate, cp." + FIELD_CAMPAIGN_STATUS +
+                " campaignStatus, qt."+ FIELD_QUESTION_LABEL +
+                " questionLabel, op." + FIELD_OPTION_SEQUENTIAL +
+                " optionSeqNumber, op." + FIELD_OPTION_LABEL +
+                " optionLabel, op." + FIELD_OPTION_RIGHT_ANSWER +
+                " optionIsRight, op." + FIELD_OPTION_USER_ANSWER +
+                " optionUserAnswer, cp." + FIELD_CAMPAIGN_POINTS_RIGHT_ANSWER +
+                " pointsRightAnswer, cp." + FIELD_CAMPAIGN_POINTS_PARTICIPATION +" pointsParticipation " +
+                " FROM " + TABLE_CAMPAIGN + " cp ," + TABLE_SPONSOR + " sp, " + TABLE_QUESTION +" qt, " + TABLE_OPTION + " op " +
+                " WHERE ((cp." + FIELD_CAMPAIGN_SPONSOR_ID + " = sp." + FIELD_SPONSOR_ID +") " +
+                " AND (qt." + FIELD_QUESTION_CAMPAIGN_ID + " = cp." + FIELD_CAMPAIGN_ID +") " +
+                " AND ((op." + FIELD_OPTION_CAMPAIGN_ID + " = qt." + FIELD_QUESTION_CAMPAIGN_ID + ") and (op." + FIELD_OPTION_QUESTION_ID + " = qt." + FIELD_QUESTION_ID + ")));";
+
+        //Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows returned by cursor and adding to the list of CampaignDetailListClass
+
+        //     private String campaignTitle, sponsorName, startDate, campaignStatus, questionLabel, optionLabel,optionIsRight,optionUserAnswer;
+        //     private int optionSeqNumber, pointsRightAnswer, pointsParticipation;
+
+        if (c.moveToFirst()) {
+            do {
+                CampaignDetailListClass mCpDetailListItem = new CampaignDetailListClass();
+
+                mCpDetailListItem.setCampaignTitle(c.getString((c.getColumnIndex("campaignTitle"))));
+                mCpDetailListItem.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
+                mCpDetailListItem.setStartDate(c.getString(c.getColumnIndex("startDate")));
+                mCpDetailListItem.setCampaignStatus(c.getString(c.getColumnIndex("campaignStatus")));
+                mCpDetailListItem.setQuestionLabel(c.getString(c.getColumnIndex("questionLabel")));
+                mCpDetailListItem.setOptionSeqNumber(c.getInt(c.getColumnIndex("optionSeqNumber")));         // int
+                mCpDetailListItem.setOptionLabel(c.getString(c.getColumnIndex("optionLabel")));
+                mCpDetailListItem.setOptionIsRight(c.getString(c.getColumnIndex("optionIsRight")));
+                mCpDetailListItem.setOptionUserAnswer(c.getString(c.getColumnIndex("optionUserAnswer")));
+                mCpDetailListItem.setPointsRightAnswer(c.getInt(c.getColumnIndex("pointsRightAnswer")));       // int
+                mCpDetailListItem.setPointsParticipation(c.getInt(c.getColumnIndex("pointsParticipation")));       // int
+
+                // adding to todo list
+                campDetailedList.add(mCpDetailListItem);
+            } while (c.moveToNext());
+        }
+
+        return campDetailedList;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    /////////     HANDLING DATABASE VERSION
+    ///////////////////////////////////////////////////////////////////////////////////////////
     private void updatePgDatabase(SQLiteDatabase db, int oldVersion, int newVersion){
 
         if (oldVersion<1) {
@@ -547,13 +618,15 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    /////////     UTILITIES
+    ///////////////////////////////////////////////////////////////////////////////////////////
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
     }
-
     // closing database
     public void closeDB() {
         SQLiteDatabase db = this.getReadableDatabase();

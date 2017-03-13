@@ -18,7 +18,7 @@ public class Option {
     // constructors
     public Option() {
     }
-    //// withou user answer... set user answer = "U" for Undifined
+    //// if we dont have the user answer... set user answer = "U" for Undefined
     public Option(Integer idSponsor, Integer idCampaign, Integer idQuestion, Integer sequential, String label, String rightAnswer) {
         this.idSponsor = idSponsor;
         this.idCampaign = idCampaign;
@@ -38,6 +38,7 @@ public class Option {
         this.rightAnswer = rightAnswer;
         this.userAnswer = userAnswer;
     }
+
 
     // setters
 

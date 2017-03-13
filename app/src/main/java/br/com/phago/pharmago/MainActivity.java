@@ -654,9 +654,8 @@ public class MainActivity extends AppCompatActivity {
         final String TAG = "UpdateTransaction";
         db = new PgDatabaseHelper(getApplicationContext());
 
-        // TODO remove
-        db.dropTable("pg_transaction");
-        db.createTableTransaction();
+        //db.dropTable("pg_transaction");
+        //db.createTableTransaction();
 
         db.clearTableTransaction();
 
@@ -692,7 +691,6 @@ public class MainActivity extends AppCompatActivity {
                             jsonArry = jsonObjRoot.getJSONArray("json");
                             Log.i(TAG, "689_jsonArry: @@@"+jsonArry.toString());
                             /*
-
                             Transaction(String sponsorCode, String eventDate, String title, String nature, int idCampaign, int idTransaction, int amount)
                              */
 

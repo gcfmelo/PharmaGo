@@ -326,7 +326,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         values.put(FIELD_TRANSACTION_AMOUNT, tr.getAmount());
 
         // insert row
-        long tr_id = db.insert(TABLE_SPONSOR, null, values);
+        long tr_id = db.insert(TABLE_TRANSACTION, null, values);
 
         return tr_id;
     }

@@ -1,0 +1,8 @@
+//  To solve the problem
+//  Error:Gradle DSL method not found: 'has()'
+//  See comment #0 at http://stackoverflow.com/questions/41237629/android-studio-errorgradle-dsl-method-not-found-has
+//  Had the same problem then I tried this: go to your volley module and comment out "publish = project.has("release")" in the
+// "bintray.gradle" file, cooment the line:  publish = project.has("release")
+//  look at the next line:
+
+//    publish = project.has("release")

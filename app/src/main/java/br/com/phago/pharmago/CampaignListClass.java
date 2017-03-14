@@ -6,7 +6,7 @@ package br.com.phago.pharmago;
  */
 
 public class CampaignListClass {
-    private String campaignName, sponsorName, startDate, campaignStatus;
+    public String campaignName, sponsorName, startDate, campaignStatus;
 
     public CampaignListClass() {
     }

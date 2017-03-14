@@ -2,5 +2,9 @@
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\pharmago_logo.png",
         "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\drawable-mdpi\\pharmago_logo.png"
+    },
+    {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_check_black_24dp.png",
+        "source": "C:\\Android\\PharmaGo\\app\\build\\generated\\res\\pngs\\debug\\drawable-mdpi\\ic_check_black_24dp.png"
     }
 ]

@@ -1,40 +1,79 @@
+SQLite_NOTES
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DATABASE ADMINISTRATION
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Open 'Terminal' and you get a Windows CMD prompt. Follow this steps and commands:
+adb root
+adb shell does not work (if adb root command, your prompt is a '$'), try typing the 'su' command after loading the sell (your prompt must change from a '$' to a '#' )
+This will connect you to a Linux terminal session in you AVD emulated device or on a USB connected phone.
+It is hard to get 'su' (super user or root) privileges in case of a connected phone.
+All Linux commands are available for you in this terminal emulator.
+cd ./data/data/br.com.phago.pharmago/databases
+cd ./data/data/br.com.phago.myapplication/databases
+Use the Linux 'ls' to see what files and folder are there...
+Open your Database in the SQLite admin tool:
+sqlite3 <your_database_name>.db  (.db is the usual extension, but you may choose other if you prefer)
+sqlite3 pharmago.db
+USE CTRL+D to exit SQLite Admin and again to close shell back to windows CMD prompt.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 .tables
-pg_option         pg_quiz           pg_transaction
-pg_campaign       pg_question       pg_sponsor        pg_user
-
------------------------------------------------------------
-- - - - - - - - -   S C H E M A   - - - - - - - - - - - - -
------------------------------------------------------------
-DROP TABLE pg_user;
-CREATE TABLE 'pg_user' ( _id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,email TEXT, cpf TEXT, status TEXT, companyCode TEXT, companyName TEXT, companyLatitude  TEXT,companyLongitude TEXT, created_at TEXT);
-SELECT COUNT(*) FROM pg_user;
-----------------------------------------------------------
-DROP TABLE pg_quiz;
-CREATE TABLE pg_quiz(_id INTEGER PRIMARY KEY AUTOINCREMENT, idQuiz INTEGER, sponsorCode TEXT, token TEXT, status TEXT, created_at TEXT);
-SELECT COUNT(*) FROM pg_quiz;
-----------------------------------------------------------
-DROP TABLE pg_transaction;
-CREATE TABLE pg_transaction(_id INTEGER PRIMARY KEY AUTOINCREMENT,idTransaction TEXT, idCampaign TEXT, title TEXT, sponsorCode TEXT, eventDate TEXT, nature TEXT, amount INTEGER, created_at TEXT);
-SELECT COUNT(*) FROM pg_transaction;
-----------------------------------------------------------
+--------
+pg_option         pg_transaction    pg_campaign
+pg_question       pg_sponsor        pg_user
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DROP TABLE COMMANDS:
+--------------------------------
 DROP TABLE pg_sponsor;
-DROP TABLE temp_pg_sponsor;
-DELETE * FROM pg_sponsor;
-CREATE TABLE pg_sponsor(_id INTEGER PRIMARY KEY AUTOINCREMENT, sponsorCode TEXT, sponsorName TEXT);
-CREATE TABLE temp_pg_sponsor(_id INTEGER PRIMARY KEY AUTOINCREMENT, sponsorCode TEXT, sponsorName TEXT);
-SELECT COUNT(*) FROM pg_sponsor;
-SELECT * FROM pg_sponsor;
-SELECT * FROM temp_pg_sponsor;
-INSERT INTO pg_sponsor (sponsorCode, sponsorName) SELECT DISTINCT sponsorCode, sponsorName FROM temp_pg_sponsor;
-----------------------------------------------------------
+DROP TABLE pg_user;
 DROP TABLE pg_campaign;
-CREATE TABLE pg_campaign(_id INTEGER PRIMARY KEY AUTOINCREMENT, idCampaign TEXT, sponsorCode TEXT, sponsorName TEXT, startDate TEXT, endDate TEXT, numberOfQuestions INTEGER, pointsForRightAnswer INTEGER, pointsForParticipation INTEGER, status TEXT);
-SELECT COUNT(*) FROM pg_campaign;
-----------------------------------------------------------
 DROP TABLE pg_question;
-CREATE TABLE pg_question (_id INTEGER PRIMARY KEY AUTOINCREMENT, idQuestion TEXT, idCampaign TEXT, seqNumber INTEGER, questionLabel TEXT);
-SELECT COUNT(*) FROM pg_question;
-----------------------------------------------------------
 DROP TABLE pg_option;
-CREATE TABLE pg_option(_id INTEGER PRIMARY KEY AUTOINCREMENT, idCampaign TEXT, idQuestion TEXT, sequential INTEGER, optionLabel TEXT, rightAnswer INTEGER, userAnswer INTEGER, created_at TEXT);
+DROP TABLE pg_transaction;
+--------------------------------
+CREATE TABLE COMMANDS:
+--------------------------------
+CREATE TABLE pg_sponsor(_id INTEGER PRIMARY KEY AUTOINCREMENT,sponsorId INTEGER, sponsorCode TEXT, sponsorName TEXT );
+CREATE TABLE pg_user(_id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,email TEXT, cpf TEXT, userAccountStatus TEXT, companyCode TEXT, companyName TEXT, companyLatitude TEXT, companyLongitude TEXT, created_at TEXT);
+CREATE TABLE pg_campaign(_id INTEGER PRIMARY KEY AUTOINCREMENT,idCampaign INTEGER, idSponsor INTEGER, title TEXT, startDate TEXT, endDate TEXT, numberOfQuestions INTEGER, pointsForRightAnswer INTEGER, pointsForParticipation INTEGE
+R, status TEXT);
+CREATE TABLE pg_question(_id INTEGER PRIMARY KEY AUTOINCREMENT,idQuestion INTEGER, idCampaign INTEGER, idSponsor INTEGER, label TEXT );
+CREATE TABLE pg_option(_id INTEGER PRIMARY KEY AUTOINCREMENT,idSponsor INTEGER, idCampaign INTEGER, idQuestion INTEGER, sequential INTEGER, label TEXT, rightAnswer INTEGER, userAnswer INTEGER, created_at TEXT);
+CREATE TABLE pg_transaction(_id INTEGER PRIMARY KEY AUTOINCREMENT,idTransaction INTEGER, idCampaign INTEGER, title TEXT, sponsorCode TEXT, eventDate TEXT, nature TEXT, amount INTEGER, created_at TEXT);
+
+--------------------------------
+RECORD COUNT COMMANDS:
+--------------------------------
+SELECT COUNT(*) FROM pg_sponsor;
+SELECT COUNT(*) FROM pg_user;
+SELECT COUNT(*) FROM pg_campaign;
+SELECT COUNT(*) FROM pg_question;
 SELECT COUNT(*) FROM pg_option;
+SELECT COUNT(*) FROM pg_transaction;
+
+--------------------------------
+DELETE RECORDS COMMANDS:
+--------------------------------
+DELETE * FROM pg_sponsor;
+DELETE * FROM pg_user;
+DELETE * FROM pg_campaign;
+DELETE * FROM pg_question;
+DELETE * FROM pg_option;
+DELETE * FROM pg_transaction;
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SOME USEFUL QUERIES EXAMPLES
+-----------------------------------
+INSERT DATA FROM A QUERY INTO A TABLE (USE OF 'DISTINCT' CLAUSE):
+-----------------------------------
+INSERT INTO pg_sponsor (sponsorCode, sponsorName) SELECT DISTINCT sponsorCode, sponsorName FROM temp_pg_sponsor;
+-----------------------------------
+LIST TO CAMPAIGN LISTVIEW:
+-----------------------------------
+select cp.title TEMA, sp.sponsorName PATROCINADOR, cp.startDate DATA_INICIO, cp.status STATUS FROM pg_campaign cp, pg_sponsor sp WHERE cp.idSponsor = sp.sponsorId;
+
+LIST TO CAMPAIGN DETAILS LISTVIEW:
+-----------------------------------
+select cp.title TEMA, sp.sponsorName PATROCINADOR, cp.startDate DATA_INICIO, cp.status STATUS, qt.label QUESTAO, op.sequential OpNro, op.label OPCAO, op.rightAnswer IsCorrect, op.userAnswer UserAnswer FROM pg_campaign cp, pg_sponsor sp, pg_question qt, pg_option op WHERE ((cp.idSponsor = sp.sponsorId) AND (qt.idCampaign = cp.idCampaign) AND ((op.idCampaign = qt.idCampaign) and(op.idQuestion = qt.idQuestion)));
+
+
+

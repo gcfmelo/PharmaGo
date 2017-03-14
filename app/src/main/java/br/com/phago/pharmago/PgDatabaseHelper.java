@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "phago.db";
+    private static final String DATABASE_NAME = "pharmago.db";
 
     // Common column names (used in more than one table)
     private static final String KEY_ID = "_id";
@@ -228,6 +229,8 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         // insert row
         long sponsor_id = db.insert(TABLE_SPONSOR, null, values);
 
+        closeDB();
+
         return sponsor_id;
     }
 
@@ -248,14 +251,14 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         // insert row
         //String TempTableSponsor = "temp_"+TABLE_SPONSOR;
         long user_id = db.insert(TABLE_USER, null, values);
-
+        closeDB();
         return user_id;
 
     }
 
     public long addCampaign(Campaign campaign) {
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = super.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(FIELD_CAMPAIGN_ID, campaign.getIdCampaign());
@@ -269,6 +272,10 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         values.put(FIELD_CAMPAIGN_STATUS, campaign.getStatus());
 
         long campaign_id = db.insert(TABLE_CAMPAIGN, null, values);
+
+        if (db.isOpen()){
+            closeDB();
+        }
 
         return campaign_id;
 
@@ -285,7 +292,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         values.put(FIELD_QUESTION_LABEL, question.getLabel());
 
         long question_id = db.insert(TABLE_QUESTION, null, values);
-
+        closeDB();
         return question_id;
     }
 
@@ -303,7 +310,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         values.put(FIELD_OPTION_USER_ANSWER, option.getUserAnswer());
 
         long option_id = db.insert(TABLE_OPTION, null, values);
-
+        closeDB();
         return option_id;
     }
 
@@ -327,7 +334,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
         // insert row
         long tr_id = db.insert(TABLE_TRANSACTION, null, values);
-
+        closeDB();
         return tr_id;
     }
 
@@ -447,6 +454,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     public void clearTableCampaign(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+TABLE_CAMPAIGN);
+        closeDB();
     }
 
     public void clearTableQuestion(){
@@ -486,7 +494,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
-
+        c.moveToFirst();
         // looping through all rows and adding to list
         if (c.moveToFirst()) {
             do {
@@ -499,42 +507,48 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
                 sponsors.add(sp);
             } while (c.moveToNext());
         }
-
+        closeDB();
         return sponsors;
     }
 
     public List<CampaignListClass> getAllCampaigns() {
         List<CampaignListClass> campList = new ArrayList<CampaignListClass>();
-        String selectQuery = "SELECT cp." + FIELD_CAMPAIGN_TITLE + " campaignName, " +
-                " sp." + FIELD_SPONSOR_NAME + " sponsorName, " +
-                " cp." + FIELD_CAMPAIGN_START_DATE + " startDate, " +
-                " cp." + FIELD_CAMPAIGN_STATUS + " campaignStatus " +
-                " FROM " + TABLE_CAMPAIGN + " cp, " + TABLE_SPONSOR + " sp "+
-                " WHERE " + "(cp." + FIELD_CAMPAIGN_SPONSOR_ID + " = sp." + FIELD_SPONSOR_ID +");";
 
-        //Log.e(LOG, selectQuery);
+        try {
+            String selectQuery = "SELECT cp." + FIELD_CAMPAIGN_TITLE + " campaignName, " +
+                    " sp." + FIELD_SPONSOR_NAME + " sponsorName, " +
+                    " cp." + FIELD_CAMPAIGN_START_DATE + " startDate, " +
+                    " cp." + FIELD_CAMPAIGN_STATUS + " campaignStatus " +
+                    " FROM " + TABLE_CAMPAIGN + " cp, " + TABLE_SPONSOR + " sp " +
+                    " WHERE " + "(cp." + FIELD_CAMPAIGN_SPONSOR_ID + " = sp." + FIELD_SPONSOR_ID + ");";
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, null);
+            SQLiteDatabase db = this.getReadableDatabase();
 
-        // looping through all rows returned by cursor and adding to the list of CampaignListClass
-        // CampaignListClass(String campaignName, String sponsorName, String startDate, String campaignStatus)
-        if (c.moveToFirst()) {
-            do {
-                CampaignListClass mCampaignListItem = new CampaignListClass();
-                mCampaignListItem.setCampaignName(c.getString((c.getColumnIndex("campaignName"))));
-                mCampaignListItem.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
-                mCampaignListItem.setStartDate(c.getString(c.getColumnIndex("startDate")));
-                mCampaignListItem.setCampaignStatus(c.getString(c.getColumnIndex("campaignStatus")));
+            Cursor c = db.rawQuery(selectQuery, null);
+            c.moveToFirst();
+            Log.i("teste", Integer.toString(c.getCount()));
 
-                // adding to todo list
-                campList.add(mCampaignListItem);
-            } while (c.moveToNext());
+            // looping through all rows returned by cursor and adding to the list of CampaignListClass
+            // CampaignListClass(String campaignName, String sponsorName, String startDate, String campaignStatus)
+            if (c.moveToFirst()) {
+                do {
+                    CampaignListClass mCampaignListItem = new CampaignListClass();
+
+                    mCampaignListItem.setCampaignName(c.getString((c.getColumnIndex("campaignName"))));
+                    mCampaignListItem.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
+                    mCampaignListItem.setStartDate(c.getString(c.getColumnIndex("startDate")));
+                    mCampaignListItem.setCampaignStatus(c.getString(c.getColumnIndex("campaignStatus")));
+
+                    //Log.i(LOG, mCampaignListItem.toString());
+                    // adding item to list
+                    campList.add(mCampaignListItem);
+                } while (c.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.i("Erro", e.toString());
         }
-
         return campList;
     }
-
 
     public List<CampaignDetailListClass> getAllDetailedCampaigns() {
         List<CampaignDetailListClass> campDetailedList = new ArrayList<CampaignDetailListClass>();

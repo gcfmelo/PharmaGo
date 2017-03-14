@@ -8,6 +8,10 @@
         "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\menu\\activity_main_menu_drawer.xml"
     },
     {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\menu\\main_menu_x.xml",
+        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\menu\\main_menu_x.xml"
+    },
+    {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\menu\\main_menu.xml",
         "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\menu\\main_menu.xml"
     }

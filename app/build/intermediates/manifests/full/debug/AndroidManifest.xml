@@ -14,36 +14,20 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name="br.com.phago.pharmago.MainActivity" >
+        <activity
+            android:name="br.com.phago.pharmago.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="br.com.phago.pharmago.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity
-            android:name="br.com.phago.pharmago.UserMenuActivity"
-            android:label="@string/title_activity_user_menu" />
-        <activity
-            android:name="br.com.phago.pharmago.AccountMenuActivity"
-            android:label="@string/title_activity_account_menu" />
-        <activity
-            android:name="br.com.phago.pharmago.CampaignsMenuActivity"
-            android:label="@string/title_activity_campaigns_menu" />
-
-        <service
-            android:name="br.com.phago.pharmago.getWsData"
-            android:exported="false" />
-        // true if available for other Apps
-        <activity
-            android:name="br.com.phago.pharmago.ClosedCampaignsListActivity"
-            android:label="@string/button_text" />
-        <activity android:name="br.com.phago.pharmago.CampaignsActivityList" />
     </application>
 
 </manifest>

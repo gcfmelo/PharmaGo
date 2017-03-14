@@ -1,4 +1,4 @@
-#Thu Mar 02 23:45:12 BRT 2017
+#Mon Mar 13 23:39:45 BRT 2017
 file.2=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\classes_ee29ec01bb6148152a1f1b07847ad8fefbb92b21\\classes.dex
 base.2=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\classes_ee29ec01bb6148152a1f1b07847ad8fefbb92b21
 file.1=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\support-annotations-25.2.0_34fa22c91218fc0f43911d3815631d55bdd23a92\\classes.dex
@@ -13,14 +13,17 @@ renamed.5=classes9.dex
 renamed.4=classes.dex
 renamed.3=classes2.dex
 renamed.2=classes12.dex
-renamed.1=classes13.dex
+renamed.1=classes14.dex
 renamed.0=classes7.dex
+renamed.13=classes13.dex
 renamed.12=classes4.dex
 renamed.11=classes10.dex
 renamed.10=classes5.dex
+base.13=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\gson-2.8.0_876716d66400a95dc8e2380bbc2fb8266e8c6fdc
 base.12=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\classes_5d9f7ae8969d8188a9b19987335c21776619fa09
 base.11=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\classes_d387cc667c6cfb6e407d3bdad6997786d44f3173
 base.10=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\classes_62a9582e2f253539c12395c0f392efeb3135a36f
+file.13=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\gson-2.8.0_876716d66400a95dc8e2380bbc2fb8266e8c6fdc\\classes.dex
 file.12=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\classes_5d9f7ae8969d8188a9b19987335c21776619fa09\\classes.dex
 file.11=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\classes_d387cc667c6cfb6e407d3bdad6997786d44f3173\\classes.dex
 file.10=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\classes_62a9582e2f253539c12395c0f392efeb3135a36f\\classes.dex

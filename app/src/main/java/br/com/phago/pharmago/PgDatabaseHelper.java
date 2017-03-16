@@ -7,30 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-/**
- * Created by Gustavo on 05/03/2017.
- * *
- * // TIPS to debug SQLite databases ...
- * // adb root         //// to get logger as root in adb
- * // adb -e shell
- * // su /// prompt = '$' if you are not rooted root, if you are rooted your prompt will be '#'
- * //                  run 'su' command to change to #
- * // cd /data/data/br.com.phago.pharmago/databases/
- * // ls -l
- * // rm <filename>   ////  to DELETE a FILE
- * // sqlite3 phago.db
- * // .tables
- * // .schema <tablename>
- * // SELECT * FROM <tablename>;
- * // DROP TABLE <tablename>;
- * // .help
- */
 
 
 public class PgDatabaseHelper extends SQLiteOpenHelper {
@@ -43,6 +25,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
     // Database Name
     private static final String DATABASE_NAME = "pharmago.db";
+
 
     // Common column names (used in more than one table)
     private static final String KEY_ID = "_id";
@@ -119,7 +102,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     // Table Create Statements  -  pg_sponsor
     private static final String CREATE_TABLE_SPONSOR = "CREATE TABLE " +
             TABLE_SPONSOR + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-            FIELD_SPONSOR_ID + " INTEGER, "+
+            FIELD_SPONSOR_ID + " INTEGER, " +
             FIELD_SPONSOR_CODE + " TEXT, " +
             FIELD_SPONSOR_NAME + " TEXT );";
 
@@ -191,10 +174,6 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
             KEY_CREATED_AT + " TEXT" + ");";
 
 
-
-    // TODO - CRUD (Create, Read, Update and Delete) Operations
-
-    // Constructor
     public PgDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -217,9 +196,16 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         // oldVersion = 0 to create from zero
         updatePgDatabase(db, 0, DATABASE_VERSION);
     }
+
     public long addSponsor(Sponsor sponsor) {
 
         SQLiteDatabase db = this.getWritableDatabase();
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
+        ///////  using DatabaseManager/////////////////////////////////////
+        //SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();//
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
 
         ContentValues values = new ContentValues();
         values.put(FIELD_SPONSOR_ID, sponsor.getSponsorId());
@@ -230,6 +216,11 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         long sponsor_id = db.insert(TABLE_SPONSOR, null, values);
 
         closeDB();
+        ///////////////////////////////////////////////////////////////////
+        ///////  using DatabaseManager/////////////////////////////////////
+        //DatabaseManager.getInstance().closeDatabase(); ///////////////////
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
 
         return sponsor_id;
     }
@@ -273,7 +264,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
         long campaign_id = db.insert(TABLE_CAMPAIGN, null, values);
 
-        if (db.isOpen()){
+        if (db.isOpen()) {
             closeDB();
         }
 
@@ -338,144 +329,119 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         return tr_id;
     }
 
-    /*
-* getting all Campaign
-*
-    public List<Campaign> getAllCampaigns() {
-        List<Campaign> campaigns = new ArrayList<Campaign>();
-        String selectQuery = "SELECT  * FROM " + TABLE_CAMPAIGN;
-
-        //Log.e(LOG, selectQuery);
-        // CREATE TABLE pg_campaign(_id INTEGER PRIMARY KEY AUTOINCREMENT, idCampaign TEXT, sponsorCode TEXT,
-        // sponsorName TEXT, startDate TEXT, endDate TEXT,
-        // numberOfQuestions INTEGER, pointsForRightAnswer INTEGER, pointsForParticipation INTEGER,
-        // status TEXT);
-
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
-        if (c.moveToFirst()) {
-            do {
-                Campaign cp = new Campaign();
-
-                // _id PRIMARY KEY
-                cp.set_id(c.getInt((c.getColumnIndex(KEY_ID))));
-                //setIdCampaign(String sponsorCode, String startDate, int numberOfQuestions,
-                //int pointsForRightAnswer, int pointsForParticipation)
-
-                // idCampaign
-                cp.setIdCampaign((c.getString(c.getColumnIndex("sponsorCode"))),
-                                                (c.getString(c.getColumnIndex("startDate"))),
-                                                (c.getInt(c.getColumnIndex("numberOfQuestions"))),
-                                                (c.getInt(c.getColumnIndex("pointsForRightAnswer"))),
-                                                (c.getInt(c.getColumnIndex("pointsForParticipation"))));
-                // sponsorCode
-                cp.setSponsorCode(c.getString(c.getColumnIndex("sponsorCode")));
-                // sponsorName
-                cp.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
-                // startDate
-                cp.setStartDate(c.getString(c.getColumnIndex("startDate")));
-                // endDate
-                cp.setEndDate(c.getString(c.getColumnIndex("endDate")));
-                // numberOfQuestions
-                cp.setNumberOfQuestions(c.getInt(c.getColumnIndex("numberOfQuestions")));
-                // pointsForRightAnswer
-                cp.setPointsForRightAnswer(c.getInt(c.getColumnIndex("pointsForRightAnswer")));
-                // pointsForParticipation
-                cp.setPointsForParticipation(c.getInt(c.getColumnIndex("pointsForParticipation")));
-                // status
-                cp.setStatus(c.getString(c.getColumnIndex("status")));
-
-
-                // adding to todo list
-                campaigns.add(cp);
-            } while (c.moveToNext());
-        }
-
-        return campaigns;
-    }
-    */
-
-    /**
-     * get datetime
-     */
-
-    public void dropTable(String TableName){
+    // CREATE, CLEAR AND DROP TABLES
+    public void dropTable(String TableName) {
         SQLiteDatabase db = this.getWritableDatabase();
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
+        ///////  using DatabaseManager/////////////////////////////////////
+        //SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();//
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
         db.execSQL("DROP TABLE IF EXISTS " + TableName);
+
+        closeDB();
+        ///////////////////////////////////////////////////////////////////
+        ///////  using DatabaseManager/////////////////////////////////////
+        //DatabaseManager.getInstance().closeDatabase(); ///////////////////
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
     }
 
-    public void createTableUser(){
+    public void createTable(String SQL_Create_String) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL(CREATE_TABLE_USER);
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
+        ///////  using DatabaseManager/////////////////////////////////////
+        //SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();//
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
+        db.execSQL(SQL_Create_String);
+        closeDB();
+        ///////////////////////////////////////////////////////////////////
+        ///////  using DatabaseManager/////////////////////////////////////
+        //DatabaseManager.getInstance().closeDatabase(); ///////////////////
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
     }
 
-    public void createTableSponsor(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL(CREATE_TABLE_SPONSOR);
+    public void createTableUser() {
+        dropTable(TABLE_USER);
+        createTable(CREATE_TABLE_USER);
     }
 
-    public void createTableCampaign(){
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void createTableSponsor() {
+        dropTable(TABLE_SPONSOR);
+        createTable(CREATE_TABLE_SPONSOR);
+    }
+
+    public void createTableCampaign() {
         dropTable(TABLE_CAMPAIGN);
-        db.execSQL(CREATE_TABLE_CAMPAIGN);
+        createTable(CREATE_TABLE_CAMPAIGN);
     }
 
-    public void createTableQuestion(){
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void createTableQuestion() {
         dropTable(TABLE_QUESTION);
-        db.execSQL(CREATE_TABLE_QUESTION);
+        createTable(CREATE_TABLE_QUESTION);
     }
 
-    public void createTableOption(){
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void createTableOption() {
         dropTable(TABLE_OPTION);
-        db.execSQL(CREATE_TABLE_OPTION);
+        createTable(CREATE_TABLE_OPTION);
     }
 
-    public void createTableTransaction(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL(CREATE_TABLE_TRANSACTION);
+    public void createTableTransaction() {
+        dropTable(TABLE_TRANSACTION);
+        createTable(CREATE_TABLE_TRANSACTION);
     }
 
-
-    public void clearTableUser(){
+    public void clearTableUser() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+TABLE_USER);
+        db.execSQL("DELETE FROM " + TABLE_USER);
     }
 
-    public void clearTableSponsor(){
+    public void clearTableSponsor() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+TABLE_SPONSOR);
-    }
-
-    public void clearTableCampaign(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+TABLE_CAMPAIGN);
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
+        ///////  using DatabaseManager/////////////////////////////////////
+        //SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();//
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
+        db.execSQL("DELETE FROM " + TABLE_SPONSOR);
+        ///////////////////////////////////////////////////////////////////
+        ///////  using DatabaseManager/////////////////////////////////////
+        //DatabaseManager.getInstance().closeDatabase(); ///////////////////
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
         closeDB();
     }
 
-    public void clearTableQuestion(){
+    public void clearTableCampaign() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+TABLE_QUESTION);
+        db.execSQL("DELETE FROM " + TABLE_CAMPAIGN);
+        closeDB();
     }
 
-    public void clearTableOption(){
+    public void clearTableQuestion() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+TABLE_OPTION);
+        db.execSQL("DELETE FROM " + TABLE_QUESTION);
     }
 
-    public void clearTableTransaction(){
+    public void clearTableOption() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+TABLE_TRANSACTION);
+        db.execSQL("DELETE FROM " + TABLE_OPTION);
     }
 
+    public void clearTableTransaction() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_TRANSACTION);
+    }
 
-    public Sponsor getSponsorByCode(String sponsorCode){
+    ///// READ AND QUERY DATA
+    public Sponsor getSponsorByCode(String sponsorCode) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery = "SELECT "+FIELD_SPONSOR_NAME+" FROM " + TABLE_SPONSOR +" WHERE sponsorCode = '"+ sponsorCode + "';";
+        String selectQuery = "SELECT " + FIELD_SPONSOR_NAME + " FROM " + TABLE_SPONSOR + " WHERE sponsorCode = '" + sponsorCode + "';";
         Cursor c = db.rawQuery(selectQuery, null);
         if (c != null)
             c.moveToFirst();
@@ -488,11 +454,19 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
     public List<Sponsor> getAllSponsors() {
         List<Sponsor> sponsors = new ArrayList<Sponsor>();
-        String selectQuery = "SELECT  * FROM " + TABLE_SPONSOR;
+        String selectQuery = "SELECT  * FROM " + TABLE_SPONSOR+";";
 
         //Log.e(LOG, selectQuery);
 
         SQLiteDatabase db = this.getReadableDatabase();
+
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
+        ///////  using DatabaseManager/////////////////////////////////////
+        //SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();//
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
+
         Cursor c = db.rawQuery(selectQuery, null);
         c.moveToFirst();
         // looping through all rows and adding to list
@@ -503,11 +477,22 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
                 sp.setSponsorCode(c.getString(c.getColumnIndex("sponsorCode")));
                 sp.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
 
+                Log.e("sponsorId",Integer.toString(c.getInt((c.getColumnIndex("sponsorId")))));
+                Log.e("sponsorCode",(c.getString(1)));
+                Log.e("sponsorId",c.getString((c.getColumnIndex("sponsorId"))));
+
                 // adding to todo list
                 sponsors.add(sp);
             } while (c.moveToNext());
         }
+
+        ///////////////////////////////////////////////////////////////////
+        ///////  using DatabaseManager/////////////////////////////////////
+        //DatabaseManager.getInstance().closeDatabase(); ///////////////////
+        ///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
         closeDB();
+
         return sponsors;
     }
 
@@ -527,21 +512,18 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
             Cursor c = db.rawQuery(selectQuery, null);
             c.moveToFirst();
             Log.i("teste", Integer.toString(c.getCount()));
+            CampaignListClass cpl_item = new CampaignListClass();
 
             // looping through all rows returned by cursor and adding to the list of CampaignListClass
             // CampaignListClass(String campaignName, String sponsorName, String startDate, String campaignStatus)
             if (c.moveToFirst()) {
-                do {
-                    CampaignListClass mCampaignListItem = new CampaignListClass();
+                do {// adding item to list
+                    cpl_item = new CampaignListClass(c.getString(c.getColumnIndex("campaignName")),
+                            c.getString(c.getColumnIndex("sponsorName")),
+                            c.getString(c.getColumnIndex("startDate")),
+                            c.getString(c.getColumnIndex("campaignStatus")));
 
-                    mCampaignListItem.setCampaignName(c.getString((c.getColumnIndex("campaignName"))));
-                    mCampaignListItem.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
-                    mCampaignListItem.setStartDate(c.getString(c.getColumnIndex("startDate")));
-                    mCampaignListItem.setCampaignStatus(c.getString(c.getColumnIndex("campaignStatus")));
-
-                    //Log.i(LOG, mCampaignListItem.toString());
-                    // adding item to list
-                    campList.add(mCampaignListItem);
+                    campList.add(cpl_item);
                 } while (c.moveToNext());
             }
         } catch (Exception e) {
@@ -550,22 +532,26 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         return campList;
     }
 
+
+
+
+
     public List<CampaignDetailListClass> getAllDetailedCampaigns() {
         List<CampaignDetailListClass> campDetailedList = new ArrayList<CampaignDetailListClass>();
         String selectQuery = "SELECT cp." + FIELD_CAMPAIGN_TITLE +
                 " campaignTitle, sp." + FIELD_SPONSOR_NAME +
                 " sponsorName, cp." + FIELD_CAMPAIGN_START_DATE +
                 " startDate, cp." + FIELD_CAMPAIGN_STATUS +
-                " campaignStatus, qt."+ FIELD_QUESTION_LABEL +
+                " campaignStatus, qt." + FIELD_QUESTION_LABEL +
                 " questionLabel, op." + FIELD_OPTION_SEQUENTIAL +
                 " optionSeqNumber, op." + FIELD_OPTION_LABEL +
                 " optionLabel, op." + FIELD_OPTION_RIGHT_ANSWER +
                 " optionIsRight, op." + FIELD_OPTION_USER_ANSWER +
                 " optionUserAnswer, cp." + FIELD_CAMPAIGN_POINTS_RIGHT_ANSWER +
-                " pointsRightAnswer, cp." + FIELD_CAMPAIGN_POINTS_PARTICIPATION +" pointsParticipation " +
-                " FROM " + TABLE_CAMPAIGN + " cp ," + TABLE_SPONSOR + " sp, " + TABLE_QUESTION +" qt, " + TABLE_OPTION + " op " +
-                " WHERE ((cp." + FIELD_CAMPAIGN_SPONSOR_ID + " = sp." + FIELD_SPONSOR_ID +") " +
-                " AND (qt." + FIELD_QUESTION_CAMPAIGN_ID + " = cp." + FIELD_CAMPAIGN_ID +") " +
+                " pointsRightAnswer, cp." + FIELD_CAMPAIGN_POINTS_PARTICIPATION + " pointsParticipation " +
+                " FROM " + TABLE_CAMPAIGN + " cp ," + TABLE_SPONSOR + " sp, " + TABLE_QUESTION + " qt, " + TABLE_OPTION + " op " +
+                " WHERE ((cp." + FIELD_CAMPAIGN_SPONSOR_ID + " = sp." + FIELD_SPONSOR_ID + ") " +
+                " AND (qt." + FIELD_QUESTION_CAMPAIGN_ID + " = cp." + FIELD_CAMPAIGN_ID + ") " +
                 " AND ((op." + FIELD_OPTION_CAMPAIGN_ID + " = qt." + FIELD_QUESTION_CAMPAIGN_ID + ") and (op." + FIELD_OPTION_QUESTION_ID + " = qt." + FIELD_QUESTION_ID + ")));";
 
         //Log.e(LOG, selectQuery);
@@ -606,9 +592,9 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     ///////////////////////////////////////////////////////////////////////////////////////////
     /////////     HANDLING DATABASE VERSION
     ///////////////////////////////////////////////////////////////////////////////////////////
-    private void updatePgDatabase(SQLiteDatabase db, int oldVersion, int newVersion){
+    private void updatePgDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        if (oldVersion<1) {
+        if (oldVersion < 1) {
             // handle each upgrade here
             // suppose you added a new column in version 1
 
@@ -623,14 +609,14 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
             // create new tables
             onCreate(db);
         }
-        if (oldVersion<2){
+        if (oldVersion < 2) {
             // this code will run if the user already has the version
             // so insert here the code to add the extra column
             // example: db.execSQL("ALTER TABLE CAMPAIGN ADD COLUMN EXPIRED INT;");
         }
 
         // downgrade:
-        if (oldVersion==3){
+        if (oldVersion == 3) {
             // run code to existing version 3 database...
         }
         if (oldVersion < 6) {
@@ -647,6 +633,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         Date date = new Date();
         return dateFormat.format(date);
     }
+
     // closing database
     public void closeDB() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -654,4 +641,23 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
             db.close();
     }
 
+
+
+    URL createURL(String email, String password, String action, String token) {
+        String baseURL = "http://www.benben.net.br/apiPharmaGo?";
+        // LoginActivity.super.getString(R.string.web_sevice_base_url);
+        try {
+            // create URL for specified email and password
+            String baseUrl = "http://www.benben.net.br/apiPharmaGo?";
+            String urlString = baseUrl + "email=" + email + "&password=" + password + "&action=" + action + "&token=" + token;
+            // URLEncoder.encode(city, "UTF-8") use caso haja espaços ou outros caracteres especiais em uma string da consulta...
+
+            return new URL(urlString);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
 }

@@ -1,4 +1,4 @@
-#Mon Mar 13 21:33:51 BRT 2017
+#Wed Mar 15 23:46:21 BRT 2017
 base.0=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_4072bfa806a075523e0959a942f4e93f5e93c277
 renamed.1=classes.dex
 renamed.0=classes2.dex

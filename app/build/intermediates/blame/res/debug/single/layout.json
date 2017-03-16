@@ -32,6 +32,10 @@
         "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\layout\\abc_action_menu_layout.xml"
     },
     {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_campaign_questionnaire.xml",
+        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\activity_campaign_questionnaire.xml"
+    },
+    {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_radio.xml",
         "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\layout\\abc_list_menu_item_radio.xml"
     },

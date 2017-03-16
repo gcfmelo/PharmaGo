@@ -1,4 +1,4 @@
-#Tue Mar 14 17:23:21 BRT 2017
+#Wed Mar 15 23:38:06 BRT 2017
 base.0=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\5\\slice_9
 renamed.0=classes.dex
 file.0=C\:\\Android\\PharmaGo\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\5\\slice_9\\classes.dex

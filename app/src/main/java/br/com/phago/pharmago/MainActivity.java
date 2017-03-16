@@ -1,5 +1,6 @@
 package br.com.phago.pharmago;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -25,34 +26,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
     public static final boolean RECREATE_TABLES = false;
     public static final String KEY_COUNTER = "COUNTER";
     public static final String WS_RETURN_OK = "SUCCESSFUL";
     public static final String WS_RETURN_ERROR = "ERROR";
-    // global variables to hold user data
-    public static String user_id, user_name, user_email;
-    public static int mCounter = 0;
 
-    ResponseElton responseElton = new ResponseElton();
     // DatabaseHelper
     PgDatabaseHelper dbx;
     //List of Campaign objects
-    //private List<Campaign> campaignList = new ArrayList<>();
+//    private List<Campaign> campaignList = new ArrayList<>();
     private List<CampaignListClass> campaignList = new ArrayList<CampaignListClass>();
+    private List<CampaignDetailListClass> campaignDetailList = new ArrayList<CampaignDetailListClass>();
     // ArrayAdapter for bind Campaign objects to a ListView
     private CampaignArrayAdapter campaignArrayAdapter;
     private ListView campaignListView; // displays Campaign info
@@ -73,15 +62,17 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i(TAG, "... onCreate");
 //        UpdateSponsor("gcfmelo@gmail.com", "abc123");
-        //TestSponsorList();
+//        TestSponsorList();
 //        UpdateUser("gcfmelo@gmail.com", "abc123");
-        UpdateCampaign("gcfmelo@gmail.com", "abc123");
+//        UpdateCampaign("gcfmelo@gmail.com", "abc123");
 //        UpdateQuestionOption("gcfmelo@gmail.com", "abc123");
 //        UpdateTransaction("gcfmelo@gmail.com", "abc123");
 
 
         // TODO GET THE CAMPAIGN LIST TO USE IN THE LAYOUT - ADJUST THIS
         campaignList = dbx.getAllCampaigns();
+        campaignDetailList = dbx.getAllDetailedCampaigns();
+
         Toast.makeText(this, " BD returned " + Integer.toString(campaignList.size()) + " campaigns", Toast.LENGTH_SHORT).show();
         // TODO DELETE ME
         // for debugging purposes
@@ -101,12 +92,17 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
                 view.setSelected(true);
                 Toast.makeText(MainActivity.this, "Clicked at item " + Integer.toString(position) + " - " + campaignList.get(position).getCampaignName(), Toast.LENGTH_SHORT).show();
+                
                 // load the Activity with detailed info about the User Selected Campaign
             }
         });
-        List<Sponsor> sp = dbx.getAllSponsors();
-        Toast.makeText(this, " BD returned " + Integer.toString(sp.size()) + " sponsors", Toast.LENGTH_LONG).show();
-        //dbx.closeDB();
+
+        UpdateSponsor("gcfmelo@gmail.com", "abc123");
+        UpdateUser("gcfmelo@gmail.com", "abc123");
+        UpdateCampaign("gcfmelo@gmail.com", "abc123");
+        UpdateQuestionOption("gcfmelo@gmail.com", "abc123");
+        UpdateTransaction("gcfmelo@gmail.com", "abc123");
+
     }
 
     @Override
@@ -133,7 +129,15 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_menu_op2) {
-            Toast.makeText(this, "You selected Option 2 id: " + Integer.toString(id), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You selected Option 2: RELOAD App", Toast.LENGTH_SHORT).show();
+
+            Intent intent = getIntent();
+            overridePendingTransition(0, 0);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(intent);
+
             return true;
         }
 
@@ -365,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void UpdateCampaign_old(String email, String password) {
+    public void UpdateCampaign(String email, String password) {
 
         final String TAG = "UpdateCampaign";
         Log.d(TAG, " process started");
@@ -509,98 +513,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (SQLiteException e) {
             Log.i(TAG, "Service: " + "Database is unavailable!");
         }
-
-    }
-
-    public void UpdateCampaign(String email, String password) {
-
-        final String TAG = "UpdateCampaign";
-
-        if (RECREATE_TABLES) {
-            dbx.dropTable("pg_campaign");
-            dbx.createTableCampaign();
-        } else {
-            dbx.clearTableCampaign();
-        }
-
-
-
-        // URL url = createURL(email, password, "findAllCampaigns", "123456789");     //format URL to call WS
-
-
-        HttpsURLConnection https = null;
-
-
-        try {
-            URL url = this.createURL("gcfmelo@gmail.com", "abc123", "findAllCampaigns", "123456789") ;
-
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            try {
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                BufferedReader inx = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                String line1;
-                while ((line1 = inx.readLine()) != null) {
-                    System.out.println(line1);
-                    Log.e(TAG, line1);
-                }
-            } finally {
-                urlConnection.disconnect();
-            }
-//            https = (HttpsURLConnection) url.openConnection();
-//            https.setReadTimeout(10000);
-//            https.setConnectTimeout(15000);
-//            https.setRequestMethod("POST");
-//            https.setDoInput(true);
-//            https.setDoOutput(true);
-//            OutputStream os = https.getOutputStream();
-//            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-//            writer.write(this.getQuery(nvps));
-//            writer.flush();
-//            writer.close();
-//            os.close();
-            https.connect();
-//            BufferedReader in = new BufferedReader(new InputStreamReader(https.getInputStream()));
-//            String line1;
-//            while ((line1 = in.readLine()) != null) {
-//                System.out.println(line1);
-//                Log.e(TAG, line1);
-//            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e(TAG,e.getMessage());
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            Log.e(TAG,e.getMessage());
-        }
-
-
-
-
-
-//        String jsonElton;
-//        ResponseElton responseElton1 = new ResponseElton();
-//        com.google.gson.Gson gson = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-//        responseElton1 = gson.fromJson(myJsonString, ResponseElton.class);
-//
-//
-//            com.google.gson.Gson gson = new com.google.gson.GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-//            ArrayList<CampaignBean> beans = gson.fromJson(responseElton.getJson(), new TypeToken<ArrayList<CampaignBean>>() {
-//            }.getType());
-//
-//            for (CampaignBean bean : beans) {
-//                Log.i("BEAN ", bean.getIdCampaign().toString() + " - " + bean.getTitle());
-//                for (QuestionBean q : bean.getQuestions()) {
-//                    Log.i("QUESTION BEAN ", q.getLabel());
-//                    for (OptionBean o : q.getOptions()) {
-//                        Log.i("OPTION BEAN ", o.getLabel());
-//                    }
-//                }
-//            }
-//
-
-
 
     }
 
@@ -914,242 +826,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    class ResponseElton {
 
-        private String status;
-        private String errorMessage;
-        private String json;
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public String getErrorMessage() {
-            return errorMessage;
-        }
-
-        public void setErrorMessage(String errorMessage) {
-            this.errorMessage = errorMessage;
-        }
-
-        public String getJson() {
-            return json;
-        }
-
-        public void setJson(String json) {
-            this.json = json;
-        }
-    }
-
-    public class OptionBean {
-        private Integer idSponsor;
-        private Integer idCampaign;
-        private Integer idQuestion;
-        private Integer sequential;
-        private String label;
-        private String rightAnswer;
-        private String userAnswer;
-
-        public Integer getIdSponsor() {
-            return idSponsor;
-        }
-
-        public void setIdSponsor(Integer idSponsor) {
-            this.idSponsor = idSponsor;
-        }
-
-        public Integer getIdCampaign() {
-            return idCampaign;
-        }
-
-        public void setIdCampaign(Integer idCampaign) {
-            this.idCampaign = idCampaign;
-        }
-
-        public Integer getIdQuestion() {
-            return idQuestion;
-        }
-
-        public void setIdQuestion(Integer idQuestion) {
-            this.idQuestion = idQuestion;
-        }
-
-        public Integer getSequential() {
-            return sequential;
-        }
-
-        public void setSequential(Integer sequential) {
-            this.sequential = sequential;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-        public void setLabel(String label) {
-            this.label = label;
-        }
-
-        public String getRightAnswer() {
-            return rightAnswer;
-        }
-
-        public void setRightAnswer(String rightAnswer) {
-            this.rightAnswer = rightAnswer;
-        }
-
-        public String getUserAnswer() {
-            return userAnswer;
-        }
-
-        public void setUserAnswer(String userAnswer) {
-            this.userAnswer = userAnswer;
-        }
-    }
-
-    public class QuestionBean {
-        private Integer idSponsor;
-        private Integer idCampaign;
-        private Integer idQuestion;
-        private String label;
-        private ArrayList<OptionBean> options;
-
-        public Integer getIdSponsor() {
-            return idSponsor;
-        }
-
-        public void setIdSponsor(Integer idSponsor) {
-            this.idSponsor = idSponsor;
-        }
-
-        public Integer getIdCampaign() {
-            return idCampaign;
-        }
-
-        public void setIdCampaign(Integer idCampaign) {
-            this.idCampaign = idCampaign;
-        }
-
-        public Integer getIdQuestion() {
-            return idQuestion;
-        }
-
-        public void setIdQuestion(Integer idQuestion) {
-            this.idQuestion = idQuestion;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-        public void setLabel(String label) {
-            this.label = label;
-        }
-
-        public ArrayList<OptionBean> getOptions() {
-            return options;
-        }
-
-        public void setOptions(ArrayList<OptionBean> options) {
-            this.options = options;
-        }
-    }
-
-    public class CampaignBean {
-        private Integer idCampaign;
-        private Integer idSponsor;
-        private String title;
-        private java.sql.Date startDate;
-        private java.sql.Date endDate;
-        private Integer numberOfQuestions;
-        private Integer pointsForRightAnswer;
-        private Integer pointsForParticipation;
-        private String status;
-        private ArrayList<QuestionBean> questions;
-
-        public Integer getIdCampaign() {
-            return idCampaign;
-        }
-
-        public void setIdCampaign(Integer idCampaign) {
-            this.idCampaign = idCampaign;
-        }
-
-        public Integer getIdSponsor() {
-            return idSponsor;
-        }
-
-        public void setIdSponsor(Integer idSponsor) {
-            this.idSponsor = idSponsor;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public Date getStartDate() {
-            return startDate;
-        }
-
-        public void setStartDate(Date startDate) {
-            this.startDate = startDate;
-        }
-
-        public Date getEndDate() {
-            return endDate;
-        }
-
-        public void setEndDate(Date endDate) {
-            this.endDate = endDate;
-        }
-
-        public Integer getNumberOfQuestions() {
-            return numberOfQuestions;
-        }
-
-        public void setNumberOfQuestions(Integer numberOfQuestions) {
-            this.numberOfQuestions = numberOfQuestions;
-        }
-
-        public Integer getPointsForRightAnswer() {
-            return pointsForRightAnswer;
-        }
-
-        public void setPointsForRightAnswer(Integer pointsForRightAnswer) {
-            this.pointsForRightAnswer = pointsForRightAnswer;
-        }
-
-        public Integer getPointsForParticipation() {
-            return pointsForParticipation;
-        }
-
-        public void setPointsForParticipation(Integer pointsForParticipation) {
-            this.pointsForParticipation = pointsForParticipation;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public ArrayList<QuestionBean> getQuestions() {
-            return questions;
-        }
-
-        public void setQuestions(ArrayList<QuestionBean> questions) {
-            this.questions = questions;
-        }
-    }
 
 }

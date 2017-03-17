@@ -282,6 +282,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         values.put(FIELD_QUESTION_SPONSOR_ID, question.getIdSponsor());
         values.put(FIELD_QUESTION_LABEL, question.getLabel());
 
+
         long question_id = db.insert(TABLE_QUESTION, null, values);
         closeDB();
         return question_id;
@@ -501,6 +502,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
         try {
             String selectQuery = "SELECT cp." + FIELD_CAMPAIGN_TITLE + " campaignName, " +
+                    " cp." + FIELD_CAMPAIGN_ID + " campaignId, " +
                     " sp." + FIELD_SPONSOR_NAME + " sponsorName, " +
                     " cp." + FIELD_CAMPAIGN_START_DATE + " startDate, " +
                     " cp." + FIELD_CAMPAIGN_STATUS + " campaignStatus " +
@@ -519,6 +521,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
             if (c.moveToFirst()) {
                 do {// adding item to list
                     cpl_item = new CampaignListClass(c.getString(c.getColumnIndex("campaignName")),
+                            c.getInt(c.getColumnIndex("campaignId")),
                             c.getString(c.getColumnIndex("sponsorName")),
                             c.getString(c.getColumnIndex("startDate")),
                             c.getString(c.getColumnIndex("campaignStatus")));
@@ -534,12 +537,11 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
 
 
-
-
     public List<CampaignDetailListClass> getAllDetailedCampaigns() {
         List<CampaignDetailListClass> campDetailedList = new ArrayList<CampaignDetailListClass>();
         String selectQuery = "SELECT cp." + FIELD_CAMPAIGN_TITLE +
-                " campaignTitle, sp." + FIELD_SPONSOR_NAME +
+                " campaignTitle, " + "cp." + FIELD_CAMPAIGN_ID +
+                " campaignId, sp." + FIELD_SPONSOR_NAME +
                 " sponsorName, cp." + FIELD_CAMPAIGN_START_DATE +
                 " startDate, cp." + FIELD_CAMPAIGN_STATUS +
                 " campaignStatus, qt." + FIELD_QUESTION_LABEL +
@@ -569,6 +571,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
                 CampaignDetailListClass mCpDetailListItem = new CampaignDetailListClass();
 
                 mCpDetailListItem.setCampaignTitle(c.getString((c.getColumnIndex("campaignTitle"))));
+                mCpDetailListItem.setCampaignId(c.getInt(c.getColumnIndex("campaignId")));       // int
                 mCpDetailListItem.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
                 mCpDetailListItem.setStartDate(c.getString(c.getColumnIndex("startDate")));
                 mCpDetailListItem.setCampaignStatus(c.getString(c.getColumnIndex("campaignStatus")));
@@ -587,6 +590,61 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
         return campDetailedList;
     }
+
+    public List<CampaignDetailListClass> getDetailedCampaignByCampaignName(String selectedCampaignName) {
+        List<CampaignDetailListClass> campDetailedList = new ArrayList<CampaignDetailListClass>();
+        String selectQuery = "SELECT cp." + FIELD_CAMPAIGN_TITLE + " campaignTitle, " +
+                "cp." + FIELD_CAMPAIGN_ID + " campaignId, " +
+                "sp." + FIELD_SPONSOR_NAME +" sponsorName, " +
+                "cp." + FIELD_CAMPAIGN_START_DATE + " startDate, " +
+                "cp." + FIELD_CAMPAIGN_STATUS + " campaignStatus, " +
+                "qt." + FIELD_QUESTION_LABEL + " questionLabel, " +
+                "op." + FIELD_OPTION_SEQUENTIAL + " optionSeqNumber, " +
+                "op." + FIELD_OPTION_LABEL + " optionLabel, " +
+                "op." + FIELD_OPTION_RIGHT_ANSWER + " optionIsRight, " +
+                "op." + FIELD_OPTION_USER_ANSWER + " optionUserAnswer, " +
+                "cp." + FIELD_CAMPAIGN_POINTS_RIGHT_ANSWER + " pointsRightAnswer, " +
+                "cp." + FIELD_CAMPAIGN_POINTS_PARTICIPATION + " pointsParticipation " +
+                " FROM " + TABLE_CAMPAIGN + " cp ," + TABLE_SPONSOR + " sp, " + TABLE_QUESTION + " qt, " + TABLE_OPTION + " op " +
+                " WHERE ((cp." + FIELD_CAMPAIGN_SPONSOR_ID + " = sp." + FIELD_SPONSOR_ID + ") " +
+                " AND (qt." + FIELD_QUESTION_CAMPAIGN_ID + " = cp." + FIELD_CAMPAIGN_ID + ") " +
+                " AND (cp." + FIELD_CAMPAIGN_TITLE + " = " + selectedCampaignName + ") " +
+                " AND ((op." + FIELD_OPTION_CAMPAIGN_ID + " = qt." + FIELD_QUESTION_CAMPAIGN_ID + ") and (op." + FIELD_OPTION_QUESTION_ID + " = qt." + FIELD_QUESTION_ID + ")));";
+
+        //Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows returned by cursor and adding to the list of CampaignDetailListClass
+
+        //     private String campaignTitle, sponsorName, startDate, campaignStatus, questionLabel, optionLabel,optionIsRight,optionUserAnswer;
+        //     private int optionSeqNumber, pointsRightAnswer, pointsParticipation;
+
+        if (c.moveToFirst()) {
+            do {
+                CampaignDetailListClass mCpDetailCampaignItem = new CampaignDetailListClass();
+
+                mCpDetailCampaignItem.setCampaignTitle(c.getString((c.getColumnIndex("campaignTitle"))));
+                mCpDetailCampaignItem.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
+                mCpDetailCampaignItem.setStartDate(c.getString(c.getColumnIndex("startDate")));
+                mCpDetailCampaignItem.setCampaignStatus(c.getString(c.getColumnIndex("campaignStatus")));
+                mCpDetailCampaignItem.setQuestionLabel(c.getString(c.getColumnIndex("questionLabel")));
+                mCpDetailCampaignItem.setOptionSeqNumber(c.getInt(c.getColumnIndex("optionSeqNumber")));         // int
+                mCpDetailCampaignItem.setOptionLabel(c.getString(c.getColumnIndex("optionLabel")));
+                mCpDetailCampaignItem.setOptionIsRight(c.getString(c.getColumnIndex("optionIsRight")));
+                mCpDetailCampaignItem.setOptionUserAnswer(c.getString(c.getColumnIndex("optionUserAnswer")));
+                mCpDetailCampaignItem.setPointsRightAnswer(c.getInt(c.getColumnIndex("pointsRightAnswer")));       // int
+                mCpDetailCampaignItem.setPointsParticipation(c.getInt(c.getColumnIndex("pointsParticipation")));       // int
+
+                // adding to todo list
+                campDetailedList.add(mCpDetailCampaignItem);
+            } while (c.moveToNext());
+        }
+
+        return campDetailedList;
+    }
+
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////

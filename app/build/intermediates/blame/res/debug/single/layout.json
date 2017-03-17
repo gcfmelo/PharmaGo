@@ -8,12 +8,12 @@
         "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\layout\\abc_action_menu_item_layout.xml"
     },
     {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_layout_tab_icon.xml",
-        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\c502f1d6e8d24bf5a7e8a121817f550c3894ccaa\\output\\res\\layout\\design_layout_tab_icon.xml"
-    },
-    {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_dialog_title_material.xml",
         "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\layout\\abc_dialog_title_material.xml"
+    },
+    {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_layout_tab_icon.xml",
+        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\c502f1d6e8d24bf5a7e8a121817f550c3894ccaa\\output\\res\\layout\\design_layout_tab_icon.xml"
     },
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_layout_snackbar.xml",
@@ -32,12 +32,24 @@
         "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\layout\\abc_action_menu_layout.xml"
     },
     {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\option_item.xml",
+        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\option_item.xml"
+    },
+    {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_campaign_questionnaire.xml",
         "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\activity_campaign_questionnaire.xml"
     },
     {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_question.xml",
+        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\activity_question.xml"
+    },
+    {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_radio.xml",
         "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\layout\\abc_list_menu_item_radio.xml"
+    },
+    {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\content_question.xml",
+        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\content_question.xml"
     },
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_activity_chooser_view.xml",
@@ -166,6 +178,10 @@
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_action.xml",
         "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\layout\\notification_action.xml"
+    },
+    {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_question_bkp.xml",
+        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\layout\\activity_question_bkp.xml"
     },
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_icon.xml",

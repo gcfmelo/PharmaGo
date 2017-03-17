@@ -1,31 +1,31 @@
 [
     {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_ic_clear_material.xml",
-        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\drawable\\abc_ic_clear_material.xml"
-    },
-    {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_text_cursor_material.xml",
         "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\drawable\\abc_text_cursor_material.xml"
     },
     {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_colored_material.xml",
-        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\drawable\\abc_btn_colored_material.xml"
-    },
-    {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_item_background_holo_light.xml",
-        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\drawable\\abc_item_background_holo_light.xml"
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_ic_clear_material.xml",
+        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\drawable\\abc_ic_clear_material.xml"
     },
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_tab_indicator_material.xml",
         "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\drawable\\abc_tab_indicator_material.xml"
     },
     {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_tile_bg.xml",
-        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\drawable\\notification_tile_bg.xml"
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_item_background_holo_light.xml",
+        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\drawable\\abc_item_background_holo_light.xml"
+    },
+    {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_colored_material.xml",
+        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\drawable\\abc_btn_colored_material.xml"
     },
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_textfield_search_material.xml",
         "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\drawable\\abc_textfield_search_material.xml"
+    },
+    {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_tile_bg.xml",
+        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\\output\\res\\drawable\\notification_tile_bg.xml"
     },
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_ratingbar_material.xml",

@@ -18,6 +18,7 @@ class CampaignArrayAdapter extends ArrayAdapter<CampaignListClass>{
     // class for reusing views as list items ("CampaignsListClass") scroll off and onto screen
     private static class ViewHolder{
         TextView campaignTextView;
+        TextView campaignIdTextView;
         TextView sponsorTextView;
         TextView startDateTextView;
         TextView statusTextView;
@@ -41,6 +42,7 @@ class CampaignArrayAdapter extends ArrayAdapter<CampaignListClass>{
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.list_item, parent, false);
             viewHolder.campaignTextView = (TextView) convertView.findViewById(R.id.textViewCampaignName);
+            viewHolder.campaignIdTextView = (TextView) convertView.findViewById(R.id.textViewCampaignId);
             viewHolder.sponsorTextView = (TextView) convertView.findViewById(R.id.textViewSponsor);
             viewHolder.startDateTextView = (TextView) convertView.findViewById(R.id.textViewStartDate);
             viewHolder.statusTextView = (TextView) convertView.findViewById(R.id.textViewStatus);
@@ -56,6 +58,8 @@ class CampaignArrayAdapter extends ArrayAdapter<CampaignListClass>{
         Context context = getContext(); // for loading String resources
         viewHolder.campaignTextView.setText(context.getString(
                 R.string.campaign_description, cp.getCampaignName()));
+        viewHolder.campaignIdTextView.setText(context.getString(
+                R.string.campaign_id, Integer.toString(cp.getCampaignId())));
         viewHolder.sponsorTextView.setText(context.getString(
                 R.string.sponsor_description, cp.getSponsorName()));
         viewHolder.startDateTextView.setText(

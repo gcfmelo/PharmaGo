@@ -29,6 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name="br.com.phago.pharmago.CampaignQuestionnaire" />
+        <activity android:name="br.com.phago.pharmago.QuestionActivity" />
     </application>
 
 </manifest>

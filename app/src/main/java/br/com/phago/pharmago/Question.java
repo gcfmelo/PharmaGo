@@ -9,6 +9,7 @@ public class Question {
     private int idCampaign;
     private int idSponsor;     // not necessary due to relation 1 Sponsor : N Campaign
     private String label;
+//    private List<Option> optionList;
 
     // constructors
     public Question() {
@@ -38,7 +39,11 @@ public class Question {
         this.label = label;
     }
 
-    // getters
+//    public void setOptionList(List<Option> optionList) {
+//        this.optionList = optionList;
+//    }
+
+// getters
 
     public int getIdQuestion() {
         return idQuestion;
@@ -55,4 +60,8 @@ public class Question {
     public String getLabel() {
         return label;
     }
+
+//    public List<Option> getOptionList() {
+//        return optionList;
+//    }
 }

@@ -1,5 +1,7 @@
 package br.com.phago.pharmago;
 
+import java.util.List;
+
 /**
  * JSONArray:
  * http://www.benben.net.br/apiPharmaGo?email=gcfmelo@gmail.com&password=abc123&action=getQuiz&token=123456789
@@ -77,6 +79,7 @@ public class Campaign {
     private int pointsForRightAnswer;   // sponsor defined: maximum number of points attainable from 100% correct answers
     private int pointsForParticipation; // sponsor defined: points granted for ay user submitting a complete answer for this campaign
     private String status;              // Possible values are: "ANSWERED", TODO define possible statuses
+    private List<Question> questionList ;   //  is a list of Option objects
 
     //  an ArrayList of objects "Question" is related with a Campaign
 

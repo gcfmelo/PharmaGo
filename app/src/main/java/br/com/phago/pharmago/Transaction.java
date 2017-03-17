@@ -26,7 +26,7 @@ public class Transaction {
     }
 
     public Transaction(String sponsorCode, String eventDate, String title, String nature, int idCampaign, int idTransaction, int amount) {
-        this.sponsorCode = sponsorCode;
+        this.sponsorCode = sponsorCode;   // CNPJ
         this.eventDate = eventDate;
         this.title = title;
         this.nature = nature;

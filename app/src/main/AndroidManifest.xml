@@ -22,7 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CampaignQuestionnaire"></activity>
+        <activity android:name=".CampaignQuestionnaire" />
+        <activity android:name=".QuestionActivity"></activity>
     </application>
 
 </manifest>

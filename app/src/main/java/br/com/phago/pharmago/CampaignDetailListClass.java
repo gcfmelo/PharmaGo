@@ -6,12 +6,13 @@ package br.com.phago.pharmago;
 
 public class CampaignDetailListClass {
     private String campaignTitle, sponsorName, startDate, campaignStatus, questionLabel, optionLabel,optionIsRight,optionUserAnswer;
-    private int optionSeqNumber, pointsRightAnswer, pointsParticipation;
+    private int campaignId, optionSeqNumber, pointsRightAnswer, pointsParticipation;
+
 
     public CampaignDetailListClass() {
             }
 
-    public CampaignDetailListClass(String campaignTitle, String sponsorName, String startDate,
+    public CampaignDetailListClass(String campaignTitle, int campaignId, String sponsorName, String startDate,
                                    String campaignStatus, String questionLabel, String optionLabel,
                                    String optionIsRight, String optionUserAnswer, int optionSeqNumber, int pointsRightAnswer, int pointsParticipation) {
         this.campaignTitle = campaignTitle;
@@ -29,6 +30,14 @@ public class CampaignDetailListClass {
 
     public String getCampaignTitle() {
         return campaignTitle;
+    }
+
+    public void setCampaignId(int campaignId) {
+        this.campaignId = campaignId;
+    }
+
+    public int getCampaignId() {
+        return campaignId;
     }
 
     public void setCampaignTitle(String campaignTitle) {

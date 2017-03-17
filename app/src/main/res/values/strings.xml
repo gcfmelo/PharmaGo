@@ -19,6 +19,7 @@
     <string name="read_error">Unable to read data from PharmaGo</string>
     <string name="connect_error">Unable to connect to PharmaGo</string>
     <string name="campaign_description">%s</string>
+    <string name="campaign_id">%s</string>
     <string name="sponsor_description">Sponsor: %s</string>
     <string name="start_date_description">Date: %s</string>
     <string name="status_description">Status: %s</string>

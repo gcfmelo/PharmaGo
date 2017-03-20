@@ -733,6 +733,55 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         return questionList;
     }
 
+    public List<Option> getOptionsByQuestionAndCampaignId(int selectedCampaignId, int selectedQuestionId) {
+        List<Option> optionList = new ArrayList<Option>();
+
+        // CREATE TABLE pg_option(_id INTEGER PRIMARY KEY AUTOINCREMENT,idSponsor INTEGER, idCampaign INTEGER, idQuestion INTEGER,
+        // sequential INTEGER, label TEXT, rightAnswer INTEGER, userAnswer INTEGER, created_at TEXT);
+
+        //    private static final String FIELD_OPTION_SPONSOR_ID = "idSponsor";
+//        private static final String FIELD_OPTION_CAMPAIGN_ID = "idCampaign";
+//        private static final String FIELD_OPTION_QUESTION_ID = "idQuestion";
+//        private static final String FIELD_OPTION_SEQUENTIAL = "sequential";
+//        private static final String FIELD_OPTION_LABEL = "label";
+//        private static final String FIELD_OPTION_RIGHT_ANSWER = "rightAnswer";
+//        private static final String FIELD_OPTION_USER_ANSWER = "userAnswer";
+
+        String selectQuery = "SELECT op." + FIELD_OPTION_SEQUENTIAL + " optionSeqNumber, " +
+                " op." + FIELD_OPTION_LABEL + " optionLabel, " +
+                " op." + FIELD_OPTION_RIGHT_ANSWER + " optionRightAnswer, " +
+                " op." + FIELD_OPTION_USER_ANSWER + " optionUserAnswer " +
+                " FROM " + TABLE_OPTION + " op " +
+                " WHERE ((op." + FIELD_OPTION_CAMPAIGN_ID + " = " + selectedCampaignId + ") " +
+                " AND (op." + FIELD_OPTION_QUESTION_ID + " = " + selectedQuestionId + ")) " +
+                " ORDER BY op." + FIELD_OPTION_SEQUENTIAL + ";" ;
+
+        Log.d(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows returned by cursor and adding to the list of CampaignDetailListClass
+
+        //     private String campaignTitle, sponsorName, startDate, campaignStatus, questionLabel, optionLabel,optionIsRight,optionUserAnswer;
+        //     private int optionSeqNumber, pointsRightAnswer, pointsParticipation;
+
+        if (c.moveToFirst()) {
+            do {
+                Option mOptionItem = new Option();
+
+                mOptionItem.setIdQuestion(c.getInt((c.getColumnIndex("questionId"))));      // int
+                mOptionItem.setLabel(c.getString(c.getColumnIndex("questionLabel")));
+
+                // adding to questionList
+                optionList.add(mOptionItem);
+            } while (c.moveToNext());
+        }
+
+        return optionList;
+    }
+
+
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////

@@ -64,8 +64,6 @@ class QuestionArrayAdapter extends ArrayAdapter<Question>{
 //        viewHolder.campaignId.setText(context.getString(R.string.campaign_id, Integer.toString(cp.getIdCampaign())));
 //        viewHolder.sponsorId.setText(context.getString(R.string.sponsor_id, Integer.toString(cp.getIdSponsor())));
 
-
-
         return convertView; // return completed list item to display
     }
 }

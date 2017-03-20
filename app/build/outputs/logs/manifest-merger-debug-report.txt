@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:2:1-28:12
+ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:2:1-29:12
 	package
 		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:3:5-36
 		INJECTED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml
@@ -18,7 +18,7 @@ ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:5:5-67
 	android:name
 		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:5:22-64
 application
-ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:7:5-26:19
+ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:7:5-27:19
 MERGED from [com.android.volley:volley:unspecified] C:\Android\PharmaGo\volley\build\intermediates\bundles\default\AndroidManifest.xml:9:5-20
 MERGED from [com.android.support:design:25.2.0] C:\Users\Lenovo\.android\build-cache\c502f1d6e8d24bf5a7e8a121817f550c3894ccaa\output\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:appcompat-v7:25.2.0] C:\Users\Lenovo\.android\build-cache\e87d9e4dec7c955951827d3aa7deaf09a111e5ac\output\AndroidManifest.xml:25:5-20
@@ -68,6 +68,10 @@ activity#br.com.phago.pharmago.QuestionActivity
 ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:25:9-63
 	android:name
 		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:25:19-51
+activity#br.com.phago.pharmago.OptionActivity
+ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:26:9-61
+	android:name
+		ADDED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml:26:19-49
 uses-sdk
 INJECTED from C:\Android\PharmaGo\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.volley:volley:unspecified] C:\Android\PharmaGo\volley\build\intermediates\bundles\default\AndroidManifest.xml:7:5-43

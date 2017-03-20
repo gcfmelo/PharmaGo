@@ -31,6 +31,9 @@ public class QuestionActivity extends AppCompatActivity {
     public static final String WS_RETURN_OK = "SUCCESSFUL";
     public static final String WS_RETURN_ERROR = "ERROR";
     private static final String TAG = QuestionActivity.class.getSimpleName();
+    public static final String EXTRA_CAMPAIGN_ID = "br.com.phago.pharmago.EXTRA_CAMPAIGN_ID";
+    public static final String EXTRA_QUESTION_ID = "br.com.phago.pharmago.EXTRA_QUESTION_ID";
+    public static final String ENABLE_PARTICIPATION_YN = "br.com.phago.pharmago.ENABLE_PARTICIPATION_YN";
 
     // DatabaseHelper
     PgDatabaseHelper dbx;
@@ -51,7 +54,10 @@ public class QuestionActivity extends AppCompatActivity {
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
         String selectedCampaignId = intent.getStringExtra(MainActivity.EXTRA_CAMPAIGN_ID);
+        final String campaign_id = selectedCampaignId;
         String selectedCampaignParticipationEnabled = intent.getStringExtra(MainActivity.ENABLE_PARTICIPATION_YN);
+        final String enable_participation = selectedCampaignParticipationEnabled;
+
 
         // Capture the layout's TextView and set the string as its text
 //        TextView textView = (TextView) findViewById(R.id.textView);
@@ -66,6 +72,7 @@ public class QuestionActivity extends AppCompatActivity {
         Log.d(TAG, "... onCreate");
 
         questionList = dbx.getQuestionsByCampaignId(Integer.parseInt(selectedCampaignId));
+        dbx.closeDB();
 
         Toast.makeText(this, " BD returned " + Integer.toString(questionList.size()) + " questions", Toast.LENGTH_SHORT).show();
         // TODO DELETE ME
@@ -88,19 +95,24 @@ public class QuestionActivity extends AppCompatActivity {
                 //Toast.makeText(MainActivity.this, "Clicked at item " + Integer.toString(position) + " - " + campaignList.get(position).getCampaignName(), Toast.LENGTH_SHORT).show();
 
                 // load the Activity with detailed info about the User Selected Questions
-                String selectedQuestionId = " | id = | " + questionList.get(position).getIdQuestion() + " |";
+                String selectedQuestionId =  Integer.toString(questionList.get(position).getIdQuestion()) ;
                 String selectedQuestionLabel = "| Question Label = | " + questionList.get(position).getLabel()+"|";
                 String toast_value;
                 String status;
-                int campaign_id;
 
                 if (selectedQuestionId != null) {
-                    toast_value = selectedQuestionId + "\n" + selectedQuestionLabel;
+
+                    Intent intent = new Intent(QuestionActivity.super.getApplicationContext(), OptionActivity.class);
+                    intent.putExtra(EXTRA_CAMPAIGN_ID, campaign_id);
+                    intent.putExtra(EXTRA_QUESTION_ID, selectedQuestionId);
+                    intent.putExtra(ENABLE_PARTICIPATION_YN, ENABLE_PARTICIPATION_YN);
+
+                    startActivity(intent);
                 }
                 else {
                     toast_value = "NULL";
                 }
-                Toast.makeText(QuestionActivity.this, toast_value, Toast.LENGTH_LONG).show();
+
             }
         });
 

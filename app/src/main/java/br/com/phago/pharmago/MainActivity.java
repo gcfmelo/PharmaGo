@@ -57,18 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i(TAG, "... onCreate");
         dbx = new PgDatabaseHelper(getApplicationContext());
-        // Update local databases
-//        UpdateUser("gcfmelo@gmail.com", "abc123");
-//        UpdateSponsor("gcfmelo@gmail.com", "abc123");
-
-        Log.d(TAG, "... onCreate");
-//        UpdateSponsor("gcfmelo@gmail.com", "abc123");
-//        TestSponsorList();
-//        UpdateUser("gcfmelo@gmail.com", "abc123");
-//        UpdateCampaign("gcfmelo@gmail.com", "abc123");
-//        UpdateQuestionOption("gcfmelo@gmail.com", "abc123");
-//        UpdateTransaction("gcfmelo@gmail.com", "abc123");
-
 
         // TODO GET THE CAMPAIGN LIST TO USE IN THE LAYOUT - ADJUST THIS
         campaignList = dbx.getAllCampaigns();

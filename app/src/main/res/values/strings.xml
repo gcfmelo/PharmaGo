@@ -8,7 +8,7 @@
     <string name="action_menu_2">Refresh Campaigns</string>
 
     <string name="question_id_text">Question Id#: </string>
-
+    <string name="option_id_text">Option Id#: </string>
 
     <string name="campaign_description">%s</string>
     <string name="campaign_id">%s</string>
@@ -20,6 +20,10 @@
     <string name="question_id">%s</string>
     <string name="sponsor_id">%s</string>
 
+    <string name="option_label">%s</string>
+    <string name="option_id">%s</string>
+    <string name="option_right_answer">%s</string>
+    <string name="option_user_answer">%s</string>
 
     <string name="api_token">123456789</string>
     <string name="web_sevice_base_url">http://www.benben.net.br/apiPharmaGo?</string>

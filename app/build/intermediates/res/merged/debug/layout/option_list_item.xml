@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:useDefaultMargins="true"
+        tools:columnCount="8"
+        tools:layout_weight="1"
+        tools:rowCount="4">
+
+        <TextView
+            android:id="@+id/textViewOptionIdLabel"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="4"
+            android:layout_row="0"
+            android:elevation="0dp"
+            android:text="@string/option_id_text"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/textViewOptionId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="6"
+            android:layout_columnSpan="2"
+            android:layout_row="0"
+            android:elevation="0dp"
+            android:text="sequential"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/textViewOptionLabel"
+            android:layout_width="235dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="8"
+            android:layout_columnWeight="1"
+            android:layout_row="1"
+            android:text="Option Item Label" />
+
+        <TextView
+            android:id="@+id/textViewRightAnswer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="3"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"
+            android:layout_row="2"
+            android:text="Y/N?" />
+
+        <TextView
+            android:id="@+id/textViewUserAnswer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="6"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"
+            android:layout_row="2"
+            android:text="Y/N/U" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </GridLayout>
+</LinearLayout>

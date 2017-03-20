@@ -33,13 +33,17 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_COUNTER = "COUNTER";
     public static final String WS_RETURN_OK = "SUCCESSFUL";
     public static final String WS_RETURN_ERROR = "ERROR";
+    public static final String EXTRA_CAMPAIGN_ID = "br.com.phago.pharmago.CAMPAIGN_ID";
+    public static final String ENABLE_PARTICIPATION_YN = "br.com.phago.pharmago.ENABLE_PARTICIPATION_YN";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     // DatabaseHelper
     PgDatabaseHelper dbx;
     //List of Campaign objects
 //    private List<Campaign> campaignList = new ArrayList<>();
     private List<CampaignListClass> campaignList = new ArrayList<CampaignListClass>();
-    private List<CampaignDetailListClass> campaignDetailList = new ArrayList<CampaignDetailListClass>();
+// migrated to other activity
+//    private List<CampaignDetailListClass> campaignDetailList = new ArrayList<CampaignDetailListClass>();
     // ArrayAdapter for bind Campaign objects to a ListView
     private CampaignArrayAdapter campaignArrayAdapter;
     private ListView campaignListView; // displays Campaign info
@@ -51,14 +55,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final String TAG = "Main Activity";
         Log.i(TAG, "... onCreate");
         dbx = new PgDatabaseHelper(getApplicationContext());
         // Update local databases
 //        UpdateUser("gcfmelo@gmail.com", "abc123");
 //        UpdateSponsor("gcfmelo@gmail.com", "abc123");
 
-        Log.i(TAG, "... onCreate");
+        Log.d(TAG, "... onCreate");
 //        UpdateSponsor("gcfmelo@gmail.com", "abc123");
 //        TestSponsorList();
 //        UpdateUser("gcfmelo@gmail.com", "abc123");
@@ -69,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO GET THE CAMPAIGN LIST TO USE IN THE LAYOUT - ADJUST THIS
         campaignList = dbx.getAllCampaigns();
-
 
         Toast.makeText(this, " BD returned " + Integer.toString(campaignList.size()) + " campaigns", Toast.LENGTH_SHORT).show();
         // TODO DELETE ME
@@ -93,17 +95,33 @@ public class MainActivity extends AppCompatActivity {
 
                 // load the Activity with detailed info about the User Selected Campaign
                 String selectedCampaignName = campaignList.get(position).getCampaignName() + " | id = | " + campaignList.get(position).getCampaignId() + " |";
-                String value;
+                selectedCampaignName = selectedCampaignName + "\n |Status=|" + campaignList.get(position).getCampaignStatus()+"|";
+                String toast_value, status, campaign_id;
+
                 if (selectedCampaignName != null) {
-                    value = selectedCampaignName;
+                    toast_value = selectedCampaignName;
+                    status = campaignList.get(position).getCampaignStatus();
+                    campaign_id= Integer.toString(campaignList.get(position).getCampaignId());
+                    Intent intent = new Intent(MainActivity.super.getApplicationContext(), QuestionActivity.class);
+                    intent.putExtra(EXTRA_CAMPAIGN_ID, campaign_id);
+
+                    if (status.equals("Aguardando Resposta")){
+                        toast_value = toast_value + "\n |Intent=|" + "Participate";
+                        Log.d(TAG,"Aguardando Resposta");
+                        intent.putExtra(ENABLE_PARTICIPATION_YN, "Y");
+                    } else {
+                        toast_value = toast_value + "\n |Intent=|" + "Show Details";
+                        Log.d(TAG,"Finalizada");
+                        intent.putExtra(ENABLE_PARTICIPATION_YN, "N");
+                    }
+                    dbx.closeDB();
+                    startActivity(intent);
                 }
                 else {
-                    value = "NULL";
+                    toast_value = "NULL";
                 }
-                Toast.makeText(MainActivity.this, value, Toast.LENGTH_LONG).show();
-
-
-            }
+                Toast.makeText(MainActivity.this, toast_value, Toast.LENGTH_LONG).show();
+            }     // End of "onItemClick"
         });
 
         UpdateSponsor("gcfmelo@gmail.com", "abc123");
@@ -186,6 +204,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
     */
+    public void openQuestion(View view) {
+        // Do something in response to button
+
+
+    }
     public void UpdateUser(String email, String password) {
         final String TAG = "UpdateUser";
         Log.d(TAG, " process started");
@@ -598,7 +621,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
 
 }

@@ -40,7 +40,7 @@ class CampaignArrayAdapter extends ArrayAdapter<CampaignListClass>{
         if(convertView == null) {// no reusable ViewHolder, so create one
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.list_item, parent, false);
+            convertView = inflater.inflate(R.layout.campaign_list_item, parent, false);
             viewHolder.campaignTextView = (TextView) convertView.findViewById(R.id.textViewCampaignName);
             viewHolder.campaignIdTextView = (TextView) convertView.findViewById(R.id.textViewCampaignId);
             viewHolder.sponsorTextView = (TextView) convertView.findViewById(R.id.textViewSponsor);

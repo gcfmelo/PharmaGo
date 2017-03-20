@@ -14,6 +14,18 @@ import static android.content.ContentValues.TAG;
 
 /**
  * Created by Gustavo on 09/03/2017.
+
+ Option Class:
+ ===========================
+ private Integer idSponsor;
+ private Integer idCampaign;
+ private Integer idQuestion;
+ private Integer sequential;
+ ---------------------------
+ private String label;
+ private String rightAnswer;
+ private String userAnswer;
+ ===========================
  */
 
 class OptionArrayAdapter extends ArrayAdapter<Option>{
@@ -62,8 +74,6 @@ class OptionArrayAdapter extends ArrayAdapter<Option>{
         viewHolder.optionLabel.setText(context.getString(R.string.option_label, (op.getLabel())));
         viewHolder.optionRightAnswer.setText(context.getString(R.string.option_right_answer, op.getRightAnswer()));
         viewHolder.optionUserAnswer.setText(context.getString(R.string.option_user_answer, op.getUserAnswer()));
-
-
 
         return convertView; // return completed list item to display
     }

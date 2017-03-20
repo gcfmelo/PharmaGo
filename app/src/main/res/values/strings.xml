@@ -21,9 +21,9 @@
     <string name="sponsor_id">%s</string>
 
     <string name="option_label">%s</string>
-    <string name="option_id">%s</string>
-    <string name="option_right_answer">%s</string>
-    <string name="option_user_answer">%s</string>
+    <string name="option_id">Option # %s</string>
+    <string name="option_right_answer">Is Right ? %s</string>
+    <string name="option_user_answer">User Answer is %s</string>
 
     <string name="api_token">123456789</string>
     <string name="web_sevice_base_url">http://www.benben.net.br/apiPharmaGo?</string>

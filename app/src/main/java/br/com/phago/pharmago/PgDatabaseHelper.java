@@ -17,14 +17,42 @@ import java.util.Locale;
 
 public class PgDatabaseHelper extends SQLiteOpenHelper {
 
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    // http://guides.codepath.com/android/local-databases-with-sqliteopenhelper
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    private static PgDatabaseHelper sInstance;
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+
     // Logcat tag
     private static final String LOG = "PgDatabaseHelper";
-
     // Database Version
     private static final int DATABASE_VERSION = 1;
-
     // Database Name
     private static final String DATABASE_NAME = "pharmago.db";
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    // http://guides.codepath.com/android/local-databases-with-sqliteopenhelper
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    public static synchronized PgDatabaseHelper getInstance(Context context) {
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (sInstance == null) {
+            sInstance = new PgDatabaseHelper(context.getApplicationContext());
+        }
+        return sInstance;
+    }
+
+    /**
+     * Constructor should be private to prevent direct instantiation.
+     * Make a call to the static method "getInstance()" instead.
+     */
+    private PgDatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////
 
 
     // Common column names (used in more than one table)
@@ -169,14 +197,14 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
             FIELD_OPTION_QUESTION_ID + " INTEGER, " +
             FIELD_OPTION_SEQUENTIAL + " INTEGER, " +
             FIELD_OPTION_LABEL + " TEXT, " +
-            FIELD_OPTION_RIGHT_ANSWER + " INTEGER, " +
-            FIELD_OPTION_USER_ANSWER + " INTEGER, " +
+            FIELD_OPTION_RIGHT_ANSWER + " TEXT, " +
+            FIELD_OPTION_USER_ANSWER + " TEXT, " +
             KEY_CREATED_AT + " TEXT" + ");";
 
 
-    public PgDatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
+//    public PgDatabaseHelper(Context context) {
+//        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+//    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -215,7 +243,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         // insert row
         long sponsor_id = db.insert(TABLE_SPONSOR, null, values);
 
-        closeDB();
+        closeDB(db);
         ///////////////////////////////////////////////////////////////////
         ///////  using DatabaseManager/////////////////////////////////////
         //DatabaseManager.getInstance().closeDatabase(); ///////////////////
@@ -242,7 +270,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         // insert row
         //String TempTableSponsor = "temp_"+TABLE_SPONSOR;
         long user_id = db.insert(TABLE_USER, null, values);
-        closeDB();
+        closeDB(db);
         return user_id;
 
     }
@@ -264,9 +292,9 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
         long campaign_id = db.insert(TABLE_CAMPAIGN, null, values);
 
-        if (db.isOpen()) {
-            closeDB();
-        }
+
+        closeDB(db);
+
 
         return campaign_id;
 
@@ -284,7 +312,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
 
         long question_id = db.insert(TABLE_QUESTION, null, values);
-        closeDB();
+        closeDB(db);
         return question_id;
     }
 
@@ -302,7 +330,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         values.put(FIELD_OPTION_USER_ANSWER, option.getUserAnswer());
 
         long option_id = db.insert(TABLE_OPTION, null, values);
-        closeDB();
+        closeDB(db);
         return option_id;
     }
 
@@ -326,7 +354,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
         // insert row
         long tr_id = db.insert(TABLE_TRANSACTION, null, values);
-        closeDB();
+        closeDB(db);
         return tr_id;
     }
 
@@ -341,7 +369,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         ///////////////////////////////////////////////////////////////////
         db.execSQL("DROP TABLE IF EXISTS " + TableName);
 
-        closeDB();
+        closeDB(db);
         ///////////////////////////////////////////////////////////////////
         ///////  using DatabaseManager/////////////////////////////////////
         //DatabaseManager.getInstance().closeDatabase(); ///////////////////
@@ -358,7 +386,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         ///////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////
         db.execSQL(SQL_Create_String);
-        closeDB();
+        closeDB(db);
         ///////////////////////////////////////////////////////////////////
         ///////  using DatabaseManager/////////////////////////////////////
         //DatabaseManager.getInstance().closeDatabase(); ///////////////////
@@ -415,13 +443,13 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         //DatabaseManager.getInstance().closeDatabase(); ///////////////////
         ///////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////
-        closeDB();
+        closeDB(db);
     }
 
     public void clearTableCampaign() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_CAMPAIGN);
-        closeDB();
+        closeDB(db);
     }
 
     public void clearTableQuestion() {
@@ -450,6 +478,9 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         sp.setSponsorId(c.getInt(c.getColumnIndex("sponsorId")));
         sp.setSponsorCode(c.getString(c.getColumnIndex("sponsorCode")));
         sp.setSponsorName(c.getString(c.getColumnIndex("sponsorName")));
+        if (c != null && !c.isClosed()) {
+            c.close();
+        }
         return sp;
     }
 
@@ -492,7 +523,10 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         //DatabaseManager.getInstance().closeDatabase(); ///////////////////
         ///////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////
-        closeDB();
+        if (c != null && !c.isClosed()) {
+            c.close();
+        }
+        closeDB(db);
 
         return sponsors;
     }
@@ -528,6 +562,10 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
 
                     campList.add(cpl_item);
                 } while (c.moveToNext());
+                if (c != null && !c.isClosed()) {
+                    c.close();
+                }
+                closeDB(db);
             }
         } catch (Exception e) {
             Log.i("Erro", e.toString());
@@ -587,7 +625,9 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
                 campDetailedList.add(mCpDetailListItem);
             } while (c.moveToNext());
         }
-
+        if (c != null && !c.isClosed()) {
+            c.close();
+        }
         return campDetailedList;
     }
 
@@ -641,7 +681,10 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
                 campDetailedList.add(mCpDetailCampaignItem);
             } while (c.moveToNext());
         }
-
+        if (c != null && !c.isClosed()) {
+            c.close();
+        }
+        closeDB(db);
         return campDetailedList;
     }
 
@@ -695,7 +738,10 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
                 campDetailedList.add(mCpDetailCampaignItem);
             } while (c.moveToNext());
         }
-
+        if (c != null && !c.isClosed()) {
+            c.close();
+        }
+        closeDB(db);
         return campDetailedList;
     }
 
@@ -729,55 +775,82 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
                 questionList.add(mQuestionItem);
             } while (c.moveToNext());
         }
-
+        if (c != null && !c.isClosed()) {
+            c.close();
+        }
+        closeDB(db);
         return questionList;
     }
 
     public List<Option> getOptionsByQuestionAndCampaignId(int selectedCampaignId, int selectedQuestionId) {
+
+        /**
+         *     Option Class:
+         ===========================
+         private Integer idSponsor;   //
+         private Integer idCampaign;
+         private Integer idQuestion;  //
+         private Integer sequential;
+         ---------------------------
+         private String label;
+         private String rightAnswer;
+         private String userAnswer;
+         ===========================
+         */
         List<Option> optionList = new ArrayList<Option>();
 
-        // CREATE TABLE pg_option(_id INTEGER PRIMARY KEY AUTOINCREMENT,idSponsor INTEGER, idCampaign INTEGER, idQuestion INTEGER,
-        // sequential INTEGER, label TEXT, rightAnswer INTEGER, userAnswer INTEGER, created_at TEXT);
+        String TAG = "getOptionsByQuestionAndCampaignId";
 
-        //    private static final String FIELD_OPTION_SPONSOR_ID = "idSponsor";
-//        private static final String FIELD_OPTION_CAMPAIGN_ID = "idCampaign";
-//        private static final String FIELD_OPTION_QUESTION_ID = "idQuestion";
-//        private static final String FIELD_OPTION_SEQUENTIAL = "sequential";
-//        private static final String FIELD_OPTION_LABEL = "label";
-//        private static final String FIELD_OPTION_RIGHT_ANSWER = "rightAnswer";
-//        private static final String FIELD_OPTION_USER_ANSWER = "userAnswer";
+//        CREATE TABLE pg_option(_id INTEGER PRIMARY KEY AUTOINCREMENT,
+// idSponsor INTEGER, idCampaign INTEGER, idQuestion INTEGER, sequential INTEGER,
+// label TEXT, rightAnswer TEXT, userAnswer TEXT, created_at TEXT);
+
+//        FIELD_OPTION_SPONSOR_ID = "idSponsor";  /
+//        FIELD_OPTION_CAMPAIGN_ID = "idCampaign"; /
+//        FIELD_OPTION_QUESTION_ID = "idQuestion"; /
+//        FIELD_OPTION_SEQUENTIAL = "sequential"; /
+//        FIELD_OPTION_LABEL = "label"; /
+//        FIELD_OPTION_RIGHT_ANSWER = "rightAnswer"; /
+//        FIELD_OPTION_USER_ANSWER = "userAnswer"; /
 
         String selectQuery = "SELECT op." + FIELD_OPTION_SEQUENTIAL + " optionSeqNumber, " +
                 " op." + FIELD_OPTION_LABEL + " optionLabel, " +
                 " op." + FIELD_OPTION_RIGHT_ANSWER + " optionRightAnswer, " +
-                " op." + FIELD_OPTION_USER_ANSWER + " optionUserAnswer " +
+                " op." + FIELD_OPTION_USER_ANSWER + " optionUserAnswer, " +
+                " op." + FIELD_OPTION_SPONSOR_ID + " optionSponsorId, " +
+                " op." + FIELD_OPTION_CAMPAIGN_ID + " optionCampaignId, " +
+                " op." + FIELD_OPTION_QUESTION_ID + " optionQuestionId " +
                 " FROM " + TABLE_OPTION + " op " +
                 " WHERE ((op." + FIELD_OPTION_CAMPAIGN_ID + " = " + selectedCampaignId + ") " +
                 " AND (op." + FIELD_OPTION_QUESTION_ID + " = " + selectedQuestionId + ")) " +
                 " ORDER BY op." + FIELD_OPTION_SEQUENTIAL + ";" ;
-
         Log.d(LOG, selectQuery);
 
         SQLiteDatabase db = this.getReadableDatabase();
+
         Cursor c = db.rawQuery(selectQuery, null);
 
         // looping through all rows returned by cursor and adding to the list of CampaignDetailListClass
+            if (c.moveToFirst()) {
+                do {
+                    Option mOptionItem = new Option();
 
-        //     private String campaignTitle, sponsorName, startDate, campaignStatus, questionLabel, optionLabel,optionIsRight,optionUserAnswer;
-        //     private int optionSeqNumber, pointsRightAnswer, pointsParticipation;
+                    mOptionItem.setIdQuestion(c.getInt((c.getColumnIndex("optionQuestionId"))));      // int
+                    mOptionItem.setIdSponsor(c.getInt((c.getColumnIndex("optionSponsorId"))));      // int
+                    mOptionItem.setIdCampaign(c.getInt((c.getColumnIndex("optionCampaignId"))));      // int
+                    mOptionItem.setSequential(c.getInt((c.getColumnIndex("optionSeqNumber"))));      // int
+                    mOptionItem.setLabel(c.getString(c.getColumnIndex("optionLabel")));       // String
+                    mOptionItem.setRightAnswer(c.getString(c.getColumnIndex("optionRightAnswer")));       // String
+                    mOptionItem.setUserAnswer(c.getString(c.getColumnIndex("optionUserAnswer")));       // String
 
-        if (c.moveToFirst()) {
-            do {
-                Option mOptionItem = new Option();
-
-                mOptionItem.setIdQuestion(c.getInt((c.getColumnIndex("questionId"))));      // int
-                mOptionItem.setLabel(c.getString(c.getColumnIndex("questionLabel")));
-
-                // adding to questionList
-                optionList.add(mOptionItem);
-            } while (c.moveToNext());
+                    // adding to questionList
+                    optionList.add(mOptionItem);
+                } while (c.moveToNext());
+            }
+        if (c != null && !c.isClosed()) {
+            c.close();
         }
-
+        closeDB(db);
         return optionList;
     }
 
@@ -830,8 +903,8 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     }
 
     // closing database
-    public void closeDB() {
-        SQLiteDatabase db = this.getReadableDatabase();
+    public void closeDB(SQLiteDatabase db) {
+        //SQLiteDatabase db = this.getReadableDatabase();
         if (db != null && db.isOpen())
             db.close();
     }

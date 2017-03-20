@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     // DatabaseHelper
-    PgDatabaseHelper dbx;
+//    PgDatabaseHelper dbx;
     //List of Campaign objects
 //    private List<Campaign> campaignList = new ArrayList<>();
     private List<CampaignListClass> campaignList = new ArrayList<CampaignListClass>();
@@ -56,10 +56,20 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Log.i(TAG, "... onCreate");
-        dbx = new PgDatabaseHelper(getApplicationContext());
+
+
+//        UpdateSponsor("gcfmelo@gmail.com", "abc123");
+//        UpdateUser("gcfmelo@gmail.com", "abc123");
+//        UpdateCampaign("gcfmelo@gmail.com", "abc123");
+//        UpdateQuestionOption("gcfmelo@gmail.com", "abc123");
+//        UpdateTransaction("gcfmelo@gmail.com", "abc123");
 
         // TODO GET THE CAMPAIGN LIST TO USE IN THE LAYOUT - ADJUST THIS
+        // dbx = new PgDatabaseHelper(getApplicationContext());
+        PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
         campaignList = dbx.getAllCampaigns();
+//        dbx.closeDB();
+        dbx.close();
 
         Toast.makeText(this, " BD returned " + Integer.toString(campaignList.size()) + " campaigns", Toast.LENGTH_SHORT).show();
         // TODO DELETE ME
@@ -102,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG,"Finalizada");
                         intent.putExtra(ENABLE_PARTICIPATION_YN, "N");
                     }
-                    dbx.closeDB();
+
                     startActivity(intent);
                 }
                 else {
@@ -198,6 +208,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void UpdateUser(String email, String password) {
+        // @@@
+        final PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
+
         final String TAG = "UpdateUser";
         Log.d(TAG, " process started");
         if (RECREATE_TABLES) {
@@ -236,6 +249,8 @@ public class MainActivity extends AppCompatActivity {
                                                     jsonObjUser.getString("companyLongitude"));
                                 dbx.addUser(user);
                             }
+                            // @@@
+                            dbx.close();
                         } else {
                             // WS responded with:
                             Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString());
@@ -263,6 +278,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void UpdateSponsor(String email, String password) {
+        // @@@
+        final PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
+
         final String TAG = "UpdateSponsor";
         if (RECREATE_TABLES) {
             dbx.dropTable("pg_sponsor");
@@ -294,6 +312,8 @@ public class MainActivity extends AppCompatActivity {
                                         jsonArry.getJSONObject(i).getString("sponsorName"));
                                 dbx.addSponsor(sponsor);
                             }
+                            // @@@
+                            dbx.close();
                         } else {
                             // WS responded with:
                         }
@@ -320,6 +340,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void UpdateCampaign(String email, String password) {
+        // @@@
+        final PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
+
         final String TAG = "UpdateCampaign";
         Log.d(TAG, " process started");
         if (RECREATE_TABLES) {
@@ -361,6 +384,8 @@ public class MainActivity extends AppCompatActivity {
                                     dbx.addCampaign(campaign);
                                 }  // process the next element from JSON
                             }
+                            // @@@
+                            dbx.close();
                         } else {
                             // WS responded not OK so...
                             if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_ERROR)) {
@@ -393,6 +418,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void UpdateQuestionOption(String email, String password) {
+        // @@@
+        final PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
+
         final String TAG = "UpdateQuestionOption";
         Log.d(TAG, " process started");
         if (RECREATE_TABLES) {
@@ -451,6 +479,8 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }  // process the next QUESTION from JSON
                             }
+                            // @@@
+                            dbx.close();
                         } else {
                             // WS responded not OK so...
                             if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_ERROR)) {
@@ -482,6 +512,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void UpdateTransaction(String email, String password) {
+        // @@@
+        final PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
+
         final String TAG = "UpdateTransaction";
         Log.d(TAG, " process started");
         if (RECREATE_TABLES) {
@@ -521,6 +554,8 @@ public class MainActivity extends AppCompatActivity {
                                     Log.i(TAG, "Element:   @@@   " + Integer.toString(i) + " " + jsonArry.getJSONObject(i));
                                 }
                             }
+                            // @@@
+                            dbx.close();
                         } else {
                             // WS responded with:
                             Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString());
@@ -552,7 +587,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, " process started");
         // dbx = new PgDatabaseHelper(getApplicationContext());
         //ArrayList<CampaignListClass> cpList = new ArrayList<CampaignListClass>();
+        PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
         List<CampaignListClass> cpList = dbx.getAllCampaigns();
+        //dbx.closeDB();
         for (int i = 0; i < cpList.size(); i++) {
             Log.i(TAG, " item(" + Integer.toString(i) + ") ===> " + cpList.get(i).toString());
         }
@@ -562,7 +599,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, " process started");
         // dbx = new PgDatabaseHelper(getApplicationContext());
         //ArrayList<CampaignListClass> cpList = new ArrayList<CampaignListClass>();
+        PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
         List<Sponsor> spList = dbx.getAllSponsors();
+        //dbx.closeDB();
         for (int i = 0; i < spList.size(); i++) {
             Log.i(TAG, " item(" + Integer.toString(i) + ") ===> " + spList.get(i).toString());
         }

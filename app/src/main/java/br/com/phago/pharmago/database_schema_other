@@ -37,7 +37,7 @@ CREATE TABLE pg_user(_id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,email TEXT,
 CREATE TABLE pg_campaign(_id INTEGER PRIMARY KEY AUTOINCREMENT,idCampaign INTEGER, idSponsor INTEGER, title TEXT, startDate TEXT, endDate TEXT, numberOfQuestions INTEGER, pointsForRightAnswer INTEGER, pointsForParticipation INTEGE
 R, status TEXT);
 CREATE TABLE pg_question(_id INTEGER PRIMARY KEY AUTOINCREMENT,idQuestion INTEGER, idCampaign INTEGER, idSponsor INTEGER, label TEXT );
-CREATE TABLE pg_option(_id INTEGER PRIMARY KEY AUTOINCREMENT,idSponsor INTEGER, idCampaign INTEGER, idQuestion INTEGER, sequential INTEGER, label TEXT, rightAnswer INTEGER, userAnswer INTEGER, created_at TEXT);
+CREATE TABLE pg_option(_id INTEGER PRIMARY KEY AUTOINCREMENT,idSponsor INTEGER, idCampaign INTEGER, idQuestion INTEGER, sequential INTEGER, label TEXT, rightAnswer TEXT, userAnswer TEXT, created_at TEXT);
 CREATE TABLE pg_transaction(_id INTEGER PRIMARY KEY AUTOINCREMENT,idTransaction INTEGER, idCampaign INTEGER, title TEXT, sponsorCode TEXT, eventDate TEXT, nature TEXT, amount INTEGER, created_at TEXT);
 
 --------------------------------

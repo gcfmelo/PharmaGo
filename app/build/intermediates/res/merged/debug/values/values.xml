@@ -696,6 +696,7 @@
     <string name="campaign_description">%s</string>
     <string name="campaign_id">%s</string>
     <string name="character_counter_pattern" translatable="false">%1$d / %2$d</string>
+    <string name="check_box_user_selection">Select True Sentences</string>
     <string name="option_id">Option # %s</string>
     <string name="option_id_text">Option Id#: </string>
     <string name="option_label">%s</string>
@@ -716,6 +717,9 @@
     <string name="status_bar_notification_info_overflow">999+</string>
     <string name="status_description">Status: %s</string>
     <string name="title_activity_questionnaire">Campaign Questions</string>
+    <string name="user_answer_false">False</string>
+    <string name="user_answer_true">True</string>
+    <string name="user_answer_undefined">Select</string>
     <string name="web_sevice_base_url">http://www.benben.net.br/apiPharmaGo?</string>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>

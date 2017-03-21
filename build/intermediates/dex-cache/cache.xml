@@ -2,49 +2,13 @@
 <items version="2" >
 
     <item
-        is-multidex="true"
-        jar="C:\Android\PharmaGo\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\Lenovo\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.8.0\c4ba5371a29ac9b2ad6129b1d39ea38750043eff\gson-2.8.0.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="a5b532dc0334babda6907cec7b5e31220f57140c">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_4072bfa806a075523e0959a942f4e93f5e93c277\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Lenovo\.android\build-cache\b230decd324b1db4d0537930de07bb357ca81715\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e51c2f662bb72419632af5192553c37e33890a99">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_d387cc667c6cfb6e407d3bdad6997786d44f3173\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Lenovo\.android\build-cache\c502f1d6e8d24bf5a7e8a121817f550c3894ccaa\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ea6a989b83d19b1b461281e0475a6cd6514897f8">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_7a37601cf4dfc7f13cc536442ca6a5b0942cd4c6\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Lenovo\AppData\Local\Android\sdk2\extras\android\m2repository\com\android\support\support-annotations\25.2.0\support-annotations-25.2.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4a5a82a027706397fff621b22fd6fa796e91d7c5">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.2.0_34fa22c91218fc0f43911d3815631d55bdd23a92\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Lenovo\.android\build-cache\d881809404daeceab1625a757103cf7a9b979475\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="152de8da301561dcb0946471697a420d8f7a68c5">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_ee29ec01bb6148152a1f1b07847ad8fefbb92b21\classes.dex" />
+        sha1="c4ba5371a29ac9b2ad6129b1d39ea38750043eff">
+        <dex dex="C:\Android\PharmaGo\app\build\intermediates\pre-dexed\debug\gson-2.8.0_876716d66400a95dc8e2380bbc2fb8266e8c6fdc.jar" />
     </item>
     <item
         is-multidex="true"
@@ -56,13 +20,22 @@
         <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_453739e58950043518e6f4a1dc50b6a4c3690237\classes.dex" />
     </item>
     <item
+        is-multidex="false"
+        jar="C:\Android\PharmaGo\volley\build\intermediates\bundles\default\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="863e41d99c0a400ba9cd8331b33d1b31e76520ef">
+        <dex dex="C:\Android\PharmaGo\app\build\intermediates\pre-dexed\debug\classes_e73c22cb31ef15b4ab9c8449c56f1bbfce2c729b.jar" />
+    </item>
+    <item
         is-multidex="true"
-        jar="C:\Users\Lenovo\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.8.0\c4ba5371a29ac9b2ad6129b1d39ea38750043eff\gson-2.8.0.jar"
+        jar="C:\Android\PharmaGo\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="c4ba5371a29ac9b2ad6129b1d39ea38750043eff">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10\gson-2.8.0_876716d66400a95dc8e2380bbc2fb8266e8c6fdc\classes.dex" />
+        sha1="b9036e8bd9dbbaa2c22b0da31491bc0d37ac990b">
+        <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_4072bfa806a075523e0959a942f4e93f5e93c277\classes.dex" />
     </item>
 
 </items>

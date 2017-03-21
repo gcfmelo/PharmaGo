@@ -6,22 +6,22 @@
     density="xxhdpi"
     format="10"
     plugin-version="2.3.0"
-    timestamp="1490034772566"
+    timestamp="1490069764928"
     token="-5379870446317862396"
     verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="419" />
+        duration="542" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="13" />
+        duration="35" />
     <task
         name="verifier"
-        duration="3" />
+        duration="16" />
 
     <artifact
         location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
@@ -70,7 +70,15 @@
     </build>
     <build
         build-mode="COLD"
-        timestamp="1490033859284"
+        timestamp="1490056488107"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
+            type="SPLIT" />
+    </build>
+    <build
+        build-mode="COLD"
+        timestamp="1490069623783"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="C:\Android\PharmaGo\app\build\outputs\apk\app-debug.apk"
@@ -78,7 +86,7 @@
     </build>
     <build
         build-mode="COLD"
-        timestamp="1490034772566"
+        timestamp="1490069764928"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="C:\Android\PharmaGo\app\build\intermediates\split-apk\debug\slices\slice_9.apk"

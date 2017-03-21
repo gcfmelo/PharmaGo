@@ -23,7 +23,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:inputType="textEmailAddress"
-    android:text="gcfmelo@gmail.com"
+    android:text=""
     android:ems="10"
     android:layout_alignParentTop="true"
     android:layout_toRightOf="@+id/textView2"

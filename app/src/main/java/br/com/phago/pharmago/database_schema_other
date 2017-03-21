@@ -33,7 +33,7 @@ DROP TABLE pg_transaction;
 CREATE TABLE COMMANDS:
 --------------------------------
 CREATE TABLE pg_sponsor(_id INTEGER PRIMARY KEY AUTOINCREMENT,sponsorId INTEGER, sponsorCode TEXT, sponsorName TEXT );
-CREATE TABLE pg_user(_id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,email TEXT, cpf TEXT, userAccountStatus TEXT, companyCode TEXT, companyName TEXT, companyLatitude TEXT, companyLongitude TEXT, created_at TEXT);
+CREATE TABLE pg_user(_id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,email TEXT, cpf TEXT, password TEXT, userAccountStatus TEXT, companyCode TEXT, companyName TEXT, companyLatitude TEXT, companyLongitude TEXT, created_at TEXT);
 CREATE TABLE pg_campaign(_id INTEGER PRIMARY KEY AUTOINCREMENT,idCampaign INTEGER, idSponsor INTEGER, title TEXT, startDate TEXT, endDate TEXT, numberOfQuestions INTEGER, pointsForRightAnswer INTEGER, pointsForParticipation INTEGE
 R, status TEXT);
 CREATE TABLE pg_question(_id INTEGER PRIMARY KEY AUTOINCREMENT,idQuestion INTEGER, idCampaign INTEGER, idSponsor INTEGER, label TEXT );

@@ -75,6 +75,7 @@ public class OptionActivity extends AppCompatActivity {
                 if (selectedCampaignParticipationEnabled.equals("Y")) {
                     if (selectedOptionId != null) {
                         toast_value = selectedOptionId + "\n" + selectedOptionLabel;
+
                         int i = position;
                         if (optionList.get(position).getUserAnswer().equals("U")) {
                             current_user_answer = "N";

@@ -17,6 +17,7 @@ public class User {
     private String email;
     private String cpf;
     private String name;
+    private String password;
     private String userAccountStatus;
     private String companyCode;
     private String companyName;
@@ -29,7 +30,7 @@ public class User {
     public User(){
 
     }
-    public User(String email, String cpf, String name, String status, String companyCode, String companyName, String companyLatitude, String companyLongitude) {
+    public User(String email, String password, String cpf, String name, String status, String companyCode, String companyName, String companyLatitude, String companyLongitude) {
         this.email = email;
         this.cpf = cpf;
         this.name = name;
@@ -43,6 +44,10 @@ public class User {
 
     // setters
 
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -82,6 +87,11 @@ public class User {
 
     // getters
 
+
+    public String getPassword() {
+        return password;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -117,4 +127,5 @@ public class User {
     public String getCreatedAt() {
         return createdAt;
     }
+
 }

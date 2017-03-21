@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.List;
@@ -36,6 +37,7 @@ class OptionArrayAdapter extends ArrayAdapter<Option>{
         TextView optionLabel;
         TextView optionRightAnswer;   // Y/N
         TextView optionUserAnswer;      // Y/N/U   U=Undefined
+        CheckBox checkBoxUserSelection;
     }
 
     public OptionArrayAdapter(Context context, List<Option> oplist){
@@ -60,6 +62,7 @@ class OptionArrayAdapter extends ArrayAdapter<Option>{
             viewHolder.optionLabel = (TextView) convertView.findViewById(R.id.textViewOptionLabel);
             viewHolder.optionRightAnswer = (TextView) convertView.findViewById(R.id.textViewRightAnswer);
             viewHolder.optionUserAnswer = (TextView) convertView.findViewById(R.id.textViewUserAnswer);
+            viewHolder.checkBoxUserSelection = (CheckBox) convertView.findViewById(R.id.checkBoxUserSelection);
 
             convertView.setTag(viewHolder);
 
@@ -74,6 +77,21 @@ class OptionArrayAdapter extends ArrayAdapter<Option>{
         viewHolder.optionLabel.setText(context.getString(R.string.option_label, (op.getLabel())));
         viewHolder.optionRightAnswer.setText(context.getString(R.string.option_right_answer, op.getRightAnswer()));
         viewHolder.optionUserAnswer.setText(context.getString(R.string.option_user_answer, op.getUserAnswer()));
+        if (op.getUserAnswer().equals("U")) {
+            viewHolder.checkBoxUserSelection.setText(R.string.user_answer_undefined);
+            viewHolder.checkBoxUserSelection.setEnabled(true);
+        } else if (op.getUserAnswer().equals("N")){
+            viewHolder.checkBoxUserSelection.setText(R.string.user_answer_false);
+            viewHolder.checkBoxUserSelection.setChecked(false);
+            viewHolder.checkBoxUserSelection.setEnabled(true);
+        } else if (op.getUserAnswer().equals("Y")){
+            viewHolder.checkBoxUserSelection.setText(R.string.user_answer_true);
+            viewHolder.checkBoxUserSelection.setChecked(true);
+            viewHolder.checkBoxUserSelection.setEnabled(true);
+        } else {
+            viewHolder.checkBoxUserSelection.setText("WTF!");
+        }
+        ;
 
         return convertView; // return completed list item to display
     }

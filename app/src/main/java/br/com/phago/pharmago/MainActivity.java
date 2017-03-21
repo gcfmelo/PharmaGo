@@ -37,13 +37,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String ENABLE_PARTICIPATION_YN = "br.com.phago.pharmago.ENABLE_PARTICIPATION_YN";
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    // DatabaseHelper
-//    PgDatabaseHelper dbx;
-    //List of Campaign objects
-//    private List<Campaign> campaignList = new ArrayList<>();
+
     private List<CampaignListClass> campaignList = new ArrayList<CampaignListClass>();
-// migrated to other activity
-//    private List<CampaignDetailListClass> campaignDetailList = new ArrayList<CampaignDetailListClass>();
     // ArrayAdapter for bind Campaign objects to a ListView
     private CampaignArrayAdapter campaignArrayAdapter;
     private ListView campaignListView; // displays Campaign info
@@ -52,17 +47,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Get the Intent that started this activity and extract the string
+//        Intent intent = getIntent();
+//        final String iEmail = intent.getStringExtra(LoginActivity.EXTRA_EMAIL);
+//        final String iPassword = intent.getStringExtra(LoginActivity.EXTRA_PASSWORD);
+//        final String iUsername = intent.getStringExtra(LoginActivity.EXTRA_USERNAME);
+
+        // TODO use intent to pass login data
+        final String iEmail = "gcfmelo@gmail.com";
+        final String iPassword = "abc123";
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         Log.i(TAG, "... onCreate");
-
-
-//        UpdateSponsor("gcfmelo@gmail.com", "abc123");
-//        UpdateUser("gcfmelo@gmail.com", "abc123");
-//        UpdateCampaign("gcfmelo@gmail.com", "abc123");
-//        UpdateQuestionOption("gcfmelo@gmail.com", "abc123");
-//        UpdateTransaction("gcfmelo@gmail.com", "abc123");
 
         // TODO GET THE CAMPAIGN LIST TO USE IN THE LAYOUT - ADJUST THIS
         // dbx = new PgDatabaseHelper(getApplicationContext());
@@ -122,11 +121,11 @@ public class MainActivity extends AppCompatActivity {
             }     // End of "onItemClick"
         });
 
-        UpdateSponsor("gcfmelo@gmail.com", "abc123");
-        UpdateUser("gcfmelo@gmail.com", "abc123");
-        UpdateCampaign("gcfmelo@gmail.com", "abc123");
-        UpdateQuestionOption("gcfmelo@gmail.com", "abc123");
-        UpdateTransaction("gcfmelo@gmail.com", "abc123");
+        UpdateSponsor(iEmail, iPassword);
+        UpdateUser(iEmail, iPassword);
+        UpdateCampaign(iEmail, iPassword);
+        UpdateQuestionOption(iEmail, iPassword);
+        UpdateTransaction(iEmail, iPassword);
 
     }
 
@@ -174,21 +173,21 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, getWsData.class);
         intent.setAction(getWsData.ACTION_GET_LOGIN_DATA);
-        intent.putExtra(getWsData.EXTRA_EMAIL, "gcfmelo@gmail.com");
-        intent.putExtra(getWsData.EXTRA_PASSWORD, "abc123");
+        intent.putExtra(getWsData.EXTRA_EMAIL, iEmail);
+        intent.putExtra(getWsData.EXTRA_PASSWORD, iPassword);
         startService(intent);
 
 
         Intent intent2 = new Intent(this, getWsData.class);
         intent2.setAction(getWsData.ACTION_GET_TRANSACTIONS_DATA);
-        intent2.putExtra(getWsData.EXTRA_EMAIL, "gcfmelo@gmail.com");
-        intent2.putExtra(getWsData.EXTRA_PASSWORD, "abc123");
+        intent2.putExtra(getWsData.EXTRA_EMAIL, iEmail);
+        intent2.putExtra(getWsData.EXTRA_PASSWORD, iPassword);
         startService(intent2);
 
         Intent intent3 = new Intent(this, getWsData.class);
         intent3.setAction(getWsData.ACTION_GET_QUIZ_DATA);
-        intent3.putExtra(getWsData.EXTRA_EMAIL, "gcfmelo@gmail.com");
-        intent3.putExtra(getWsData.EXTRA_PASSWORD, "abc123");
+        intent3.putExtra(getWsData.EXTRA_EMAIL, iEmail);
+        intent3.putExtra(getWsData.EXTRA_PASSWORD, iPassword);
         startService(intent3);
 
 
@@ -196,8 +195,8 @@ public class MainActivity extends AppCompatActivity {
         // TEST AND DEBUG PURPOSES
         Intent intent4 = new Intent(this, getWsData.class);
         intent4.setAction(getWsData.ACTION_TEST);
-        intent4.putExtra(getWsData.EXTRA_EMAIL, "gcfmelo@gmail.com");
-        intent4.putExtra(getWsData.EXTRA_PASSWORD, "abc123");
+        intent4.putExtra(getWsData.EXTRA_EMAIL, iEmail);
+        intent4.putExtra(getWsData.EXTRA_PASSWORD, iPassword;
         startService(intent4);
 
     }
@@ -207,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void UpdateUser(String email, String password) {
+    public void UpdateUser(String email, final String password) {
         // @@@
         final PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
 
@@ -240,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                             jsonObjUser = jsonObjRoot.getJSONObject("json");
                             if (jsonObjUser != null) {
                                 User user = new User(jsonObjUser.getString("email"),
+                                                    password,
                                                     jsonObjUser.getString("name"),
                                                     jsonObjUser.getString("userAccountStatus"),
                                                     jsonObjUser.getString("cpf"),

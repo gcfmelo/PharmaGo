@@ -77,6 +77,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     private static final String FIELD_USER_NAME = "name";
     private static final String FIELD_USER_EMAIL = "email";
     private static final String FIELD_USER_CPF = "cpf";
+    private static final String FIELD_USER_PASSWORD = "password";
     private static final String FIELD_USER_STATUS = "userAccountStatus";
     private static final String FIELD_USER_COMPANY_CODE = "companyCode";
     private static final String FIELD_USER_COMPANY_NAME = "companyName";
@@ -90,6 +91,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
             FIELD_USER_NAME + " TEXT," +
             FIELD_USER_EMAIL + " TEXT, " +
             FIELD_USER_CPF + " TEXT, " +
+            FIELD_USER_PASSWORD + " TEXT, " +
             FIELD_USER_STATUS + " TEXT, " +
             FIELD_USER_COMPANY_CODE + " TEXT, " +
             FIELD_USER_COMPANY_NAME + " TEXT, " +
@@ -260,6 +262,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(FIELD_USER_EMAIL, user.getEmail());
         values.put(FIELD_USER_NAME, user.getName());
+        values.put(FIELD_USER_PASSWORD, user.getPassword());
         values.put(FIELD_USER_STATUS, user.getUserAccountStatus());
         values.put(FIELD_USER_CPF, user.getCpf());
         values.put(FIELD_USER_COMPANY_CODE, user.getCompanyCode());
@@ -468,6 +471,42 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
     }
 
     ///// READ AND QUERY DATA
+
+      public User getLastUser() {
+
+        User user = new User();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT " +
+                FIELD_USER_NAME + ", " +
+                FIELD_USER_CPF + ", " +
+                FIELD_USER_EMAIL + ", " +
+                FIELD_USER_PASSWORD + ", " +
+                FIELD_USER_STATUS + ", " +
+                FIELD_USER_COMPANY_CODE + ", " +
+                FIELD_USER_COMPANY_NAME + ", " +
+                FIELD_USER_COMPANY_LATITUDE + ", " +
+                FIELD_USER_COMPANY_LONGITUDE +" " +
+                " FROM " + TABLE_USER +";";
+        Cursor c = db.rawQuery(selectQuery, null);
+        if (c != null) {
+            c.moveToFirst();
+            user.setName(c.getString(c.getColumnIndex(FIELD_USER_NAME)));
+            user.setCpf(c.getString(c.getColumnIndex(FIELD_USER_CPF)));
+            user.setEmail(c.getString(c.getColumnIndex(FIELD_USER_EMAIL)));
+            user.setPassword(c.getString(c.getColumnIndex(FIELD_USER_PASSWORD)));
+            user.setUserAccountStatus(c.getString(c.getColumnIndex(FIELD_USER_STATUS)));
+            user.setCompanyCode(c.getString(c.getColumnIndex(FIELD_USER_COMPANY_CODE)));
+            user.setCompanyName(c.getString(c.getColumnIndex(FIELD_USER_COMPANY_NAME)));
+            user.setCompanyLatitude(c.getString(c.getColumnIndex(FIELD_USER_COMPANY_LATITUDE)));
+            user.setCompanyLongitude(c.getString(c.getColumnIndex(FIELD_USER_COMPANY_LONGITUDE)));
+        }
+        if (c != null && !c.isClosed()) {
+            c.close();
+        }
+        closeDB(db);
+        return user;
+    }
+
     public Sponsor getSponsorByCode(String sponsorCode) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "SELECT " + FIELD_SPONSOR_NAME + " FROM " + TABLE_SPONSOR + " WHERE sponsorCode = '" + sponsorCode + "';";
@@ -483,6 +522,7 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         }
         return sp;
     }
+
 
     public List<Sponsor> getAllSponsors() {
         List<Sponsor> sponsors = new ArrayList<Sponsor>();

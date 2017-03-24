@@ -6,3 +6,6 @@ Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
 Solution: Build>Clean Project
 Build>Rebuild Project
 Run
+
+TO REMOVE AN APP:
+adb uninstall br.com.phago.pharmago

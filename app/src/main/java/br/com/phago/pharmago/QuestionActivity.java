@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +47,7 @@ public class QuestionActivity extends AppCompatActivity {
         //dbx.closeDB();
         dbx.close();
 
-        Toast.makeText(this, " BD returned " + Integer.toString(questionList.size()) + " questions", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, " BD returned " + Integer.toString(questionList.size()) + " questions", Toast.LENGTH_SHORT).show();
         // TODO DELETE ME
         // for debugging purposes
         if (questionList.size() < 1) {

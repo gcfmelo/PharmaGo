@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class OptionActivity extends AppCompatActivity {
         //dbx.closeDB();
         dbx.close();
 
-        Toast.makeText(this, " BD returned " + Integer.toString(optionList.size()) + " questions", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, " BD returned " + Integer.toString(optionList.size()) + " questions", Toast.LENGTH_SHORT).show();
         // TODO DELETE ME
         // for debugging purposes
         if (optionList.size() < 1) {
@@ -79,21 +78,21 @@ public class OptionActivity extends AppCompatActivity {
                         int i = position;
                         if (optionList.get(position).getUserAnswer().equals("U")) {
                             current_user_answer = "N";
-                            Toast.makeText(OptionActivity.this, "Answer changed from 'U' to 'N'", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(OptionActivity.this, "Answer changed from 'U' to 'N'", Toast.LENGTH_SHORT).show();
                             // updateUserAnswer(...)
                         } else if (optionList.get(position).getUserAnswer().equals("Y")) {
                             current_user_answer = "N";
-                            Toast.makeText(OptionActivity.this, "Answer changed from 'Y' to 'N'", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(OptionActivity.this, "Answer changed from 'Y' to 'N'", Toast.LENGTH_SHORT).show();
                             // updateUserAnswer(...)
                         } else if (optionList.get(position).getUserAnswer().equals("N")) {
                             current_user_answer = "Y";
-                            Toast.makeText(OptionActivity.this, "Answer changed from 'N' to 'Y'", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(OptionActivity.this, "Answer changed from 'N' to 'Y'", Toast.LENGTH_SHORT).show();
                             // updateUserAnswer(...)
                         }
                     } else {
                         toast_value = "NULL";
                     }
-                    Toast.makeText(OptionActivity.this, toast_value, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(OptionActivity.this, toast_value, Toast.LENGTH_LONG).show();
                 }
             }
         });

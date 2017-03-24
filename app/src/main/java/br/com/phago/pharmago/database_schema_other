@@ -15,6 +15,9 @@ Open your Database in the SQLite admin tool:
 sqlite3 <your_database_name>.db  (.db is the usual extension, but you may choose other if you prefer)
 sqlite3 pharmago.db
 USE CTRL+D to exit SQLite Admin and again to close shell back to windows CMD prompt.
+------------------------------------
+TO REMOVE AN APP:
+adb uninstall br.com.phago.pharmago
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 .tables
 --------

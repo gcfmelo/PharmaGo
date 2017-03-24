@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.phago.pharmago.CheckinActivity">
+    tools:context="br.com.phago.pharmago.CheckInActivity">
 
     <EditText
         android:id="@+id/editTextEmailAddress"
@@ -16,6 +16,7 @@
         android:ems="10"
         android:hint="email"
         android:inputType="textEmailAddress"
+        android:nextFocusDown="@+id/editTextPassword"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -39,6 +40,7 @@
 
     <EditText
         android:id="@+id/editText5"
+        style="@android:style/Widget.AutoCompleteTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -47,7 +49,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="none|textMultiLine"
+        android:inputType="none"
         android:text="please fill your email and password and press button [LOGIN] to login in PharmaGo \n\n Please visit our sito to mor information (www.pharmago.com.br) \nIn case of any questions, please contact our support at support@pharmago.com.br"
         android:textAlignment="gravity"
         android:textSize="14sp"
@@ -71,7 +73,7 @@
         app:layout_constraintHorizontal_bias="0.0">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/buttonExit"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_column="0"
@@ -115,7 +117,7 @@
             android:textAlignment="gravity" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonLogin"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_column="3"

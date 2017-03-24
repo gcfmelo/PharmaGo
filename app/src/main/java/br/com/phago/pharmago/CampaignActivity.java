@@ -2,7 +2,6 @@ package br.com.phago.pharmago;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,25 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CampaignActivity extends AppCompatActivity {
-    public static final boolean RECREATE_TABLES = false;
+    public static final boolean RECREATE_TABLES = true;
     public static final String WS_RETURN_OK = "SUCCESSFUL";
     public static final String WS_RETURN_ERROR = "ERROR";
     public static final String EXTRA_CAMPAIGN_ID = "br.com.phago.pharmago.CAMPAIGN_ID";
@@ -97,12 +84,12 @@ public class CampaignActivity extends AppCompatActivity {
 //        PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().apply();
 
         // bVariableName is a BEGINNING value of the Variable retrieved from PreferenceManager
-        String bEmail = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("KEY_EMAIL", KEY_EMAIL_NOT_FOUND_VALUE);
-        String bUsername = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("KEY_PASSWORD", KEY_USERNAME_NOT_FOUND_VALUE);
-        String bPassword = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("KEY_USERNAME", KEY_PASSWORD_NOT_FOUND_VALUE);
-        int bCounter = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getInt("KEY_COUNTER", KEY_COUNTER_NOT_FOUND_VALUE);
+        String bEmail = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString(KEY_EMAIL, KEY_EMAIL_NOT_FOUND_VALUE);
+        String bUsername = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString(KEY_USERNAME, KEY_USERNAME_NOT_FOUND_VALUE);
+        String bPassword = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString(KEY_PASSWORD, KEY_PASSWORD_NOT_FOUND_VALUE);
+        int bCounter = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getInt(KEY_COUNTER, KEY_COUNTER_NOT_FOUND_VALUE);
 
-        Toast.makeText(this, bEmail + "\n"+ bUsername + "\n" + bPassword +"\n" + Integer.toString(bCounter), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, bEmail + "\n"+ bUsername + "\n" + bPassword +"\n" + Integer.toString(bCounter), Toast.LENGTH_SHORT).show();
 
 //
 //        if ((!bEmail.equals(KEY_EMAIL_NOT_FOUND_VALUE))&&!(bPassword.equals(KEY_PASSWORD_NOT_FOUND_VALUE))&&(bEmail.contains("@"))) {
@@ -129,51 +116,15 @@ public class CampaignActivity extends AppCompatActivity {
             editor.putString(KEY_USERNAME, bUsername);
             editor.putInt(KEY_COUNTER, bCounter);
             editor.commit();
-
             // open CheckInActivity Intent to ask the user for login data, then
             // we will use (mEmail,mPassword) to try login again
             Intent intentCheckIn= new Intent(CampaignActivity.super.getApplicationContext(), CheckInActivity.class);
             intentCheckIn.putExtra(EXTRA_EMAIL, selectedEmail);                       // fill login editTextEmail
             intentCheckIn.putExtra(EXTRA_PASSWORD, selectedPassword);                 // fill login editTextPassword
             startActivity(intentCheckIn);
-
-        } else {
-
-
-            //PreferenceManager.getDefaultSharedPreferences(context).getString("MYLABEL", "defaultStringIfNothingFound");
-            //PreferenceManager.getDefaultSharedPreferences(context).edit().putString("MYLABEL", "myStringToSave").commit();
-
-            // open CheckInActivity Intent to ask the user for login data, then
-            // we will use (mEmail,mPassword) to try login again
-            Intent intentCheckIn= new Intent(CampaignActivity.super.getApplicationContext(), CheckInActivity.class);
-            intentCheckIn.putExtra(EXTRA_EMAIL, mEmail);                       // fill login editTextEmail
-            intentCheckIn.putExtra(EXTRA_PASSWORD, mPassword);                 // fill login editTextPassword
-            startActivity(intentCheckIn);
-
         }
-
-
-        Toast.makeText(this, "Counter :  " + Integer.toString(mCounter), Toast.LENGTH_SHORT).show();
-        if (mEmail.contains("@")){
-            // we will use (mEmail, mPassword)  to try login
-            Toast.makeText(this, "There is an email in local 'settings'" + mEmail, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "NOT FOUND email in local 'settings'", Toast.LENGTH_SHORT).show();
-            // open CheckInActivity Intent to ask the user for login data, then
-            // we will use (mEmail,mPassword) to try login
-            // this logic will be implemented in CheckInActivity
-            // if the user can not succeed in login, may use [EXIT] button do close App
-            // and receive a splash screen with support information
-        }
-
 
         mCounter++;
-
-
-        // TODO use intent to pass login data
-        final String iEmail = "gcfmelo@gmail.com";
-        final String iPassword = "abc123";
-//        LoginActivity();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -186,7 +137,18 @@ public class CampaignActivity extends AppCompatActivity {
         campaignList = dbx.getAllCampaigns();
         dbx.close();
 
-        Toast.makeText(this, " BD returned " + Integer.toString(campaignList.size()) + " campaigns", Toast.LENGTH_SHORT).show();
+        if (campaignList ==null || campaignList.size()==0 || campaignList.get(0).getCampaignName().startsWith("Selec")) {
+
+            Intent intentReload = getIntent();
+            overridePendingTransition(0, 0);
+            intentReload.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(intentReload);
+        }
+
+
+//        Toast.makeText(this, " BD returned " + Integer.toString(campaignList.size()) + " campaigns", Toast.LENGTH_SHORT).show();
         // TODO DELETE ME
         // for debugging purposes
         if (campaignList.size() < 1) {
@@ -233,15 +195,15 @@ public class CampaignActivity extends AppCompatActivity {
                 else {
                     toast_value = "NULL";
                 }
-                Toast.makeText(CampaignActivity.this, toast_value, Toast.LENGTH_LONG).show();
+//                Toast.makeText(CampaignActivity.this, toast_value, Toast.LENGTH_LONG).show();
             }     // End of "onItemClick"
         });
 
-        UpdateSponsor(selectedEmail, selectedPassword);
-        UpdateUser(selectedEmail, selectedPassword);
-        UpdateCampaign(selectedEmail, selectedPassword);
-        UpdateQuestionOption(selectedEmail, selectedPassword);
-        UpdateTransaction(selectedEmail, selectedPassword);
+//        UpdateSponsor(selectedEmail, selectedPassword);
+//        UpdateUser(selectedEmail, selectedPassword);
+//        UpdateCampaign(selectedEmail, selectedPassword);
+//        UpdateQuestionOption(selectedEmail, selectedPassword);
+//        UpdateTransaction(selectedEmail, selectedPassword);
 
     }
 
@@ -291,17 +253,13 @@ public class CampaignActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+//    <string name="action_menu_0">Refresh Campaigns</string>
+//    <string name="action_menu_1">Login</string>
+//    <string name="action_menu_2">Exit</string>
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_menu_op0) {
-            Toast.makeText(this, "You selected Option 0 id: " + Integer.toString(id), Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        if (id == R.id.action_menu_op1) {
-            Toast.makeText(this, "You selected Option 1  id: " + Integer.toString(id), Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        if (id == R.id.action_menu_op2) {
-            Toast.makeText(this, "You selected Option 2: RELOAD App", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "You selected Option 0 id: " + Integer.toString(id), Toast.LENGTH_SHORT).show();
 
             Intent intent = getIntent();
             overridePendingTransition(0, 0);
@@ -310,6 +268,32 @@ public class CampaignActivity extends AppCompatActivity {
             overridePendingTransition(0, 0);
             startActivity(intent);
 
+            return true;
+        }
+        if (id == R.id.action_menu_op1) {
+//            Toast.makeText(this, "You selected Option 1  id: " + Integer.toString(id), Toast.LENGTH_SHORT).show();
+            // TODO call Login
+
+            //        Limpar PreferedManager
+            // limpa tudo
+            PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().commit();
+            // não limpa o contador de acessos
+//            PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("KEY_EMAIL", "").commit();
+//            PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("KEY_PASSWORD", "").commit();
+//            PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("KEY_USERNAME", "").commit();
+
+            Intent intentCheckIn = new Intent(CampaignActivity.super.getApplicationContext(), CheckInActivity.class);
+            intentCheckIn.putExtra(EXTRA_EMAIL, "");
+            intentCheckIn.putExtra(EXTRA_PASSWORD, "");
+            startActivity(intentCheckIn);
+            finish();
+
+            return true;
+        }
+        if (id == R.id.action_menu_op2) {
+//            Toast.makeText(this, "You selected Option 2: RELOAD App", Toast.LENGTH_SHORT).show();
+
+            finish();
             return true;
         }
 
@@ -354,382 +338,6 @@ public class CampaignActivity extends AppCompatActivity {
 
 
     }
-    public void UpdateUser(String email, final String password) {
-        // @@@
-        final PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
-
-        final String TAG = "UpdateUser";
-        Log.d(TAG, " process started");
-        if (RECREATE_TABLES) {
-            dbx.dropTable("pg_user");
-            dbx.createTableUser();
-        } else {
-            dbx.clearTableUser();
-        }
-        try {
-            RequestQueue queue = Volley.newRequestQueue(this);
-            URL urlObj = createURL(email, password, "doLogin", "123456789");     //format URL to call WS
-            String url = urlObj.toString();
-            Log.i(TAG, "URL:   " + url);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    String myJsonString = response.toString();
-                    myJsonString = myJsonString.replace("\\\"", "\"");
-                    myJsonString = myJsonString.replace("\":\"{", "\":{");
-                    myJsonString = myJsonString.replace("}\"}", "}}");
-                    // converting to JSONObject
-                    JSONObject jsonObjRoot = null;
-                    JSONObject jsonObjUser = null;
-                    try {
-                        jsonObjRoot = new JSONObject(myJsonString);
-                        if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_OK)) {
-                            jsonObjUser = jsonObjRoot.getJSONObject("json");
-                            if (jsonObjUser != null) {
-                                User user = new User(jsonObjUser.getString("email"),
-                                                    password,
-                                                    jsonObjUser.getString("name"),
-                                                    jsonObjUser.getString("userAccountStatus"),
-                                                    jsonObjUser.getString("cpf"),
-                                                    jsonObjUser.getString("companyCode"),
-                                                    jsonObjUser.getString("companyName"),
-                                                    jsonObjUser.getString("companyLatitude"),
-                                                    jsonObjUser.getString("companyLongitude"));
-                                dbx.addUser(user);
-                            }
-                            // @@@
-                            dbx.close();
-                        } else {
-                            // WS responded with:
-                            Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString());
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if (error.getMessage() == null) {
-                        Log.i(TAG, " Web Service has failed!" + "\n\n");
-                        // TODO: reset your password, create a new account
-                    } else {
-                        Log.i(TAG, "onErrorResponse(): " + error.getMessage());
-                    }
-                }
-            });
-            queue.add(stringRequest);   // replace for the correct object name
-        } catch (SQLiteException e) {
-            Log.i(TAG, "Service: " + "Database is unavailable!");
-        }
-    }
-
-    public void UpdateSponsor(String email, String password) {
-        // @@@
-        final PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
-
-        final String TAG = "UpdateSponsor";
-        if (RECREATE_TABLES) {
-            dbx.dropTable("pg_sponsor");
-            dbx.createTableSponsor();
-        } else {
-            dbx.clearTableSponsor();
-        }
-        try {
-            URL urlObj = createURL(email, password, "findAllSponsors", "123456789");     //format URL to call WS
-            String url = urlObj.toString();
-            RequestQueue queue = Volley.newRequestQueue(this);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    String myJsonString = response;
-                    myJsonString = myJsonString.replace("\\\"", "\"");
-                    myJsonString = myJsonString.replace("\"[{", "[{");
-                    myJsonString = myJsonString.replace("]\"}", "]}");
-                    // converting to JSONObject
-                    JSONObject jsonObjRoot = null;
-                    JSONArray jsonArry = null;
-                    try {
-                        jsonObjRoot = new JSONObject(myJsonString);
-                        if (jsonObjRoot.getString("status").equals(WS_RETURN_OK)) {
-                            jsonArry = jsonObjRoot.getJSONArray("json");
-                            for (int i = 0; i < jsonArry.length(); i++) {
-                                Sponsor sponsor = new Sponsor(jsonArry.getJSONObject(i).getInt("idSponsor"),
-                                        jsonArry.getJSONObject(i).getString("sponsorCode"),
-                                        jsonArry.getJSONObject(i).getString("sponsorName"));
-                                dbx.addSponsor(sponsor);
-                            }
-                            // @@@
-                            dbx.close();
-                        } else {
-                            // WS responded with:
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if (error.getMessage() == null) {
-                        Log.i(TAG, " Web Service has failed!" + "\n\n");
-                        // TODO: reset your password, create a new account
-                    } else {
-                        Log.i(TAG, "onErrorResponse(): " + error.getMessage());
-                    }
-                }
-            });
-            queue.add(stringRequest);   // replace for the correct object name
-        } catch (SQLiteException e) {
-            Log.i(TAG, "Service: " + "Database is unavailable!");
-        }
-    }
-
-    public void UpdateCampaign(String email, String password) {
-        // @@@
-        final PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
-
-        final String TAG = "UpdateCampaign";
-        Log.d(TAG, " process started");
-        if (RECREATE_TABLES) {
-            dbx.dropTable("pg_campaign");
-            dbx.createTableCampaign();
-        } else {
-            dbx.clearTableCampaign();
-        }
-        try {
-            RequestQueue queue = Volley.newRequestQueue(this);
-            URL urlObj = createURL(email, password, "findAllCampaigns", "123456789");     //format URL to call WS
-            String url = urlObj.toString();
-            Log.i(TAG, "URL:   " + url);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    String myJsonString = response.toString();
-                    myJsonString = myJsonString.replace("\\\"", "\"");
-                    myJsonString = myJsonString.replace(":\"[{", ":[{");
-                    myJsonString = myJsonString.replace("}]\"}", "}]}");
-                    // converting to JSONObject
-                    JSONObject jsonObjRoot = null;
-                    JSONArray jsonArry = null;
-                    try {
-                        jsonObjRoot = new JSONObject(myJsonString);
-                        if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_OK)) {
-                            jsonArry = jsonObjRoot.getJSONArray("json");
-                            if (jsonArry != null) {
-                                for (int i = 0; i < jsonArry.length(); i++) {
-                                    Campaign campaign = new Campaign(jsonArry.getJSONObject(i).getInt("idCampaign"),
-                                                                    jsonArry.getJSONObject(i).getInt("idSponsor"),
-                                                                    jsonArry.getJSONObject(i).getString("title"),
-                                                                    jsonArry.getJSONObject(i).getString("startDate"),
-                                                                    jsonArry.getJSONObject(i).getString("endDate"),
-                                                                    jsonArry.getJSONObject(i).getInt("numberOfQuestions"),
-                                                                    jsonArry.getJSONObject(i).getInt("pointsForRightAnswer"),
-                                                                    jsonArry.getJSONObject(i).getInt("pointsForParticipation"),
-                                                                    jsonArry.getJSONObject(i).getString("status"));
-                                    dbx.addCampaign(campaign);
-                                }  // process the next element from JSON
-                            }
-                            // @@@
-                            dbx.close();
-                        } else {
-                            // WS responded not OK so...
-                            if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_ERROR)) {
-                                Log.i(TAG, "WS responded with: ERROR:  " + jsonObjRoot.getString("errorMessage").toString());
-                            } else {
-                                Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString() + "  " + jsonObjRoot.getString("errorMessage").toString());
-                            }
-                        }
-                    } catch (JSONException e) {
-                        Log.i("ERRO JSON ", e.getMessage());
-                    }
-                }
-
-            }
-                    , new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if (error.getMessage() == null) {
-                        Log.i(TAG, " Web Service has failed!" + "\n\n");
-                        // TODO: reset your password, create a new account
-                    } else {
-                        Log.i(TAG, "onErrorResponse(): " + error.getMessage());
-                    }
-                }
-            });
-            queue.add(stringRequest);   // replace for the correct object name
-        } catch (SQLiteException e) {
-            Log.i(TAG, "Service: " + "Database is unavailable!");
-        }
-    }
-
-    public void UpdateQuestionOption(String email, String password) {
-        // @@@
-        final PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
-
-        final String TAG = "UpdateQuestionOption";
-        Log.d(TAG, " process started");
-        if (RECREATE_TABLES) {
-            dbx.dropTable("pg_question");
-            dbx.dropTable("pg_option");
-            dbx.createTableQuestion();
-            dbx.createTableOption();
-        } else {
-            dbx.clearTableQuestion();
-            dbx.clearTableOption();
-        }
-        try {
-            RequestQueue queue = Volley.newRequestQueue(this);
-            URL urlObj = createURL(email, password, "findAllQuestions", "123456789");     //format URL to call WS
-            String url = urlObj.toString();
-            Log.i(TAG, "URL:   " + url);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    String myJsonString = response.toString();
-                    myJsonString = myJsonString.replace("\\\"", "\"");
-                    myJsonString = myJsonString.replace(":\"[{", ":[{");
-                    myJsonString = myJsonString.replace("}]\"}", "}]}");
-                    // converting to JSONObject
-                    JSONObject jsonObjRoot = null;
-                    JSONArray jsonArryQuestion = null;
-                    JSONArray jsonArryOptions = null;
-                    try {
-                        jsonObjRoot = new JSONObject(myJsonString);
-                        if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_OK)) {
-                            jsonArryQuestion = jsonObjRoot.getJSONArray("json");
-                            if (jsonArryQuestion != null) {
-                                for (int i = 0; i < jsonArryQuestion.length(); i++) {       // Itereate QUESTIONS
-                                    Question question = new Question(jsonArryQuestion.getJSONObject(i).getInt("idQuestion"),
-                                            jsonArryQuestion.getJSONObject(i).getInt("idCampaign"),
-                                            jsonArryQuestion.getJSONObject(i).getInt("idSponsor"),
-                                            jsonArryQuestion.getJSONObject(i).getString("label"));
-                                    dbx.addQuestion(question);
-                                    // lets process each OPTION inside this Question element of jsonArry
-                                    // there is one inner JSONArray inside
-                                    // lets extract the Options:
-                                    jsonArryOptions = jsonArryQuestion.getJSONObject(i).getJSONArray("options");
-                                    List<Option> mOpList = new ArrayList<Option>();
-                                    if (jsonArryOptions != null) {
-                                        for (int j = 0; j < jsonArryOptions.length(); j++) {    // this loop iterate OPTIONS
-                                            // Option(Integer idSponsor, Integer idCampaign, Integer idQuestion, Integer sequential, String label, String rightAnswer, String userAnswer)
-                                            Option option = new Option(jsonArryOptions.getJSONObject(j).getInt("idSponsor"),
-                                                                        jsonArryOptions.getJSONObject(j).getInt("idCampaign"),
-                                                                        jsonArryOptions.getJSONObject(j).getInt("idQuestion"),
-                                                                        jsonArryOptions.getJSONObject(j).getInt("sequential"),
-                                                                        jsonArryOptions.getJSONObject(j).getString("label"),
-                                                                        jsonArryOptions.getJSONObject(j).getString("rightAnswer"),
-                                                                        jsonArryOptions.getJSONObject(j).getString("userAnswer"));
-                                            dbx.addOption(option);
-                                        }  // process next OPTION
-                                    }
-                                }  // process the next QUESTION from JSON
-                            }
-                            // @@@
-                            dbx.close();
-                        } else {
-                            // WS responded not OK so...
-                            if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_ERROR)) {
-                                Log.i(TAG, "WS responded with: ERROR:  " + jsonObjRoot.getString("errorMessage").toString());
-                            } else {
-                                Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString() + "  " + jsonObjRoot.getString("errorMessage").toString());
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if (error.getMessage() == null) {
-                        Log.i(TAG, " Web Service has failed!" + "\n\n");
-                        // TODO: reset your password, create a new account
-                    } else {
-                        Log.i(TAG, "onErrorResponse(): " + error.getMessage());
-                    }
-                }
-            });
-            queue.add(stringRequest);   // replace for the correct object name
-        } catch (SQLiteException e) {
-            Log.i(TAG, "Service: " + "Database is unavailable!");
-        }
-    }
-
-    public void UpdateTransaction(String email, String password) {
-        // @@@
-        final PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
-
-        final String TAG = "UpdateTransaction";
-        Log.d(TAG, " process started");
-        if (RECREATE_TABLES) {
-            dbx.dropTable("pg_transaction");
-            dbx.createTableTransaction();
-        } else {
-            dbx.clearTableTransaction();
-        }
-        try {
-            RequestQueue queue = Volley.newRequestQueue(this);
-            URL urlObj = createURL(email, password, "findAllTransactions", "123456789");     //format URL to call WS
-            String url = urlObj.toString();
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    String myJsonString = response.toString();
-                    myJsonString = myJsonString.replace("\\\"", "\"");
-                    myJsonString = myJsonString.replace(":\"[{", ":[{");
-                    myJsonString = myJsonString.replace("}]\"}", "}]}");
-                    // converting to JSONObject
-                    JSONObject jsonObjRoot = null;
-                    JSONArray jsonArry = null;
-                    try {
-                        jsonObjRoot = new JSONObject(myJsonString);
-                        if (jsonObjRoot.getString("status").toString().equals(WS_RETURN_OK)) {
-                            jsonArry = jsonObjRoot.getJSONArray("json");
-                            if (jsonArry != null) {
-                                for (int i = 0; i < jsonArry.length(); i++) {
-                                    Transaction tr = new Transaction(jsonArry.getJSONObject(i).getString("sponsorCode"),
-                                                                            jsonArry.getJSONObject(i).getString("eventDate"),
-                                                                            jsonArry.getJSONObject(i).getString("title"),
-                                                                            jsonArry.getJSONObject(i).getString("nature"),
-                                                                            jsonArry.getJSONObject(i).getInt("idCampaign"),
-                                                                            jsonArry.getJSONObject(i).getInt("idTransaction"),
-                                                                            jsonArry.getJSONObject(i).getInt("amount"));
-                                    dbx.addTransaction(tr);
-                                    Log.i(TAG, "Element:   @@@   " + Integer.toString(i) + " " + jsonArry.getJSONObject(i));
-                                }
-                            }
-                            // @@@
-                            dbx.close();
-                        } else {
-                            // WS responded with:
-                            Log.i(TAG, "WS responded with:   @@@   " + jsonObjRoot.getString("status").toString());
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if (error.getMessage() == null) {
-                        Log.i(TAG, " Web Service has failed!" + "\n\n");
-                        // TODO: reset your password, create a new account
-                    } else {
-                        Log.i(TAG, "onErrorResponse(): " + error.getMessage());
-                    }
-                }
-            });
-            queue.add(stringRequest);   // replace for the correct object name
-        } catch (SQLiteException e) {
-            Log.i(TAG, "Service: " + "Database is unavailable!");
-        }
-    }
-
     public void TestCampaignList() {
         final String TAG = "TestCampaignList";
         Log.d(TAG, " process started");
@@ -778,21 +386,33 @@ public class CampaignActivity extends AppCompatActivity {
 
     void getFakeCampaignsList() {
         // for debugging
-        for (int i = 1; i < 20; i++) {
+        for (int i = 1; i < 2; i++) {
             CampaignListClass mCpl = new CampaignListClass();
-            mCpl.setCampaignName("Campanha " + Integer.toString(i));
+            mCpl.setCampaignName("Selecione: Menu > Refresh " + Integer.toString(i));
             mCpl.setCampaignId(i);
-            mCpl.setSponsorName("Patrocinador " + Integer.toString(i));
-            mCpl.setStartDate("2017-01-0" + Integer.toString(i));
-            if (i <= 10) {
-                mCpl.setCampaignStatus("Closed");
-            } else {
-                mCpl.setCampaignStatus("Open");
-            }
+            mCpl.setSponsorName(" " + Integer.toString(i));
+            mCpl.setStartDate("");
+            mCpl.setCampaignStatus("");
 
             campaignList.add(mCpl);
             Log.i("DEBUG DEBUG AND DEBUG", mCpl.toString());
         }
+//
+//        for (int i = 1; i < 20; i++) {
+//            CampaignListClass mCpl = new CampaignListClass();
+//            mCpl.setCampaignName("Campanha " + Integer.toString(i));
+//            mCpl.setCampaignId(i);
+//            mCpl.setSponsorName("Patrocinador " + Integer.toString(i));
+//            mCpl.setStartDate("2017-01-0" + Integer.toString(i));
+//            if (i <= 10) {
+//                mCpl.setCampaignStatus("Closed");
+//            } else {
+//                mCpl.setCampaignStatus("Open");
+//            }
+//
+//            campaignList.add(mCpl);
+//            Log.i("DEBUG DEBUG AND DEBUG", mCpl.toString());
+//        }
 
 
     }

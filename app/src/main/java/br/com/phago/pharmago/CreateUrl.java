@@ -9,7 +9,8 @@ import java.net.URL;
 
 public class CreateUrl {
 
-    private URL url;
+    private URL uurl;
+    private String url;
     private String baseUrl="";
     private String email;
     private String password;
@@ -23,7 +24,8 @@ public class CreateUrl {
         this.password = password;
         this.action = action;
         this.api_token = api_token;
-        this.url = new URL(baseUrl + "email=" + email + "&password=" + password + "&action=" + action + "&token=" + api_token);
+        this.uurl = new URL(baseUrl + "email=" + email + "&password=" + password + "&action=" + action + "&token=" + api_token);
+        this.url = uurl.toString();
     }
 
     // constructor with 3 String parameters
@@ -33,10 +35,15 @@ public class CreateUrl {
         this.action = action;
         baseUrl="http://www.benben.net.br/apiPharmaGo?";
         api_token="123456789";
-        url = new URL(baseUrl + "email=" + email + "&password=" + password + "&action=" + action + "&token=" + api_token);
+        uurl = new URL(baseUrl + "email=" + email + "&password=" + password + "&action=" + action + "&token=" + api_token);
+        url = uurl.toString();
     }
 
-    public URL getUrl() {
+    public URL getUrlObject() {
+        // retuns an URL object
+        return uurl;
+    }
+    public String getUrl() {
         // retuns an URL object
         return url;
     }

@@ -1,0 +1,166 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//////         T  O  D  O        L  I  S  T         ///////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+We have to develop five items:
+ 1) a method to check if there is user data on android client
+ 1.1) read DATA in SharedPreferences named 'settings'
+      SharedPreferences settings = getPreferences(MODE_PRIVATE);
+      //        mCounter = settings.getInt(KEY_COUNTER, spCounter);
+      //        mUsername = settings.getString(KEY_USERNAME, spUsername);
+      //        mEmail = settings.getString(KEY_EMAIL, spEmail);
+      //        mPassword = settings.getString(KEY_PASSWORD, spPassword);
+       if (mEmail().contains("@")){
+            // we will use (mEmail, mPassword)  to try login
+       } else {
+            // open CheckInActivity Intent to ask the user for login data, then
+            // we will use (mEmail,mPassword) to try login
+       }
+
+// SHARED PREFERENCES:
+
+// To RETRIEVE values from shared preferences:
+//    --------
+SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+String name = preferences.getString("Name", "");
+if(!name.equalsIgnoreCase(""))
+{
+    name = name + "  Sethi";  /* Edit the value here*/
+}
+
+// To STORE values in shared preferences:
+//    -----
+SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+SharedPreferences.Editor editor = settings.edit();
+editor.putString("Name","Harneet");
+editor.putString("Name","Harneet");
+editor.putString("Name","Harneet");
+editor.apply();
+
+// other... removing data from shared preferences:
+To remove specific values:
+SharedPreferences.Editor.remove() //followed by a
+commit()
+
+To remove them all
+SharedPreferences.Editor.clear() //followed by a
+commit()
+
+//If you don't care about the return value and you're using this from your application's main thread, consider using apply() instead.
+// How to delete the entire preference file, not just the preferences inside the file?
+// If it's not necessary to be removed every time, you can remove it manually (in you android device) from:
+// Settings -> Applications -> Manage applications -> (choose your app) -> Clear data or Uninstall
+
+//Deleting Android Shared Preferences in one line :-)
+context.getSharedPreferences("YOUR_PREFS", 0).edit().clear().commit();
+
+// Or apply for non-blocking asynchronous operation:
+this.getSharedPreferences("YOUR_PREFS", 0).edit().clear().apply();
+
+// Clear them all:
+PreferenceManager.getDefaultSharedPreferences(context).edit().clear().apply();
+
+// in the class definitions
+private static final String PREFERENCES = "shared_prefs";
+
+private static final SharedPreferences sharedPreferences  = getApplicationContext().getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+
+// inside the class
+public static void deleteAllSharePrefs(){
+        sharedPreferences.edit().clear().commit();
+}
+
+// To Clear all SharedPreferences centrally from any class:
+public static SharedPreferences.Editor getEditor(Context context) {
+    return getPreferences(context).edit();
+}
+
+// And then from any class:(Commit return Boolean whhere you can check whether your Preferences cleared or not)
+Navigation.getEditor(this).clear().commit();
+
+Or: you can use Apply: it returns void :
+Navigation.getEditor(this).clear().apply();
+
+// The fastest way to do this while you are developing/testing would be to
+// on Windows prompt
+gcfmelo@gmail.com   abc123
+adb uninstall br.com.phago.pharmago
+
+Example: $ adb uninstall com.example.myappname
+
+
+
+////
+
+       boolean loginGranted = false;
+       int loginAttempLimit = 10; // define a parameter
+       do {
+               loginGranted = checkIn(mEmail, mPassword))
+               loginAttemptLimit--
+               if (!loginGranted){
+                    // open CheckInActivity Intent to ask the user for login data, then
+                    // we will use (mEmail,mPassword) to try login again
+                    Intent intent = new Intent(MainActivity.super.getApplicationContext(), CheckInActivity.class);
+                    intent.putExtra(EXTRA_EMAIL, mEmail);                       // fill login editTextEmail
+                    intent.putExtra(EXTRA_PASSWORD, mPassword);                 // fill login editTextPassword
+                    intent.putExtra(EXTRA_LOGIN_ATTEMPT, loginAttempLimit);     // show in login layout
+                    startActivity(intent);
+               }
+       } while (loginAttempt>0 || !loginGranted);
+       // next we have to update user DATA in SharedPreferences named 'settings'
+
+ 2) a method to save/update user data to android client
+
+ // we may call onSaveInstanceState() that we made an @Override:
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_COUNTER, mCounter);
+        outState.putString(KEY_USERNAME, mUsername);
+        outState.putString(KEY_EMAIL, mEmail);
+        outState.putString(KEY_PASSWORD, mPassword);
+    }
+
+
+ 3) a method to check user login is authorized
+ // developed in step (1)
+ // if we came to this point it is time to update all data fro Web Services to local database
+
+ 4) an Activity to get/update local user data
+ // already solved
+
+ 5) a method to create a JSON file with UNSynchronized answers
+ // develop a getJSON method in POJO class Campaign
+
+ A MainLoader will select handle the authentication process:
+
+ check if there is already an username and a password saved locally
+ if (exist(user) == true) {
+
+     if(tryLoginWithSuccess(user) == true) {
+
+                (1) update local database using Web Services
+                (2) check if there are Answers in local database that are not
+                    synchronized with remote server data
+                (3) case (2) is true, send pending Answers
+                (4) load MainActivity by Intent, passing User data (email, password)
+
+            } else {
+
+                    (1) locally available data is not working in site, or user account
+                        is disabled/blocked.
+                    (2) Load CheckInActivity to get and save username and password, then:
+                    (3) update local user data and
+                    (4) restart this process
+
+             }
+
+ } else {
+          there is no User data in android client
+          Load CheckInActivity to get and save username and password, then:
+          update local user data and
+          restart this process
+ }
+ ///////////////////////////////////////////////////////////////////////////////////////////////////
+

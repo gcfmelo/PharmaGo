@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.com.phago.pharmago.SplashScreenActivity"
+    tools:layout_editor_absoluteY="73dp"
+    tools:layout_editor_absoluteX="0dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="349dp"
+        android:layout_height="251dp"
+        app:srcCompat="@drawable/dog_3_medium"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="219dp"
+        android:layout_height="114dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:text="Bem-vindo ao Pharmago. \n\n\nCadastre-se no site e use o menu para fazer login. "
+        android:textSize="14sp"
+        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="9dp" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="219dp"
+        android:layout_height="70dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:text=" Site :    www.phago.com.br \n Email : suporte@phago.com.br"
+        android:textSize="14sp"
+        tools:layout_editor_absoluteY="137dp"
+        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        android:layout_marginLeft="10dp" />
+
+</android.support.constraint.ConstraintLayout>

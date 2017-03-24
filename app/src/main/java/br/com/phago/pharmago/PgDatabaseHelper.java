@@ -490,15 +490,18 @@ public class PgDatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(selectQuery, null);
         if (c != null) {
             c.moveToFirst();
-            user.setName(c.getString(c.getColumnIndex(FIELD_USER_NAME)));
-            user.setCpf(c.getString(c.getColumnIndex(FIELD_USER_CPF)));
-            user.setEmail(c.getString(c.getColumnIndex(FIELD_USER_EMAIL)));
-            user.setPassword(c.getString(c.getColumnIndex(FIELD_USER_PASSWORD)));
-            user.setUserAccountStatus(c.getString(c.getColumnIndex(FIELD_USER_STATUS)));
-            user.setCompanyCode(c.getString(c.getColumnIndex(FIELD_USER_COMPANY_CODE)));
-            user.setCompanyName(c.getString(c.getColumnIndex(FIELD_USER_COMPANY_NAME)));
-            user.setCompanyLatitude(c.getString(c.getColumnIndex(FIELD_USER_COMPANY_LATITUDE)));
-            user.setCompanyLongitude(c.getString(c.getColumnIndex(FIELD_USER_COMPANY_LONGITUDE)));
+            if (!c.getString(c.getColumnIndex(FIELD_USER_EMAIL)).isEmpty()) {
+
+                user.setName(c.getString(c.getColumnIndex(FIELD_USER_NAME)));
+                user.setCpf(c.getString(c.getColumnIndex(FIELD_USER_CPF)));
+                user.setEmail(c.getString(c.getColumnIndex(FIELD_USER_EMAIL)));
+                user.setPassword(c.getString(c.getColumnIndex(FIELD_USER_PASSWORD)));
+                user.setUserAccountStatus(c.getString(c.getColumnIndex(FIELD_USER_STATUS)));
+                user.setCompanyCode(c.getString(c.getColumnIndex(FIELD_USER_COMPANY_CODE)));
+                user.setCompanyName(c.getString(c.getColumnIndex(FIELD_USER_COMPANY_NAME)));
+                user.setCompanyLatitude(c.getString(c.getColumnIndex(FIELD_USER_COMPANY_LATITUDE)));
+                user.setCompanyLongitude(c.getString(c.getColumnIndex(FIELD_USER_COMPANY_LONGITUDE)));
+            }
         }
         if (c != null && !c.isClosed()) {
             c.close();

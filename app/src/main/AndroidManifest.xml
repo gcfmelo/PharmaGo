@@ -11,7 +11,6 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -19,14 +18,18 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".QuestionActivity"></activity>
-        <activity android:name=".OptionActivity"></activity>
+        <activity android:name=".QuestionActivity" />
+        <activity android:name=".OptionActivity" />
+        <activity android:name=".CheckInActivity" />
+        <activity android:name=".CampaignActivity" />
 
         <!--
+        <activity android:name=".CheckInActivity" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
@@ -35,8 +38,8 @@
 
         </activity>
 
-        </!-->
-
+        </!
+        -->
 
     </application>
 

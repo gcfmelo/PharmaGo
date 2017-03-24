@@ -9,7 +9,7 @@ This will connect you to a Linux terminal session in you AVD emulated device or 
 It is hard to get 'su' (super user or root) privileges in case of a connected phone.
 All Linux commands are available for you in this terminal emulator.
 cd ./data/data/br.com.phago.pharmago/databases
-cd ./data/data/br.com.phago.myapplication/databases
+sqlite3 pharmago.db
 Use the Linux 'ls' to see what files and folder are there...
 Open your Database in the SQLite admin tool:
 sqlite3 <your_database_name>.db  (.db is the usual extension, but you may choose other if you prefer)

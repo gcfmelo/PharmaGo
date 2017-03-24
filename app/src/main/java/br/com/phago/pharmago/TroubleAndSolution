@@ -1,0 +1,8 @@
+Error:
+-----
+Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
+> com.android.build.api.transform.TransformException: java.lang.RuntimeException: com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException: com.android.ide.common.process.ProcessException: Return code 1 for dex process
+
+Solution: Build>Clean Project
+Build>Rebuild Project
+Run

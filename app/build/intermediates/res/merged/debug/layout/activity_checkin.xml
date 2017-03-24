@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.com.phago.pharmago.CheckinActivity">
+
+    <EditText
+        android:id="@+id/editTextEmailAddress"
+        android:layout_width="340dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="0dp"
+        android:ems="10"
+        android:hint="email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-8dp" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="340dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="password"
+        android:inputType="textPassword"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="7dp"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddress" />
+
+    <EditText
+        android:id="@+id/editText5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="none|textMultiLine"
+        android:text="please fill your email and password and press button [LOGIN] to login in PharmaGo \n\n Please visit our sito to mor information (www.pharmago.com.br) \nIn case of any questions, please contact our support at support@pharmago.com.br"
+        android:textAlignment="gravity"
+        android:textSize="14sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:columnCount="4"
+        android:rowCount="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/editText5"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0">
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:onClick="btnExitClick"
+            android:text="Exit" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSaveEmail"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_column="1"
+            android:layout_row="1"
+            android:onClick="onClickCheckBoxEmail"
+            android:text="Email"
+            android:textAlignment="center"
+            android:textSize="10sp"
+            app:layout_constraintHorizontal_bias="0.148"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@+id/editText5"
+            app:layout_constraintTop_toBottomOf="@+id/editText5" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSavePassword"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_column="2"
+            android:layout_row="1"
+            android:text="Password"
+            android:onClick="onClickCheckBoxPassword"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:layout_column="1"
+            android:layout_columnSpan="2"
+            android:layout_row="0"
+            android:text="\nSelect to save:"
+            android:textAlignment="gravity" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_column="3"
+            android:layout_row="1"
+            android:onClick="btnLoginClick"
+            android:text="LOGIN"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@+id/checkBoxSaveEmail"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText5" />
+
+    </GridLayout>
+
+</android.support.constraint.ConstraintLayout>

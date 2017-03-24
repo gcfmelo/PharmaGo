@@ -2,15 +2,6 @@
 <items version="2" >
 
     <item
-        is-multidex="false"
-        jar="C:\Users\Lenovo\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.8.0\c4ba5371a29ac9b2ad6129b1d39ea38750043eff\gson-2.8.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="c4ba5371a29ac9b2ad6129b1d39ea38750043eff">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\pre-dexed\debug\gson-2.8.0_876716d66400a95dc8e2380bbc2fb8266e8c6fdc.jar" />
-    </item>
-    <item
         is-multidex="true"
         jar="C:\Android\PharmaGo\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
@@ -20,21 +11,12 @@
         <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_453739e58950043518e6f4a1dc50b6a4c3690237\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="C:\Android\PharmaGo\volley\build\intermediates\bundles\default\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="863e41d99c0a400ba9cd8331b33d1b31e76520ef">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\pre-dexed\debug\classes_e73c22cb31ef15b4ab9c8449c56f1bbfce2c729b.jar" />
-    </item>
-    <item
         is-multidex="true"
         jar="C:\Android\PharmaGo\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="b9036e8bd9dbbaa2c22b0da31491bc0d37ac990b">
+        sha1="f412ac86cc423d2040309aaf2619940b67a150f4">
         <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_4072bfa806a075523e0959a942f4e93f5e93c277\classes.dex" />
     </item>
 

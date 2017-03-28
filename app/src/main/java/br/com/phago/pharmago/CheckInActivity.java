@@ -63,7 +63,7 @@ public class CheckInActivity extends AppCompatActivity {
         String bPassword = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString(KEY_PASSWORD, KEY_PASSWORD_NOT_FOUND_VALUE);
         int bCounter = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getInt(KEY_COUNTER, KEY_COUNTER_NOT_FOUND_VALUE);
 
-        // Get the Intent that started this activity and extract the string
+        // Get the Intent that started this activity and extract the strings
         Intent intent = getIntent();
         String selectedEmail = intent.getStringExtra(MainActivity.EXTRA_EMAIL);
         String selectedPassword = intent.getStringExtra(MainActivity.EXTRA_PASSWORD);
@@ -166,11 +166,19 @@ public class CheckInActivity extends AppCompatActivity {
                             UpdateQuestionOption(mEmail, mPassword);
                             UpdateTransaction(mEmail, mPassword);
 
+//
+                            // save email and password to PreferenceManager, accordingly to user selection
+                            PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString(KEY_EMAIL, mEmail).commit();
+                            PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString(KEY_PASSWORD, mPassword).commit();
+
 
                             Intent intentMain = new Intent(CheckInActivity.super.getApplicationContext(), CampaignActivity.class);
                             intentMain.putExtra(EXTRA_EMAIL, mEmail);                       // fill login editTextEmail
                             intentMain.putExtra(EXTRA_PASSWORD, mPassword);                 // fill login editTextPassword
                             startActivity(intentMain);
+
+
+                            finish();
 
                         } else {
                             // WS responded with:

@@ -26,7 +26,7 @@ class CampaignArrayAdapter extends ArrayAdapter<CampaignListClass>{
 
     public CampaignArrayAdapter(Context context, List<CampaignListClass> camplist){
         super(context, -1, camplist);
-        // the argument "-1" indicates that we use a custom layout in this App so we can display moe than one TextView
+        // the argument "-1" indicates that we use a custom layout in this App so we can display more than one TextView
     }
 
     // creates the custom views for the ListView's items

@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             selectedPassword = "";
         }
 
-        if (selectedEmail == "" || selectedPassword == "" || !selectedEmail.contains("@")) {
+        if (selectedEmail.equals("") || selectedPassword.equals("") || !selectedEmail.contains("@")) {
             // user credentials passed as EXTRA parameters ARE NOT usable
             // retrieve user data from PreferenceManager
             String bEmail = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("KEY_EMAIL", KEY_EMAIL_NOT_FOUND_VALUE);
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             String bPassword = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("KEY_USERNAME", KEY_PASSWORD_NOT_FOUND_VALUE);
             int bCounter = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getInt("KEY_COUNTER", KEY_COUNTER_NOT_FOUND_VALUE);
 
-            if (bEmail == null || bPassword == null || !selectedEmail.contains("@")) {
+            if (bEmail.equals("") || bPassword.equals("") || !selectedEmail.contains("@")) {
                 // if user data from PreferenceManager IS NOT potentially valid open CheckInActivity with blank credentials
                 Intent intentCheckIn = new Intent(MainActivity.super.getApplicationContext(), CheckInActivity.class);
                 intentCheckIn.putExtra(EXTRA_EMAIL, "");

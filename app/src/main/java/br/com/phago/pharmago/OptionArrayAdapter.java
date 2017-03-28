@@ -77,6 +77,10 @@ class OptionArrayAdapter extends ArrayAdapter<Option>{
         viewHolder.optionLabel.setText(context.getString(R.string.option_label, (op.getLabel())));
         viewHolder.optionRightAnswer.setText(context.getString(R.string.option_right_answer, op.getRightAnswer()));
         viewHolder.optionUserAnswer.setText(context.getString(R.string.option_user_answer, op.getUserAnswer()));
+        // formatting items according to values:
+        // if(your condition here) rowView.setBackgroundColor(Color.parseColor("#20FFFFFF"));
+//        if(op.getUserAnswer().equals("U")) viewHolder.setBackgroundColor(Color.parseColor("#20FFFFFF"));
+//
         if (op.getUserAnswer().equals("U")) {
             viewHolder.checkBoxUserSelection.setText(R.string.user_answer_undefined);
             viewHolder.checkBoxUserSelection.setEnabled(true);

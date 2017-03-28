@@ -2,8 +2,12 @@ package br.com.phago.pharmago;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -60,6 +64,10 @@ public class OptionActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
                 view.setSelected(true);
+
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+
                 //Toast.makeText(MainActivity.this, "Clicked at item " + Integer.toString(position) + " - " + campaignList.get(position).getCampaignName(), Toast.LENGTH_SHORT).show();
 
                 // load the Activity with detailed info about the User Selected Questions
@@ -97,6 +105,67 @@ public class OptionActivity extends AppCompatActivity {
             }
         });
     }
+
+    // Menu icons are inflated just as they were with actionbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_option, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+//    <string name="action_menu_0">Refresh Campaigns</string>
+//    <string name="action_menu_1">Login</string>
+//    <string name="action_menu_2">Exit</string>
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_menu_op0) {
+//            Toast.makeText(this, "You selected Option 0 id: " + Integer.toString(id), Toast.LENGTH_SHORT).show();
+
+            Intent intent = getIntent();
+            overridePendingTransition(0, 0);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(intent);
+
+            return true;
+        }
+        if (id == R.id.action_menu_op1) {
+//            Toast.makeText(this, "You selected Option 1  id: " + Integer.toString(id), Toast.LENGTH_SHORT).show();
+            // TODO call Login
+
+            //        Limpar PreferedManager
+            // limpa tudo
+            PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().commit();
+            // não limpa o contador de acessos
+//            PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("KEY_EMAIL", "").commit();
+//            PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("KEY_PASSWORD", "").commit();
+//            PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("KEY_USERNAME", "").commit();
+
+//            Intent intentCheckIn = new Intent(CampaignActivity.super.getApplicationContext(), CheckInActivity.class);
+//            intentCheckIn.putExtra(EXTRA_EMAIL, "");
+//            intentCheckIn.putExtra(EXTRA_PASSWORD, "");
+//            startActivity(intentCheckIn);
+            finish();
+
+            return true;
+        }
+        if (id == R.id.action_menu_op2) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     void getFakeOptionsList() {
         // for debugging

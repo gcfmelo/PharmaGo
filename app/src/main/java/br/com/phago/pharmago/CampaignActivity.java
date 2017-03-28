@@ -64,6 +64,11 @@ public class CampaignActivity extends AppCompatActivity {
         String selectedEmail = intent.getStringExtra(MainActivity.EXTRA_EMAIL);
         String selectedPassword = intent.getStringExtra(MainActivity.EXTRA_PASSWORD);
 
+        // save email and password to PreferenceManager, accordingly to user selection
+        PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString(KEY_EMAIL, selectedEmail).commit();
+        PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString(KEY_PASSWORD, selectedPassword).commit();
+
+
 
 
         // variables to hold values of settings in the BEGINNING of this session
@@ -122,12 +127,13 @@ public class CampaignActivity extends AppCompatActivity {
             intentCheckIn.putExtra(EXTRA_EMAIL, selectedEmail);                       // fill login editTextEmail
             intentCheckIn.putExtra(EXTRA_PASSWORD, selectedPassword);                 // fill login editTextPassword
             startActivity(intentCheckIn);
+            finish();
         }
 
         mCounter++;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
 
         Log.i(TAG, "... onCreate");
 
@@ -210,7 +216,7 @@ public class CampaignActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_campaign, menu);
         return true;
     }
 

@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.com.phago.phgo.MainActivity">
+    <item
+        android:id="@+id/action_menu_op0"
+        android:orderInCategory="100"
+        android:title="@string/action_menu_question_0"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_menu_op1"
+        android:orderInCategory="100"
+        android:title="@string/action_menu_question_1"
+        app:showAsAction="never" />
+</menu>

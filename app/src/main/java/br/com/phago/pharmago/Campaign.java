@@ -176,4 +176,8 @@ public class Campaign {
     public String getStatus() {
         return status;
     }
+
+    public String getJson() {
+        return "{}";
+    }
 }

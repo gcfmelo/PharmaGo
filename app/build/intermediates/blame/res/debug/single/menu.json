@@ -4,15 +4,15 @@
         "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\menu\\menu_main.xml"
     },
     {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\menu\\activity_main_menu_drawer.xml",
-        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\menu\\activity_main_menu_drawer.xml"
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_option.xml",
+        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\menu\\menu_option.xml"
     },
     {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\menu\\main_menu_x.xml",
-        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\menu\\main_menu_x.xml"
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_question.xml",
+        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\menu\\menu_question.xml"
     },
     {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\menu\\main_menu.xml",
-        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\menu\\main_menu.xml"
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_campaign.xml",
+        "source": "C:\\Android\\PharmaGo\\app\\src\\main\\res\\menu\\menu_campaign.xml"
     }
 ]

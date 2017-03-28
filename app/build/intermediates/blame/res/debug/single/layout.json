@@ -8,12 +8,12 @@
         "source": "C:\\Users\\Lenovo\\.android\\build-cache\\6373a9dd8cd9c1fbea4823aabd5dd55998572714\\output\\res\\layout\\abc_action_menu_item_layout.xml"
     },
     {
-        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_dialog_title_material.xml",
-        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\6373a9dd8cd9c1fbea4823aabd5dd55998572714\\output\\res\\layout\\abc_dialog_title_material.xml"
-    },
-    {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_layout_tab_icon.xml",
         "source": "C:\\Users\\Lenovo\\.android\\build-cache\\a97622210a1a8160dc129b196f1c8efb2af1155e\\output\\res\\layout\\design_layout_tab_icon.xml"
+    },
+    {
+        "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_dialog_title_material.xml",
+        "source": "C:\\Users\\Lenovo\\.android\\build-cache\\6373a9dd8cd9c1fbea4823aabd5dd55998572714\\output\\res\\layout\\abc_dialog_title_material.xml"
     },
     {
         "merged": "C:\\Android\\PharmaGo\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_layout_snackbar.xml",

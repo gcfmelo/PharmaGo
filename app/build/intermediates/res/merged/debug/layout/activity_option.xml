@@ -28,5 +28,18 @@
         layout="@layout/content_option"
         android:theme="@style/AppTheme.AppBarOverlay" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButtonSaveAnswers"
+        android:layout_width="54dp"
+        android:layout_height="57dp"
+        android:layout_gravity="top|center_horizontal"
+        android:clickable="true"
+        android:onClick="onClickFabSaveAnswers"
+        app:elevation="12dp"
+        app:fabSize="mini"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="top|left"
+        app:srcCompat="@android:drawable/ic_menu_set_as" />
+
 
 </android.support.design.widget.CoordinatorLayout>

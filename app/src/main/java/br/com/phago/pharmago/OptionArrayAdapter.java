@@ -84,14 +84,27 @@ class OptionArrayAdapter extends ArrayAdapter<Option>{
         if (op.getUserAnswer().equals("U")) {
             viewHolder.checkBoxUserSelection.setText(R.string.user_answer_undefined);
             viewHolder.checkBoxUserSelection.setEnabled(true);
+
         } else if (op.getUserAnswer().equals("N")){
             viewHolder.checkBoxUserSelection.setText(R.string.user_answer_false);
             viewHolder.checkBoxUserSelection.setChecked(false);
             viewHolder.checkBoxUserSelection.setEnabled(true);
+
+//            op.setUserAnswer("N");
+//            PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(getContext());
+//            dbx.updateOption(op);
+//            dbx.close();
+
         } else if (op.getUserAnswer().equals("Y")){
             viewHolder.checkBoxUserSelection.setText(R.string.user_answer_true);
             viewHolder.checkBoxUserSelection.setChecked(true);
             viewHolder.checkBoxUserSelection.setEnabled(true);
+
+//            op.setUserAnswer("Y");
+//            PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(getContext());
+//            dbx.updateOption(op);
+//            dbx.close();
+
         } else {
             viewHolder.checkBoxUserSelection.setText("WTF!");
         }

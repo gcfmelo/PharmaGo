@@ -113,6 +113,33 @@ public class CampaignActivity extends AppCompatActivity {
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
 
 
+
+        //////////////////////////////////////////
+        //////////////////////////////////////////
+        ////////////////////////////////////////// TEST getUserAnswerByCampaignId(idcampaign)
+        //////////////////////////////////////////
+        //////////////////////////////////////////
+//        List<UserAnswer> userAnswers = new ArrayList<UserAnswer>();
+//        dbx = PgDatabaseHelper.getInstance(this);
+//        int idcampaign = 4;
+//        userAnswers = dbx.getUserAnswerByCampaignId(idcampaign);
+//        dbx.close();
+
+        String jsonAnswers = "";
+
+//        dbx = PgDatabaseHelper.getInstance(this);
+//        int idcamp = 4;
+//        jsonAnswers = dbx.getJsonUserAnswerByCampaignId(idcamp);
+//        dbx.close();
+//        Log.d("JSON", jsonAnswers);
+
+        //////////////////////////////////////////
+        //////////////////////////////////////////
+        //////////////////////////////////////////
+
+
+
+
         if (!selectedEmail.contains("@")) {
             //SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = settings.edit();
@@ -183,6 +210,14 @@ public class CampaignActivity extends AppCompatActivity {
                     toast_value = selectedCampaignName;
                     status = campaignList.get(position).getCampaignStatus();
                     campaign_id= Integer.toString(campaignList.get(position).getCampaignId());
+                    /////////////////////////////////
+                    //   TEST JSON
+                    dbx = PgDatabaseHelper.getInstance(getApplicationContext());
+                    String jsonAnswers = dbx.getJsonUserAnswerByCampaignId(Integer.parseInt(campaign_id));
+                    dbx.close();
+                    Log.d("JSON", jsonAnswers);
+
+                    /////////////////////////////////
                     Intent intent = new Intent(CampaignActivity.super.getApplicationContext(), QuestionActivity.class);
                     intent.putExtra(EXTRA_CAMPAIGN_ID, campaign_id);
 

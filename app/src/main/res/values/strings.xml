@@ -59,6 +59,14 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="exit_button_caption">Exit</string>
+    <string name="email_edit_text_caption">Email</string>
+    <string name="password_edit_text_caption">Password</string>
+    <string name="select_to_save_edit_text_caption">Select to save:</string>
+    <string name="login_button_caption">LOGIN</string>
+    <string name="please_fill_your_email_log_text_at_login_page">please fill your email and password and press button [LOGIN] to login in PharmaGo    Please visit our sito to mor information (www.pharmago.com.br)  In case of any questions, please contact our support at support@pharmago.com.br</string>
+    <string name="email_hint_text">email</string>
+    <string name="password_hint_text">password</string>
 
 
 </resources>

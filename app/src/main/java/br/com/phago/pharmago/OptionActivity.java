@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +40,8 @@ public class OptionActivity extends AppCompatActivity {
 //        textView.setText(message);
 
         Log.i(TAG, "... onCreate");
-        //dbx = new PgDatabaseHelper(getApplicationContext());
-        PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(this);
-
+        PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(getApplicationContext());
         optionList = dbx.getOptionsByQuestionAndCampaignId(Integer.parseInt(selectedCampaignId), Integer.parseInt(selectedQuestionId));
-        //dbx.closeDB();
         dbx.close();
 
 //        Toast.makeText(this, " BD returned " + Integer.toString(optionList.size()) + " questions", Toast.LENGTH_SHORT).show();
@@ -73,9 +71,11 @@ public class OptionActivity extends AppCompatActivity {
                 // load the Activity with detailed info about the User Selected Questions
                 String selectedOptionId = " | id = | " + optionList.get(position).getSequential().toString() + " |";
                 String selectedOptionLabel = "| Option Label = | " + optionList.get(position).getLabel() + "|";
+                Toast.makeText(OptionActivity.this, selectedOptionId+selectedOptionLabel, Toast.LENGTH_SHORT).show();
                 String toast_value;
                 String initial_user_answer = optionList.get(position).getUserAnswer();
                 String current_user_answer;
+                Option selectedOption = optionList.get(position);
 
                 int campaign_id;
 
@@ -83,20 +83,33 @@ public class OptionActivity extends AppCompatActivity {
                     if (selectedOptionId != null) {
                         toast_value = selectedOptionId + "\n" + selectedOptionLabel;
 
+
                         int i = position;
                         if (optionList.get(position).getUserAnswer().equals("U")) {
-                            current_user_answer = "N";
+                            selectedOption.setUserAnswer("N");
+                            PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(getApplicationContext());
+                            dbx.updateOption(selectedOption);
+                            dbx.close();
+
 //                            Toast.makeText(OptionActivity.this, "Answer changed from 'U' to 'N'", Toast.LENGTH_SHORT).show();
                             // updateUserAnswer(...)
                         } else if (optionList.get(position).getUserAnswer().equals("Y")) {
-                            current_user_answer = "N";
+                            selectedOption.setUserAnswer("N");
+                            PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(getApplicationContext());
+                            dbx.updateOption(selectedOption);
+                            dbx.close();
+
 //                            Toast.makeText(OptionActivity.this, "Answer changed from 'Y' to 'N'", Toast.LENGTH_SHORT).show();
                             // updateUserAnswer(...)
                         } else if (optionList.get(position).getUserAnswer().equals("N")) {
-                            current_user_answer = "Y";
+                            selectedOption.setUserAnswer("Y");
+                            PgDatabaseHelper dbx = PgDatabaseHelper.getInstance(getApplicationContext());
+                            dbx.updateOption(selectedOption);
+                            dbx.close();
 //                            Toast.makeText(OptionActivity.this, "Answer changed from 'N' to 'Y'", Toast.LENGTH_SHORT).show();
                             // updateUserAnswer(...)
                         }
+
                     } else {
                         toast_value = "NULL";
                     }
@@ -105,6 +118,7 @@ public class OptionActivity extends AppCompatActivity {
             }
         });
     }
+
 
     // Menu icons are inflated just as they were with actionbar
     @Override

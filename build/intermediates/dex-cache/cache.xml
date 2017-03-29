@@ -11,21 +11,12 @@
         <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_453739e58950043518e6f4a1dc50b6a4c3690237\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="C:\Android\PharmaGo\volley\build\intermediates\bundles\default\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="863e41d99c0a400ba9cd8331b33d1b31e76520ef">
-        <dex dex="C:\Android\PharmaGo\app\build\intermediates\pre-dexed\debug\classes_e73c22cb31ef15b4ab9c8449c56f1bbfce2c729b.jar" />
-    </item>
-    <item
         is-multidex="true"
         jar="C:\Android\PharmaGo\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="19116167f4fdc7f415b6463161caa971876286bc">
+        sha1="d0aa82989964b85424e8bb96a0e4ab8eac14914e">
         <dex dex="C:\Android\PharmaGo\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_4072bfa806a075523e0959a942f4e93f5e93c277\classes.dex" />
     </item>
 
